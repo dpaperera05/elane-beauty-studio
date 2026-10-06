@@ -16,7 +16,10 @@
   --font-sans: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
   --font-serif: var(--font-cormorant), Georgia, serif;
 
-  /* Editorial scale (Cormorant Garamond). */
+  /* Editorial scale (Cormorant Garamond). Display steps down below 80rem;
+     "& Every Occasion" must fit one line at 320px. */
+  --text-display-mobile: clamp(2.375rem, 1.55rem + 4.1vw, 3rem);
+  --text-display-tablet: clamp(3.25rem, 1.9rem + 3.8vw, 4.75rem);
   --text-display: clamp(3.125rem, 2.1rem + 4.6vw, 6.25rem);
   --text-h2: clamp(2.5rem, 2.2rem + 1.4vw, 3.5rem);
   --text-h3: clamp(2rem, 1.85rem + 0.7vw, 2.625rem);
@@ -25,6 +28,8 @@
 
   /* Interface scale (Manrope). */
   --text-body: clamp(1rem, 0.97rem + 0.12vw, 1.0625rem);
+  --text-lead-mobile: 0.9375rem;
+  --text-lead-tablet: 1rem;
   --text-lead: clamp(1.0625rem, 1.03rem + 0.15vw, 1.125rem);
   --text-ui: 0.9375rem;
   --text-small: 0.875rem;
@@ -78,10 +83,17 @@
 /* Editorial — Cormorant Garamond, regular/medium, tight leading. */
 @utility type-display {
   font-family: var(--font-serif);
-  font-size: var(--text-display);
+  font-size: var(--text-display-mobile);
   font-weight: 400;
   line-height: 0.88;
   letter-spacing: -0.015em;
+
+  @media (width >= 40rem) {
+    font-size: var(--text-display-tablet);
+  }
+  @media (width >= 80rem) {
+    font-size: var(--text-display);
+  }
 }
 
 @utility type-h2 {
@@ -126,8 +138,16 @@
 /* Interface — Manrope. */
 @utility type-lead {
   font-family: var(--font-sans);
-  font-size: var(--text-lead);
-  line-height: 1.7;
+  font-size: var(--text-lead-mobile);
+  line-height: 1.65;
+
+  @media (width >= 40rem) {
+    font-size: var(--text-lead-tablet);
+    line-height: 1.7;
+  }
+  @media (width >= 80rem) {
+    font-size: var(--text-lead);
+  }
 }
 
 @utility type-small {

@@ -39,13 +39,13 @@ export function Header() {
   return (
     <header className="absolute inset-x-0 top-0 z-40">
       <div className="container-site">
-        <div className="relative flex items-center justify-between pt-5 lg:pt-8">
+        <div className="relative flex items-center justify-between pt-4 sm:pt-5 lg:pt-6 xl:pt-8">
           <a
             href="#"
             className="relative z-20 text-ivory"
             aria-label={`${site.fullName} home`}
           >
-            <Logo intro />
+            <Logo intro compact />
           </a>
 
           {/* Desktop nav pill */}
@@ -62,7 +62,7 @@ export function Header() {
                       aria-expanded={dropdownOpen}
                       aria-haspopup="true"
                       onClick={() => setDropdownOpen((o) => !o)}
-                      className="flex items-center gap-1.5 rounded-full px-5 py-3 leading-none transition hover:bg-white/10"
+                      className="flex items-center gap-1.5 rounded-full px-4 py-3 leading-none transition hover:bg-white/10 xl:px-5"
                     >
                       {item.label}
                       <Icon
@@ -107,7 +107,7 @@ export function Header() {
                   <li key={item.label} data-intro="header-item">
                     <a
                       href={item.href}
-                      className="block rounded-full px-5 py-3 leading-none transition hover:bg-white/10"
+                      className="block rounded-full px-4 py-3 leading-none transition hover:bg-white/10 xl:px-5"
                     >
                       {item.label}
                     </a>
@@ -129,7 +129,7 @@ export function Header() {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               data-intro="header-item"
-              className="flex size-12 flex-col items-center justify-center gap-1.5 rounded-full bg-ink/80 text-white backdrop-blur-md lg:hidden"
+              className="flex size-11 flex-col items-center justify-center gap-1.5 rounded-full bg-ink/80 text-white backdrop-blur-md sm:size-12 lg:hidden"
             >
               <span
                 className={`h-px w-5 bg-current transition ${menuOpen ? "translate-y-[3.5px] rotate-45" : ""}`}

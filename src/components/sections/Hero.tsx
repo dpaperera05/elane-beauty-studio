@@ -52,7 +52,7 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <div className="container-site relative pt-44 pb-24 md:pb-40">
+      <div className="container-site relative pt-32 pb-16 sm:pt-44 sm:pb-24 md:pb-40">
         <div className="mx-auto max-w-5xl text-center">
           <h1 className="type-display">
             {hero.titleLines.map((line, i) => {
@@ -74,12 +74,15 @@ export function Hero() {
               );
             })}
           </h1>
-          <p data-intro="hero-copy" className="type-lead mx-auto mt-7 max-w-[42rem] text-balance text-white/85">
+          <p data-intro="hero-copy" className="type-lead mx-auto mt-5 max-w-[21rem] text-balance text-white/85 sm:mt-6 sm:max-w-[34rem] xl:mt-7 xl:max-w-[42rem]">
             {hero.body}
           </p>
-          {/* Equal-width pair: grid columns share the widest button's width
-              (stacked on phones, side by side from sm). */}
-          <div data-intro="hero-cta" className="mt-9 inline-grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {/* Phones: full-width stacked buttons. From sm: an equal-width pair
+              whose grid columns share the widest button's width. */}
+          <div
+            data-intro="hero-cta"
+            className="mx-auto mt-8 grid w-full max-w-xs grid-cols-1 gap-3 sm:mt-9 sm:inline-grid sm:w-auto sm:max-w-none sm:grid-cols-2"
+          >
             <Button href={hero.primary.href}>{hero.primary.label}</Button>
             <Button href={hero.secondary.href} variant="light">
               {hero.secondary.label}

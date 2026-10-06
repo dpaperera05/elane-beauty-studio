@@ -1,14 +1,23 @@
 /**
  * Typographic wordmark: Cormorant capitals over a small Manrope "Beauty Studio" line.
- * `intro` marks both lines for the staggered entrance in SiteIntro (header only).
+ * `intro` marks both lines for the entrance in SiteIntro, and `compact` steps
+ * the wordmark down on phones (both header only).
  */
-export function Logo({ className = "", intro = false }: { className?: string; intro?: boolean }) {
+export function Logo({
+  className = "",
+  intro = false,
+  compact = false,
+}: {
+  className?: string;
+  intro?: boolean;
+  compact?: boolean;
+}) {
   const introAttr = intro ? { "data-intro": "header-item" } : {};
 
   return (
     <span className={`flex flex-col leading-none ${className}`}>
       {/* Negative right margin cancels the trailing letter-spacing so the mark stays optically aligned. */}
-      <span {...introAttr} className="type-wordmark mr-[-0.26em] text-[2.125rem]">
+      <span {...introAttr} className={`type-wordmark mr-[-0.26em] ${compact ? "text-[1.75rem] sm:text-[2.125rem]" : "text-[2.125rem]"}`}>
         Élane
       </span>
       <span
