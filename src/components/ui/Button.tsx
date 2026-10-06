@@ -5,19 +5,26 @@ import { cn } from "@/lib/cn";
 
 const variants = {
   /** Burgundy fill — the main call to action. One per view where possible. */
-  primary:
-    "min-h-13 px-7 rounded-sharp bg-accent text-surface hover:bg-accent-deep",
+  primary: "rounded-sharp bg-accent text-surface hover:bg-accent-deep",
   /** Hairline outline that fills charcoal on hover. */
   secondary:
-    "min-h-13 px-7 rounded-sharp border border-ink text-ink hover:bg-ink hover:text-surface",
+    "rounded-sharp border border-ink text-ink hover:bg-ink hover:text-surface",
   /** Editorial text link with drawn underline. */
   text: "py-1 text-ink",
+} as const;
+
+/** Box sizes for primary / secondary. Text links are unboxed and ignore size. */
+const sizes = {
+  default: "min-h-13 px-7",
+  /** For tight spaces such as the header — still a 44px touch target. */
+  compact: "min-h-11 px-5",
 } as const;
 
 type Variant = keyof typeof variants;
 
 type BaseProps = {
   variant?: Variant;
+  size?: keyof typeof sizes;
   /** Show the trailing arrow. Defaults to true for primary and text links. */
   arrow?: boolean;
   className?: string;
@@ -37,6 +44,7 @@ export type ButtonProps = LinkButtonProps | NativeButtonProps;
 /** Renders a Next.js `Link` when given `href`, otherwise a native `<button>`. */
 export function Button({
   variant = "primary",
+  size = "default",
   arrow,
   className,
   children,
@@ -49,6 +57,7 @@ export function Button({
     "transition-colors duration-500 ease-editorial",
     "disabled:pointer-events-none disabled:opacity-50",
     variants[variant],
+    variant !== "text" && sizes[size],
     className,
   );
 
