@@ -45,7 +45,7 @@ export function Header() {
             className="relative z-20 text-ivory"
             aria-label={`${site.fullName} home`}
           >
-            <Logo />
+            <Logo intro />
           </a>
 
           {/* Desktop nav pill */}
@@ -56,7 +56,7 @@ export function Header() {
             <ul className="flex items-center">
               {nav.map((item) =>
                 "children" in item && item.children ? (
-                  <li key={item.label} ref={dropdownRef} className="relative">
+                  <li key={item.label} ref={dropdownRef} data-intro="header-item" className="relative">
                     <button
                       type="button"
                       aria-expanded={dropdownOpen}
@@ -104,7 +104,7 @@ export function Header() {
                     </div>
                   </li>
                 ) : (
-                  <li key={item.label}>
+                  <li key={item.label} data-intro="header-item">
                     <a
                       href={item.href}
                       className="block rounded-full px-5 py-3 leading-none transition hover:bg-white/10"
@@ -118,14 +118,17 @@ export function Header() {
           </nav>
 
           <div className="relative z-20 flex items-center gap-3">
-            <span className="hidden sm:block">
-              <Button href="#book">Book Now</Button>
+            <span data-intro="header-item" className="hidden sm:block">
+              <Button href="#book" className="min-w-44">
+                Book Now
+              </Button>
             </span>
             <button
               type="button"
               onClick={() => setMenuOpen((o) => !o)}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
+              data-intro="header-item"
               className="flex size-12 flex-col items-center justify-center gap-1.5 rounded-full bg-ink/80 text-white backdrop-blur-md lg:hidden"
             >
               <span

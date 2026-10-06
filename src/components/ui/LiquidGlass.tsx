@@ -57,7 +57,7 @@ export function LiquidGlass() {
         <feDisplacementMap
           in="SourceGraphic"
           in2="map"
-          scale="26"
+          scale="44"
           xChannelSelector="R"
           yChannelSelector="G"
         />

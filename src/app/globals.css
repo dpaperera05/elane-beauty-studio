@@ -191,7 +191,7 @@
     --glass-tint: rgb(95 39 48 / 0.75);
   }
   .liquid-glass--clear {
-    --glass-tint: rgb(255 255 255 / 0.2);
+    --glass-tint: rgb(255 255 255 / 0.28);
   }
   /* Frosted: already glass at rest (light tint, no refraction), intensifies on hover. */
   .liquid-glass--frosted {
@@ -213,8 +213,9 @@
 
   .liquid-glass__refract {
     display: none;
-    /* Oversized so displaced pixels never pull in empty edges; the host clips it. */
-    inset: -16px;
+    /* Oversized (> half the displacement scale) so displaced pixels never pull
+       in empty edges; the host clips it. */
+    inset: -24px;
   }
   :root[data-glass-refraction] .liquid-glass__refract {
     display: block;
@@ -233,29 +234,34 @@
 
   .liquid-glass__shine {
     background:
+      /* Specular light that follows the cursor. */
       radial-gradient(
-        5.5rem circle at var(--glass-x) var(--glass-y),
-        rgb(255 255 255 / 0.3),
-        transparent 70%
+        7rem circle at var(--glass-x) var(--glass-y),
+        rgb(255 255 255 / 0.5),
+        transparent 65%
       ),
+      /* Glossy upper half with a soft horizon, plus a faint lower bounce. */
       linear-gradient(
         to bottom,
-        rgb(255 255 255 / 0.2),
-        transparent 45% 75%,
-        rgb(255 255 255 / 0.08)
+        rgb(255 255 255 / 0.34),
+        rgb(255 255 255 / 0.08) 48%,
+        transparent 54% 78%,
+        rgb(255 255 255 / 0.16)
       );
     box-shadow:
-      inset 0 1px 0.5px rgb(255 255 255 / 0.65),
-      inset 0 -1px 0.5px rgb(255 255 255 / 0.25),
-      inset 0 0 0 1px rgb(255 255 255 / 0.12),
-      inset 0 -0.75rem 1.25rem -1rem rgb(255 255 255 / 0.4);
+      /* Bright rim along the top and sides, dimmer along the bottom. */
+      inset 0 1.5px 0.5px rgb(255 255 255 / 0.95),
+      inset 1px 0 0.5px rgb(255 255 255 / 0.35),
+      inset -1px 0 0.5px rgb(255 255 255 / 0.35),
+      inset 0 -1px 0.5px rgb(255 255 255 / 0.45),
+      inset 0 0 0 1px rgb(255 255 255 / 0.24),
+      /* Inner glow pooling at the top and bottom edges. */
+      inset 0 0.5rem 1rem -0.75rem rgb(255 255 255 / 0.5),
+      inset 0 -0.75rem 1.25rem -1rem rgb(255 255 255 / 0.6);
   }
 
   /* Hover (pointer devices), keyboard focus and touch press share one state. */
   @media (hover: hover) {
-    .liquid-glass:hover {
-      box-shadow: 0 0.75rem 2rem -1rem rgb(27 25 24 / 0.5);
-    }
     .liquid-glass:hover .liquid-glass__layer {
       opacity: 1;
     }
@@ -264,8 +270,8 @@
     }
     /* With real refraction, ease the blur so the bend stays visible. */
     :root[data-glass-refraction] .liquid-glass:hover .liquid-glass__frost {
-      -webkit-backdrop-filter: blur(3px) saturate(1.8);
-      backdrop-filter: blur(3px) saturate(1.8);
+      -webkit-backdrop-filter: blur(2px) saturate(2);
+      backdrop-filter: blur(2px) saturate(2);
     }
   }
   .liquid-glass:is(:focus-visible, :active) .liquid-glass__layer {
@@ -284,6 +290,99 @@
 .hero-video::-webkit-media-controls-start-playback-button {
   display: none !important;
   -webkit-appearance: none;
+}
+
+/*
+ * Intro overlay (SiteIntro). The wordmark entrance is CSS so it starts on
+ * first paint; GSAP takes over for the exit and the hero reveal.
+ */
+.site-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background: var(--color-burgundy-deep);
+  color: var(--color-ivory);
+  clip-path: inset(0% 0% 0% 0%);
+}
+
+.site-intro__mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.site-intro__mask {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.14em 0.04em;
+  font-size: clamp(2.75rem, 2.2rem + 2.6vw, 4.25rem);
+}
+
+.site-intro__name {
+  display: block;
+  /* Cancels the trailing letter-spacing so the word centres optically. */
+  margin-right: -0.26em;
+  animation: site-intro-rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.site-intro__tagline {
+  margin-top: 0.9rem;
+  /* Balances the trailing letter-spacing for true centring. */
+  padding-left: 0.42em;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  animation: site-intro-fade 0.8s 0.25s ease both;
+}
+
+@keyframes site-intro-rise {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@keyframes site-intro-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Hidden until the intro reveals them (only while the overlay exists). */
+  .site-intro ~ * [data-intro] {
+    opacity: 0;
+  }
+  /* Failsafe: if the script never takes over, reveal everything after 4s. */
+  .site-intro:not(.is-ready) ~ * [data-intro] {
+    animation: site-intro-failsafe-in 0s 4s forwards;
+  }
+  .site-intro:not(.is-ready) {
+    animation: site-intro-failsafe-out 0s 4s forwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-intro {
+    display: none;
+  }
+}
+
+@keyframes site-intro-failsafe-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes site-intro-failsafe-out {
+  to {
+    visibility: hidden;
+  }
 }
 
 /* Scroll reveal, toggled by <Reveal>. */

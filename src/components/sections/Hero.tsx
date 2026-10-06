@@ -58,7 +58,7 @@ export function Hero() {
             {hero.titleLines.map((line, i) => {
               const [start, end] = line.split(hero.titleEmphasis);
               return (
-                <span key={line} className="block">
+                <span key={line} data-intro="headline-line" className="block">
                   {end === undefined ? (
                     line
                   ) : (
@@ -74,10 +74,12 @@ export function Hero() {
               );
             })}
           </h1>
-          <p className="type-lead mx-auto mt-7 max-w-[42rem] text-balance text-white/85">
+          <p data-intro="hero-copy" className="type-lead mx-auto mt-7 max-w-[42rem] text-balance text-white/85">
             {hero.body}
           </p>
-          <div className="mt-9 flex flex-wrap justify-center gap-3">
+          {/* Equal-width pair: grid columns share the widest button's width
+              (stacked on phones, side by side from sm). */}
+          <div data-intro="hero-cta" className="mt-9 inline-grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Button href={hero.primary.href}>{hero.primary.label}</Button>
             <Button href={hero.secondary.href} variant="light">
               {hero.secondary.label}
