@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { SiteIntro } from "@/components/SiteIntro";
+import { About } from "@/components/sections/About";
 import { Hero } from "@/components/sections/Hero";
 
 export default function Home() {
@@ -9,7 +10,11 @@ export default function Home() {
       <SiteIntro />
       <Header />
       <main>
-        <Hero />
+        {/* The header stays transparent while this is behind it. */}
+        <div data-header-overlay>
+          <Hero />
+        </div>
+        <About />
       </main>
     </>
   );

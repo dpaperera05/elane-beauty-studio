@@ -61,3 +61,34 @@ export const hero = {
   primary: { label: "Explore Services", href: "#studio" },
   secondary: { label: "Book a Visit", href: "#book" },
 };
+
+export const about = {
+  eyebrow: "About the Studio",
+  title: "A modern beauty studio in the heart of Colombo.",
+  body: "ÉLANE is a full-service beauty studio created around thoughtful care, skilled artistry and a calm, welcoming experience. From hair and skin to nails, makeup and bridal, every service begins with understanding what works for you.",
+  cta: { label: "Discover Our Studio", href: "/about" },
+  location: "Colombo 07 · Sri Lanka",
+  highlights: [
+    { value: "05", label: "Beauty disciplines under one roof" },
+    { value: "1:1", label: "Consultation before every service" },
+  ],
+  badge: {
+    title: "Full-service beauty studio",
+    services: ["Hair", "Skin", "Nails", "Makeup", "Bridal"],
+  },
+  // Stand-ins from Unsplash; replace with the studio's own photography.
+  images: {
+    main: {
+      src: "/images/home/about-hair-ritual.jpg",
+      alt: "Stylist rinsing a client's hair at a backwash basin",
+    },
+    secondary: {
+      src: "/images/home/about-skin-ritual.jpg",
+      alt: "Therapist brushing a clay mask onto a relaxed client",
+    },
+    detail: {
+      src: "/images/home/about-nail-detail.jpg",
+      alt: "Close-up of softly polished, almond-shaped nails",
+    },
+  },
+};

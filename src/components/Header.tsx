@@ -9,7 +9,27 @@ import { Logo } from "./Logo";
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  // True while the full-bleed hero is behind the header.
+  const [overHero, setOverHero] = useState(true);
+  const headerRef = useRef<HTMLElement>(null);
   const dropdownRef = useRef<HTMLLIElement>(null);
+
+  // Switch to the solid header once the hero has scrolled out from behind it.
+  // Pages without a hero get the solid header straight away.
+  useEffect(() => {
+    const hero = document.querySelector("[data-header-overlay]");
+    if (!hero) {
+      const frame = requestAnimationFrame(() => setOverHero(false));
+      return () => cancelAnimationFrame(frame);
+    }
+    const height = headerRef.current?.offsetHeight ?? 80;
+    const observer = new IntersectionObserver(
+      ([entry]) => setOverHero(entry.isIntersecting),
+      { rootMargin: `-${height}px 0px 0px 0px` },
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
 
   // Close the services dropdown on outside click or Escape.
   useEffect(() => {
@@ -36,13 +56,31 @@ export function Header() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  // The open mobile menu is dark, so it keeps the over-hero (light) styling.
+  const solid = !overHero && !menuOpen;
+  const tone = (overlay: string, solidTone: string) => (solid ? solidTone : overlay);
+
   return (
-    <header className="absolute inset-x-0 top-0 z-40">
-      <div className="container-site">
-        <div className="relative flex items-center justify-between pt-4 sm:pt-5 lg:pt-6 xl:pt-8">
+    <header ref={headerRef} className="fixed inset-x-0 top-0 z-40">
+      {/* Solid background on its own layer: a backdrop-filter on <header>
+          itself would trap the fixed mobile menu inside the header box. */}
+      <div
+        aria-hidden="true"
+        className={`absolute inset-0 border-b bg-white/85 backdrop-blur-md transition-[opacity,border-color] duration-500 ${tone(
+          "border-transparent opacity-0",
+          "border-ink/10 opacity-100",
+        )}`}
+      />
+      <div className="container-site relative">
+        <div
+          className={`relative flex items-center justify-between transition-[padding] duration-500 ${tone(
+            "pt-4 sm:pt-5 lg:pt-6 xl:pt-8",
+            "py-3 lg:py-3.5",
+          )}`}
+        >
           <a
             href="#"
-            className="relative z-20 text-ivory"
+            className={`relative z-20 transition-colors duration-500 ${tone("text-ivory", "text-ink")}`}
             aria-label={`${site.fullName} home`}
           >
             <Logo intro compact />
@@ -51,7 +89,10 @@ export function Header() {
           {/* Desktop nav pill */}
           <nav
             aria-label="Main"
-            className="type-ui absolute left-1/2 hidden -translate-x-1/2 rounded-full bg-ink/80 px-2 py-1.5 text-white backdrop-blur-md lg:block"
+            className={`type-ui absolute left-1/2 hidden -translate-x-1/2 rounded-full px-2 py-1.5 backdrop-blur-md transition-colors duration-500 lg:block ${tone(
+              "bg-ink/80 text-white",
+              "bg-transparent text-ink",
+            )}`}
           >
             <ul className="flex items-center">
               {nav.map((item) =>
@@ -62,7 +103,7 @@ export function Header() {
                       aria-expanded={dropdownOpen}
                       aria-haspopup="true"
                       onClick={() => setDropdownOpen((o) => !o)}
-                      className="flex items-center gap-1.5 rounded-full px-4 py-3 leading-none transition hover:bg-white/10 xl:px-5"
+                      className={`flex items-center gap-1.5 rounded-full px-4 py-3 leading-none transition ${tone("hover:bg-white/10", "hover:bg-ink/5")} xl:px-5`}
                     >
                       {item.label}
                       <Icon
@@ -77,19 +118,26 @@ export function Header() {
                           : "invisible -translate-y-2 opacity-0"
                       }`}
                     >
-                      <ul className="rounded-2xl bg-ink/90 p-2 backdrop-blur-md">
+                      <ul
+                        className={`rounded-2xl p-2 backdrop-blur-md transition-colors duration-500 ${tone(
+                          "bg-ink/90 text-white",
+                          "bg-white text-ink shadow-[0_16px_40px_-16px_rgb(27_25_24/0.25)] ring-1 ring-ink/5",
+                        )}`}
+                      >
                         {item.children.map((child) => (
                           <li key={child.label}>
                             <a
                               href={child.href}
                               onClick={() => setDropdownOpen(false)}
-                              className="group flex items-center justify-between gap-4 rounded-xl px-4 py-3 transition hover:bg-white/10"
+                              className={`group flex items-center justify-between gap-4 rounded-xl px-4 py-3 transition ${tone("hover:bg-white/10", "hover:bg-ink/5")}`}
                             >
                               <span>
                                 <span className="block">
                                   {child.label}
                                 </span>
-                                <span className="type-small block font-normal text-white/60">
+                                <span
+                                  className={`type-small block font-normal ${tone("text-white/60", "text-muted")}`}
+                                >
                                   {child.description}
                                 </span>
                               </span>
@@ -107,7 +155,7 @@ export function Header() {
                   <li key={item.label} data-intro="header-item">
                     <a
                       href={item.href}
-                      className="block rounded-full px-4 py-3 leading-none transition hover:bg-white/10 xl:px-5"
+                      className={`block rounded-full px-4 py-3 leading-none transition ${tone("hover:bg-white/10", "hover:bg-ink/5")} xl:px-5`}
                     >
                       {item.label}
                     </a>
@@ -129,7 +177,10 @@ export function Header() {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               data-intro="header-item"
-              className="flex size-11 flex-col items-center justify-center gap-1.5 rounded-full bg-ink/80 text-white backdrop-blur-md sm:size-12 lg:hidden"
+              className={`flex size-11 flex-col items-center justify-center gap-1.5 rounded-full backdrop-blur-md transition-colors duration-500 sm:size-12 lg:hidden ${tone(
+                "bg-ink/80 text-white",
+                "bg-ink/5 text-ink",
+              )}`}
             >
               <span
                 className={`h-px w-5 bg-current transition ${menuOpen ? "translate-y-[3.5px] rotate-45" : ""}`}

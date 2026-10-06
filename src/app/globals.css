@@ -39,10 +39,12 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Anchor jumps land below the fixed header. */
+    scroll-padding-top: 6rem;
   }
 
   body {
-    background: var(--color-ivory);
+    background: #fff;
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: var(--text-body);
@@ -231,10 +233,15 @@
        in empty edges; the host clips it. */
     inset: -24px;
   }
-  :root[data-glass-refraction] .liquid-glass__refract {
+  /* Solid buttons are excluded here too: this selector outranks the
+     `--solid` rule above, and the bent backdrop would show through the fill. */
+  :root[data-glass-refraction] .liquid-glass:not(.liquid-glass--solid) .liquid-glass__refract {
     display: block;
     backdrop-filter: blur(1px) saturate(1.6);
     filter: url(#liquid-glass-refraction);
+    /* Trim the oversized layer back to the host's exact pill (clip-path runs
+       after the filter), so the bend never alters the button's outline. */
+    clip-path: inset(24px round 9999px);
   }
 
   .liquid-glass__frost {
