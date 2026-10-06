@@ -1,26 +1,169 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ==========================================================================
+   ÉLANE design tokens
+   Every token below generates Tailwind utilities (bg-canvas, text-ink,
+   font-display, text-hero, shadow-panel, ease-editorial, ...).
+   ========================================================================== */
+
+@theme {
+  /* Colour — warm ivory, charcoal, burgundy accent.
+     Tailwind's default palette is cleared so only brand colours are available. */
+  --color-*: initial;
+  --color-canvas: #f5f1ea; /* main background */
+  --color-surface: #fcfaf7; /* light surface / ivory text on accent */
+  --color-surface-muted: #e9e0d5; /* secondary surface */
+  --color-ink: #191817; /* primary text */
+  --color-ink-soft: #67625d; /* secondary text */
+  --color-accent: #7a343d; /* burgundy — use sparingly */
+  --color-accent-deep: #63282f; /* accent hover / pressed */
+  --color-accent-soft: #c9a3a1; /* dusty rose */
+  --color-line: #d8d0c6; /* 1px borders and rules */
+
+  /* Type scale — fluid between ~375px and ~1360px viewports.
+     Desktop targets: hero 96–112, display 64–72, heading 42–48, title 26–32. */
+  --text-hero: clamp(3.25rem, 1.6rem + 6.4vw, 7rem);
+  --text-hero--line-height: 0.95;
+  --text-hero--letter-spacing: -0.025em;
+
+  --text-display: clamp(2.5rem, 1.4rem + 4.2vw, 4.5rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.02em;
+
+  --text-heading: clamp(2rem, 1.35rem + 2.6vw, 3rem);
+  --text-heading--line-height: 1.08;
+  --text-heading--letter-spacing: -0.015em;
+
+  --text-title: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  --text-title--line-height: 1.2;
+  --text-title--letter-spacing: -0.01em;
+
+  --text-body-lg: clamp(1.0625rem, 1rem + 0.25vw, 1.125rem);
+  --text-body-lg--line-height: 1.7;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.7;
+
+  --text-ui: 0.9375rem;
+  --text-ui--line-height: 1.2;
+  --text-ui--letter-spacing: 0.01em;
+
+  --text-label: clamp(0.75rem, 0.7rem + 0.15vw, 0.8125rem);
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.2em;
+
+  /* Layout */
+  --container-site: 80rem; /* 1280px content width */
+  --container-narrow: 48rem; /* long-form text, forms */
+
+  /* Surfaces */
+  --radius-sharp: 3px; /* buttons, inputs — near-square, never pills */
+  --shadow-panel: 0 20px 60px rgb(25 24 23 / 0.08);
+
+  /* Motion — see src/lib/motion.ts for the JS equivalents */
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Font variables are set on <html> by next/font in the root layout. */
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-cormorant), "Times New Roman", Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Fluid spacing that isn't tied to a single utility. */
+:root {
+  /* Container side padding: ~20px mobile → ~32px tablet → ~56–64px desktop. */
+  --gutter: clamp(1.25rem, 0.25rem + 4vw, 4rem);
+  /* Vertical section rhythm: ~72px mobile → ~96px tablet → ~132–144px desktop. */
+  --section-space: clamp(4.5rem, 2.25rem + 7.5vw, 9rem);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  /* Major headings are editorial by default; size them with text-hero / text-display / text-heading. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+/* Editorial underline: a resting hairline with a full-strength line that
+   draws in from the left on hover / focus of the nearest .group. */
+@utility link-underline {
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(var(--color-line), var(--color-line));
+  background-size:
+    0% 1px,
+    100% 1px;
+  background-position:
+    0 100%,
+    0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 0.25em;
+  transition: background-size 500ms var(--ease-editorial);
+
+  :where(.group):hover &,
+  :where(.group):focus-visible & {
+    background-size:
+      100% 1px,
+      100% 1px;
+  }
 }

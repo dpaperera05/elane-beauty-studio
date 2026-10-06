@@ -1,69 +1,106 @@
-import Image from "next/image";
+import { Container } from "@/components/layout/Container";
+import { Section } from "@/components/layout/Section";
+import { Reveal } from "@/components/motion/Reveal";
+import { Button } from "@/components/ui/Button";
+import { SectionLabel } from "@/components/ui/SectionLabel";
+import { siteConfig } from "@/lib/site";
+
+// Temporary design-system preview. Replaced by the real homepage in the next phase.
+
+const typeScale = [
+  { token: "text-display", note: "Section heading · 64–72px", className: "font-display text-display", sample: "Crafted with intention" },
+  { token: "text-heading", note: "Secondary heading · 42–48px", className: "font-display text-heading", sample: "Hair, skin & bridal" },
+  { token: "text-title", note: "Card title · 26–32px", className: "font-display text-title font-medium", sample: "Signature Colour" },
+  { token: "text-body-lg", note: "Large body · 18px", className: "text-body-lg text-ink-soft", sample: "Every appointment begins with a conversation about you." },
+  { token: "text-body", note: "Body · 16px", className: "text-body text-ink-soft", sample: "Precision cuts, considered colour and skin rituals, shaped to your features and your routine." },
+];
+
+const swatches = [
+  { name: "Canvas", hex: "#F5F1EA", className: "bg-canvas" },
+  { name: "Surface", hex: "#FCFAF7", className: "bg-surface" },
+  { name: "Surface muted", hex: "#E9E0D5", className: "bg-surface-muted" },
+  { name: "Ink", hex: "#191817", className: "bg-ink" },
+  { name: "Ink soft", hex: "#67625D", className: "bg-ink-soft" },
+  { name: "Accent", hex: "#7A343D", className: "bg-accent" },
+  { name: "Accent soft", hex: "#C9A3A1", className: "bg-accent-soft" },
+  { name: "Line", hex: "#D8D0C6", className: "bg-line" },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="flex-1">
+      <Section className="flex min-h-[85svh] items-center">
+        <Container>
+          <Reveal className="flex flex-col gap-10 md:gap-14">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-6">
+              <p className="font-display text-title font-medium tracking-[0.18em]">
+                {siteConfig.name}
+              </p>
+              <SectionLabel tone="muted">Design System Foundation Ready</SectionLabel>
+            </div>
+
+            <h1 className="max-w-[12ch] text-hero">
+              Beauty, <em className="text-accent">shaped</em> around you.
+            </h1>
+
+            <p className="max-w-xl text-body-lg text-ink-soft">{siteConfig.description}</p>
+          </Reveal>
+        </Container>
+      </Section>
+
+      <Section tone="surface" aria-labelledby="typography-heading">
+        <Container className="flex flex-col gap-12">
+          <SectionLabel>Typography</SectionLabel>
+          <h2 id="typography-heading" className="sr-only">Typography</h2>
+          <dl className="divide-y divide-line border-y border-line">
+            {typeScale.map((item) => (
+              <div key={item.token} className="grid gap-3 py-8 md:grid-cols-[14rem_1fr] md:gap-10">
+                <dt className="flex flex-col gap-1 text-sm">
+                  <code className="font-semibold text-ink">{item.token}</code>
+                  <span className="text-ink-soft">{item.note}</span>
+                </dt>
+                <dd className={item.className}>{item.sample}</dd>
+              </div>
+            ))}
+          </dl>
+        </Container>
+      </Section>
+
+      <Section aria-labelledby="colour-heading">
+        <Container className="flex flex-col gap-12">
+          <SectionLabel>Colour</SectionLabel>
+          <h2 id="colour-heading" className="sr-only">Colour</h2>
+          <ul className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-4">
+            {swatches.map((swatch) => (
+              <li key={swatch.name} className="flex flex-col gap-3">
+                <span aria-hidden="true" className={`aspect-4/3 border border-line ${swatch.className}`} />
+                <span className="flex flex-col text-sm">
+                  <span className="font-semibold">{swatch.name}</span>
+                  <span className="text-ink-soft">{swatch.hex}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </Section>
+
+      <Section tone="muted" aria-labelledby="components-heading">
+        <Container className="flex flex-col gap-12">
+          <SectionLabel>Components</SectionLabel>
+          <h2 id="components-heading" className="text-heading">
+            Buttons &amp; labels
+          </h2>
+          <div className="flex flex-col items-start gap-6 sm:flex-row sm:flex-wrap sm:items-center">
+            <Button>Book Appointment</Button>
+            <Button variant="secondary">View Services</Button>
+            <Button variant="text">Discover the studio</Button>
+          </div>
+          <div className="flex flex-col gap-4">
+            <SectionLabel>Accent label</SectionLabel>
+            <SectionLabel tone="muted">Muted label</SectionLabel>
+          </div>
+        </Container>
+      </Section>
+    </main>
   );
 }
