@@ -65,7 +65,10 @@ export const hero = {
 export const about = {
   eyebrow: "About the Studio",
   title: "A modern beauty studio in the heart of Colombo.",
-  body: "ÉLANE is a full-service beauty studio created around thoughtful care, skilled artistry and a calm, welcoming experience. From hair and skin to nails, makeup and bridal, every service begins with understanding what works for you.",
+  body: [
+    "ÉLANE is a full-service beauty studio created around thoughtful care, skilled artistry and a calm, welcoming experience. From hair and skin to nails, makeup and bridal, every service begins with understanding what works for you.",
+    "Tucked into Colombo 07, the studio is a quiet retreat from the city, with soft light, unhurried appointments and senior artists who take the time to get it right. From a fresh cut to your wedding day, you leave feeling looked after, never rushed.",
+  ],
   cta: { label: "Discover Our Studio", href: "/contact" },
   location: "Colombo 07 · Sri Lanka",
   // `icon` keys map to Lucide icons in About.tsx.
@@ -73,23 +76,19 @@ export const about = {
     { icon: "disciplines", value: "05", label: "Beauty disciplines under one roof" },
     { icon: "consultation", value: "1:1", label: "Consultation before every service" },
   ],
-  badge: {
-    title: "Full-service beauty studio",
-    services: ["Hair", "Skin", "Nails", "Makeup", "Bridal"],
-  },
-  // Stand-ins from Unsplash; replace with the studio's own photography.
+  // Studio interiors: the tall main photo, then the two stacked beside it.
   images: {
     main: {
-      src: "/images/home/about-hair-ritual.jpg",
-      alt: "Stylist rinsing a client's hair at a backwash basin",
+      src: "/images/home/about-styling-floor.jpg",
+      alt: "Styling floor with round backlit mirrors, pendant lamps and hanging greenery",
     },
     secondary: {
-      src: "/images/home/about-skin-ritual.jpg",
-      alt: "Therapist brushing a clay mask onto a relaxed client",
+      src: "/images/home/about-nail-lounge.jpg",
+      alt: "Marble reception desk beside a nail-colour wall and window manicure stations",
     },
     detail: {
-      src: "/images/home/about-nail-detail.jpg",
-      alt: "Close-up of softly polished, almond-shaped nails",
+      src: "/images/home/about-mirror-wall.jpg",
+      alt: "Row of backlit round mirrors and black styling chairs along a stone wall",
     },
   },
 };

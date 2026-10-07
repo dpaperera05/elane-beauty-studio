@@ -19,9 +19,8 @@ const highlightIcons: Record<(typeof about.highlights)[number]["icon"], LucideIc
 
 /**
  * Studio introduction: a centred heading, then copy on the left and a
- * three-photo collage on the right (hair ritual, skin treatment, nail detail)
- * with a small "full-service" tag hanging off the main photo. Stacks
- * text-first below lg.
+ * three-photo collage of the studio interior on the right. Stacks text-first
+ * below lg.
  */
 export function About() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -43,8 +42,8 @@ export function About() {
         scrollTrigger: { trigger: "[data-reveal='text']", start: "clamp(top 80%)", once: true },
       });
 
-      // Photos unmask upward one after another, each settling from a slight
-      // zoom; the tag follows.
+      // The backdrop wipes in, then the photos unmask upward one after
+      // another, each settling from a slight zoom.
       gsap
         .timeline({ scrollTrigger: { trigger: collage, start: "clamp(top 80%)", once: true } })
         .fromTo(
@@ -58,7 +57,24 @@ export function About() {
           { scale: 1.12, duration: 1.8, stagger: 0.18, ease: "power2.out" },
           0.2,
         )
-        .from("[data-reveal='badge']", { opacity: 0, y: 16, duration: 0.9, ease: "power3.out" }, 1.1);
+        .fromTo(
+          "[data-reveal='backdrop']",
+          { clipPath: "inset(0% 0% 0% 100%)" },
+          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut" },
+          0,
+        );
+
+      // The backdrop drifts slightly against the scroll so it reads as a
+      // layer behind the photos.
+      gsap.fromTo(
+        "[data-reveal='backdrop']",
+        { y: 24 },
+        {
+          y: -24,
+          ease: "none",
+          scrollTrigger: { trigger: collage, start: "top bottom", end: "bottom top", scrub: true },
+        },
+      );
 
       // Gentle drift on the main photo; its wrapper is oversized so no edge shows.
       gsap.fromTo(
@@ -95,28 +111,34 @@ export function About() {
 
         <div className="mt-12 grid grid-cols-1 gap-y-16 md:mt-16 lg:mt-20 lg:grid-cols-12 lg:items-start lg:gap-x-10">
           {/* Copy */}
-          <div data-reveal="text" className="max-w-[36rem] lg:col-span-5 lg:max-w-none">
-            <p data-reveal="item" className="type-lead text-ink">
-              {about.body}
-            </p>
+          <div data-reveal="text" className="max-w-[36rem] lg:col-span-6">
+            {/* Desktop: pulled up by its half-leading so the first line sits
+                level with the photo top. */}
+            <div data-reveal="item" className="space-y-5 lg:-mt-[0.5em]">
+              {about.body.map((paragraph) => (
+                <p key={paragraph} className="type-lead text-ink">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
 
-            {/* Highlights: a soft ivory panel, each stat with its icon. */}
-            <ul data-reveal="item" className="mt-9 grid grid-cols-2 bg-ivory">
+            {/* Highlights: a compact ivory strip, each stat with its icon. */}
+            <ul data-reveal="item" className="mt-8 grid max-w-[30rem] grid-cols-2 bg-ivory">
               {about.highlights.map((item) => {
                 const HighlightIcon = highlightIcons[item.icon];
                 return (
                   <li
                     key={item.value}
-                    className="flex flex-col gap-3 px-4 py-5 not-first:border-l not-first:border-line sm:flex-row sm:items-center sm:gap-4 sm:px-6"
+                    className="flex flex-col gap-2.5 px-4 py-3.5 not-first:border-l not-first:border-line sm:flex-row sm:items-center sm:gap-3.5 sm:px-5"
                   >
-                    <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-white text-burgundy">
-                      <HighlightIcon aria-hidden="true" strokeWidth={1.4} className="size-5" />
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-burgundy">
+                      <HighlightIcon aria-hidden="true" strokeWidth={1.5} className="size-4" />
                     </span>
                     <span>
-                      <span className="block font-serif text-[2.25rem] leading-none font-medium text-burgundy lining-nums">
+                      <span className="block font-serif text-[1.625rem] leading-none font-medium text-burgundy lining-nums">
                         {item.value}
                       </span>
-                      <span className="type-small mt-1.5 block text-ink">{item.label}</span>
+                      <span className="mt-1 block text-[0.8125rem] leading-snug text-ink">{item.label}</span>
                     </span>
                   </li>
                 );
@@ -125,7 +147,7 @@ export function About() {
 
             <div
               data-reveal="item"
-              className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5"
+              className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5"
             >
               <Button href={about.cta.href}>{about.cta.label}</Button>
               <p className="type-small flex items-center gap-2.5 text-ink">
@@ -135,62 +157,56 @@ export function About() {
             </div>
           </div>
 
-          {/* Collage */}
-          <div data-reveal="collage" className="relative lg:col-span-6 lg:col-start-7">
-            <div className="relative grid grid-cols-2 gap-3 sm:grid-cols-12 sm:gap-4">
-              <div className="relative col-span-2 sm:col-span-8">
-                <div data-reveal="photo" className="relative aspect-4/5 overflow-hidden bg-beige">
-                  <div data-parallax className="absolute inset-x-0 -top-[7%] -bottom-[7%]">
-                    <Image
-                      src={images.main.src}
-                      alt={images.main.alt}
-                      fill
-                      sizes="(min-width: 1024px) 32vw, (min-width: 640px) 64vw, 100vw"
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
+          {/* Collage: a large photo on the left and a narrower column set
+              lower on the right (portrait over square), with a soft ivory
+              block behind the top right. The right padding leaves room for the
+              block to run past the photos to the container edge. */}
+          <div
+            data-reveal="collage"
+            className="relative isolate pr-[3.5%] lg:col-span-6 lg:col-start-7"
+          >
+            <div
+              data-reveal="backdrop"
+              aria-hidden="true"
+              className="absolute -top-6 right-0 bottom-[45%] left-[44%] -z-10 bg-ivory sm:-top-8 lg:-top-10"
+            />
 
-                <div
-                  data-reveal="badge"
-                  className="absolute bottom-3 left-3 flex max-w-[calc(100%-1.5rem)] items-center gap-3 bg-white py-3 pr-4 pl-3 shadow-[0_18px_40px_-22px_rgb(27_25_24/0.45)] sm:bottom-6 sm:left-6 sm:gap-3.5 sm:py-3.5 sm:pr-5 sm:pl-3.5 lg:bottom-10 lg:-left-10 lg:max-w-none lg:whitespace-nowrap"
-                >
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-burgundy text-ivory sm:size-10">
-                    <Icon name="sparkle" className="size-4.5" />
-                  </span>
-                  <span>
-                    <span className="type-ui block text-ink">{about.badge.title}</span>
-                    {/* Phones: the body copy already lists these, so the tag stays compact. */}
-                    <span className="type-small hidden text-muted sm:block">
-                      {about.badge.services.join(" · ")}
-                    </span>
-                  </span>
+            <div className="grid grid-cols-[64fr_31fr] gap-x-[2.3%]">
+              <div
+                data-reveal="photo"
+                className="relative aspect-4/5 overflow-hidden bg-beige"
+              >
+                <div data-parallax className="absolute inset-x-0 -top-[7%] -bottom-[7%]">
+                  <Image
+                    src={images.main.src}
+                    alt={images.main.alt}
+                    fill
+                    sizes="(min-width: 1024px) 30vw, 64vw"
+                    className="object-cover"
+                  />
                 </div>
               </div>
 
-              {/* Second column sits lower so the collage reads as staggered. */}
-              <div className="col-span-2 grid grid-cols-2 gap-3 sm:col-span-4 sm:grid-cols-1 sm:gap-4 sm:pt-16 lg:pt-20">
-                <div
-                  data-reveal="photo"
-                  className="relative aspect-square overflow-hidden bg-beige sm:aspect-3/4"
-                >
-                  <Image
-                    src={images.secondary.src}
-                    alt={images.secondary.alt}
-                    fill
-                    sizes="(min-width: 1024px) 16vw, (min-width: 640px) 32vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-                <div data-reveal="photo" className="relative aspect-square overflow-hidden bg-beige">
-                  <Image
-                    src={images.detail.src}
-                    alt={images.detail.alt}
-                    fill
-                    sizes="(min-width: 1024px) 16vw, (min-width: 640px) 32vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
+              {/* Set lower so the collage reads as staggered. */}
+              <div className="flex flex-col gap-3 pt-[38%] sm:gap-4">
+                {[
+                  { ...images.secondary, aspect: "aspect-3/4" },
+                  { ...images.detail, aspect: "aspect-square" },
+                ].map((image) => (
+                  <div
+                    key={image.src}
+                    data-reveal="photo"
+                    className={`relative overflow-hidden bg-beige ${image.aspect}`}
+                  >
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      sizes="(min-width: 1024px) 15vw, 31vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
