@@ -254,54 +254,36 @@ export const team = {
 
 // Stand-ins from Unsplash; replace with the studio's own work. `position`
 // keeps the subject in frame where a tile crops the photo.
+// Two carousel rows of 2:3 portraits, shown as capsules. The first row drifts
+// left, the second right. Stand-ins from Unsplash; swap for the studio's own work.
+const edit = (name: string, alt: string) => ({ src: `/images/gallery/edit-${name}.jpg`, alt });
+
 export const gallery = {
   eyebrow: "The ÉLANE Edit",
   title: "A closer look at our work.",
   body: "Hair, beauty, skin, details and moments from inside the studio.",
   cta: { label: "Explore the Gallery", href: "/gallery" },
-  items: [
-    {
-      id: "hair",
-      category: "Finished Hair",
-      src: "/images/gallery/finished-hair.jpg",
-      alt: "Long lavender waves with a soft, glossy finish",
-      position: "center 30%",
-    },
-    {
-      id: "nails",
-      category: "Nails",
-      src: "/images/gallery/nail-detail.jpg",
-      alt: "Black and tortoiseshell manicure against a knit sleeve",
-      position: "center 45%",
-    },
-    {
-      id: "stylist",
-      category: "In the Studio",
-      src: "/images/gallery/stylist-at-work.jpg",
-      alt: "Stylist setting pin curls for an updo",
-      position: "center 40%",
-    },
-    {
-      id: "bridal",
-      category: "Bridal",
-      src: "/images/gallery/bridal-detail.jpg",
-      alt: "Bride holding a bouquet of peach and white roses",
-      position: "center 45%",
-    },
-    {
-      id: "skin",
-      category: "Skin",
-      src: "/images/gallery/skin-ritual.jpg",
-      alt: "Client relaxing during a hydrating facial mask treatment",
-      position: "center",
-    },
-    {
-      id: "interior",
-      category: "The Studio",
-      src: "/images/gallery/studio-interior.jpg",
-      alt: "Styling stations with round mirrors in a calm, modern studio",
-      position: "center",
-    },
+  rows: [
+    [
+      edit("eye-makeup", "Bronze eyeshadow and lashes being finished with a fine brush"),
+      edit("ivory-nails", "Glossy ivory almond nails against a deep wine backdrop"),
+      edit("salon-floor", "Stylist working on a client in a bright, plant-filled salon"),
+      edit("facial-massage", "Therapist's fingertips smoothing a client's brow during a facial"),
+      edit("braid", "Close-up of a loose, glossy honey-brown braid"),
+      edit("amber-serum", "Amber serum bottle on a turned wooden stand in soft palm shadow"),
+      edit("bridal-vine", "Bridal half-up waves threaded with a pearl and crystal vine"),
+      edit("curls", "Stylist shaping long brunette curls with a curling iron"),
+    ],
+    [
+      edit("honey-mask", "Warm honey mask being spread across a client's lips and cheek"),
+      edit("nails-marigold", "Taupe manicure and gold watch among marigold blooms"),
+      edit("bridal-veil", "Bride in a lace veil with a softly swept updo"),
+      edit("precision-cut", "Stylist taking a precise cut on long, wet dark hair"),
+      edit("pink-nails", "Soft pink almond manicure resting on white linen"),
+      edit("head-massage", "Guest relaxing into a slow head and ear massage"),
+      edit("rose-gold", "Rose-gold and blush skincare bottles on a pink surface"),
+      edit("polish-wall", "Wall of nail colours on fine gold shelves"),
+    ],
   ],
 };
 

@@ -10,48 +10,16 @@ import { SectionHeading } from "../ui/SectionHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type Tile = { mobile: string; desktop: string; sizes: string };
-
-// Below lg: a compact two-column grid (landscapes span both columns).
-// lg+: explicit placement on a 12-column grid with a fixed row unit, so the
-// tiles form an asymmetric, magazine-style spread with deliberate gaps.
-const tiles: Record<string, Tile> = {
-  hair: {
-    mobile: "aspect-3/4",
-    desktop: "lg:col-start-1 lg:col-span-4 lg:row-start-1 lg:row-span-8",
-    sizes: "(min-width: 1024px) 30vw, 50vw",
-  },
-  nails: {
-    mobile: "aspect-3/4",
-    desktop: "lg:col-start-10 lg:col-span-3 lg:row-start-1 lg:row-span-6",
-    sizes: "(min-width: 1024px) 22vw, 50vw",
-  },
-  stylist: {
-    mobile: "col-span-2 aspect-16/10",
-    desktop: "lg:col-start-5 lg:col-span-5 lg:row-start-2 lg:row-span-5",
-    sizes: "(min-width: 1024px) 37vw, 100vw",
-  },
-  bridal: {
-    mobile: "aspect-4/5",
-    desktop: "lg:col-start-10 lg:col-span-3 lg:row-start-8 lg:row-span-6",
-    sizes: "(min-width: 1024px) 22vw, 50vw",
-  },
-  skin: {
-    mobile: "aspect-4/5",
-    desktop: "lg:col-start-1 lg:col-span-4 lg:row-start-10 lg:row-span-4",
-    sizes: "(min-width: 1024px) 30vw, 50vw",
-  },
-  interior: {
-    mobile: "col-span-2 aspect-16/10",
-    desktop: "lg:col-start-5 lg:col-span-5 lg:row-start-8 lg:row-span-6",
-    sizes: "(min-width: 1024px) 37vw, 100vw",
-  },
-};
+// Drift speed in px per second; hovering eases a row down to this fraction.
+const SPEED = 40;
+const HOVER_TIME_SCALE = 0.15;
 
 /**
- * Gallery preview: an editorial mixed-size grid of the studio's work. Each
- * tile links into the gallery; hover zooms the photo and shows its category
- * (always shown on touch screens, which have no hover).
+ * Gallery preview: two full-bleed rows of capsule-shaped portraits that drift
+ * endlessly, the first to the left and the second to the right. Each row's
+ * photos are rendered twice, so sliding the track by half its width loops
+ * seamlessly. Hovering eases a row to a crawl; rows pause while off screen.
+ * With reduced motion the rows stay still.
  */
 export function Gallery() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -62,72 +30,107 @@ export function Gallery() {
 
     const mm = gsap.matchMedia(section);
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      // Tiles unmask upward as they arrive, each photo settling from a slight zoom.
-      ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-tile]"), {
-        start: "clamp(top 90%)",
-        once: true,
-        onEnter: (batch) => {
-          gsap.fromTo(
-            batch,
-            { clipPath: "inset(100% 0% 0% 0%)" },
-            { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, stagger: 0.12, ease: "expo.inOut" },
-          );
-          gsap.from(
-            batch.map((tile) => tile.querySelector("img")),
-            { scale: 1.14, duration: 1.8, stagger: 0.12, ease: "power2.out" },
-          );
-        },
+      gsap.from("[data-reveal='row']", {
+        opacity: 0,
+        y: 30,
+        duration: 1.2,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: { trigger: "[data-reveal='rows']", start: "clamp(top 85%)", once: true },
       });
+
+      const cleanups = gsap.utils.toArray<HTMLElement>("[data-marquee]").map((row) => {
+        const track = row.querySelector<HTMLElement>("[data-track]")!;
+        const toRight = row.dataset.marquee === "right";
+        const loop = gsap.fromTo(
+          track,
+          { xPercent: toRight ? -50 : 0 },
+          {
+            xPercent: toRight ? 0 : -50,
+            duration: track.scrollWidth / 2 / SPEED,
+            ease: "none",
+            repeat: -1,
+          },
+        );
+
+        ScrollTrigger.create({
+          trigger: row,
+          start: "top bottom",
+          end: "bottom top",
+          onToggle: (self) => (self.isActive ? loop.play() : loop.pause()),
+        });
+
+        const slow = () => gsap.to(loop, { timeScale: HOVER_TIME_SCALE, duration: 0.8, ease: "power2.out" });
+        const resume = () => gsap.to(loop, { timeScale: 1, duration: 0.8, ease: "power2.in" });
+        row.addEventListener("pointerenter", slow);
+        row.addEventListener("pointerleave", resume);
+        return () => {
+          row.removeEventListener("pointerenter", slow);
+          row.removeEventListener("pointerleave", resume);
+        };
+      });
+
+      return () => cleanups.forEach((cleanup) => cleanup());
     });
 
     return () => mm.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} id="gallery" aria-labelledby="gallery-title" className="section-space">
+    <section ref={sectionRef} id="gallery" aria-labelledby="gallery-title" className="section-space overflow-x-clip">
       <div className="container-site">
         <SectionHeading
           id="gallery-title"
           eyebrow={gallery.eyebrow}
           title={gallery.title}
           intro={gallery.body}
+          tone="accent"
+          titleClassName="leading-[0.94] tracking-[-0.035em]"
         >
           <Button href={gallery.cta.href} variant="secondary">
             {gallery.cta.label}
           </Button>
         </SectionHeading>
+      </div>
 
-        <ul className="mt-12 grid grid-cols-2 gap-3 sm:gap-5 md:mt-16 lg:mt-20 lg:grid-cols-12 lg:auto-rows-[clamp(2.75rem,4.4vw,4.25rem)] lg:gap-6">
-          {gallery.items.map((item) => {
-            const tile = tiles[item.id];
-            return (
-              <li
-                key={item.id}
-                data-tile
-                className={`relative overflow-hidden bg-beige lg:aspect-auto ${tile.mobile} ${tile.desktop}`}
-              >
-                <a href={`${gallery.cta.href}#${item.id}`} className="group absolute inset-0 block outline-none">
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    fill
-                    sizes={tile.sizes}
-                    style={{ objectPosition: item.position }}
-                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05] group-focus-visible:scale-[1.05] motion-reduce:transition-none"
-                  />
-                  {/* Category: revealed on hover/focus; always shown where there's no hover. */}
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/45 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:opacity-100"
-                  />
-                  <span className="type-label absolute bottom-3 left-3 translate-y-2 text-white opacity-0 transition duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 sm:bottom-5 sm:left-5 [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100">
-                    {item.category}
-                  </span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+      {/* Full-bleed rows; the edges fade out so photos glide in and out. */}
+      <div
+        data-reveal="rows"
+        className="mt-12 flex flex-col gap-3 mask-[linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] sm:gap-4 md:mt-16 lg:mt-20 lg:gap-5"
+      >
+        {gallery.rows.map((photos, r) => (
+          <div
+            key={r}
+            data-reveal="row"
+            data-marquee={r % 2 === 0 ? "left" : "right"}
+            className="overflow-hidden"
+          >
+            {/* Each photo carries its own right padding (not a flex gap), so
+                the two copies are exactly half the track each. */}
+            <ul data-track className="flex w-max">
+              {[...photos, ...photos].map((photo, i) => {
+                const isCopy = i >= photos.length;
+                return (
+                  <li
+                    key={`${photo.src}-${i}`}
+                    aria-hidden={isCopy || undefined}
+                    className="pr-3 sm:pr-4 lg:pr-5"
+                  >
+                    <div className="group relative aspect-2/3 w-[clamp(9rem,5.5rem+11vw,16rem)] overflow-hidden rounded-full bg-beige">
+                      <Image
+                        src={photo.src}
+                        alt={isCopy ? "" : photo.alt}
+                        fill
+                        sizes="(min-width: 1024px) 16rem, (min-width: 640px) 12rem, 9rem"
+                        className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.06] motion-reduce:transition-none"
+                      />
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
       </div>
     </section>
   );
