@@ -17,7 +17,7 @@ export const nav = [
   { label: "Services", href: "/services" },
   { label: "About", href: "/about" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Contact", href: "#footer" },
+  { label: "Contact", href: "/contact" },
 ];
 
 // Hero background clips. Both play in sequence (see `hero.videos`).
@@ -406,7 +406,7 @@ export const footer = {
     { label: "Services", href: "/services" },
     { label: "About", href: "/about" },
     { label: "Gallery", href: "/gallery" },
-    { label: "Contact", href: "#footer" },
+    { label: "Contact", href: "/contact" },
   ],
   visit: ["Colombo 07", "Sri Lanka"],
   hours: [
