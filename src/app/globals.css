@@ -34,6 +34,16 @@
   --text-ui: 0.9375rem;
   --text-small: 0.875rem;
   --text-label: 0.75rem;
+
+  /* Brand strip: the track holds two identical halves, so sliding it half
+     its own width loops without a seam. */
+  --animate-marquee: marquee 48s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 @layer base {

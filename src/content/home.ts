@@ -368,6 +368,26 @@ export const testimonials = {
   ],
 };
 
+// Product houses shown in the moving strip under the client stories. Logos
+// are SVGs in /public/images/brands, painted solid ink by the section.
+// `width`/`height` are the file's own proportions; `size` is the displayed
+// height in em, tuned per logo so wide wordmarks and tall emblems look
+// equally weighted.
+export const brands = {
+  eyebrow: "Our Products",
+  title: "The world’s finest, in every treatment.",
+  items: [
+    { name: "L’Oréal", src: "/images/brands/loreal.svg", width: 800, height: 145, size: 1.5 },
+    { name: "Wella", src: "/images/brands/wella.svg", width: 1024, height: 583, size: 3.25 },
+    { name: "Sothys Paris", src: "/images/brands/sothys.svg", width: 1024, height: 252, size: 2.5 },
+    { name: "Aveda", src: "/images/brands/aveda.svg", width: 512, height: 125, size: 1.6 },
+    { name: "Schwarzkopf", src: "/images/brands/schwarzkopf.svg", width: 1024, height: 438, size: 3.4 },
+    { name: "Redken", src: "/images/brands/redken.svg", width: 1024, height: 282, size: 2.4 },
+    { name: "Kiehl’s", src: "/images/brands/kiehls.svg", width: 512, height: 258, size: 3.1 },
+    { name: "Shiseido", src: "/images/brands/shiseido.svg", width: 400, height: 73, size: 1.6 },
+  ],
+};
+
 export const booking = {
   eyebrow: "Book Your Visit",
   title: "Your next appointment starts here.",

@@ -3,6 +3,7 @@ import { Header } from "@/components/Header";
 import { SiteIntro } from "@/components/SiteIntro";
 import { About } from "@/components/sections/About";
 import { BookingPreview } from "@/components/sections/BookingPreview";
+import { Brands } from "@/components/sections/Brands";
 import { Gallery } from "@/components/sections/Gallery";
 import { Hero } from "@/components/sections/Hero";
 import { Services } from "@/components/sections/Services";
@@ -25,6 +26,7 @@ export default function Home() {
         <SignatureRitual />
         <Gallery />
         <Testimonials />
+        <Brands />
         <BookingPreview />
       </main>
       <Footer />
