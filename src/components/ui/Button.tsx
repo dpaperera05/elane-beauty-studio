@@ -21,36 +21,65 @@ const variants: Record<Variant, string> = {
   link: "bg-transparent text-ink border-transparent !px-0 hover:text-burgundy",
 };
 
-/** Pill button with a circular arrow badge; turns to liquid glass on hover. */
-export function Button({
-  href,
-  children,
-  variant = "primary",
-  className = "",
-}: {
-  href: string;
+const base =
+  "inline-flex h-12 items-center whitespace-nowrap gap-3 rounded-full border py-1.5 pr-1.5 pl-5 type-ui";
+
+type ButtonProps = {
   children: string;
   variant?: Variant;
   className?: string;
-}) {
-  return (
-    <a
-      href={href}
-      className={`inline-flex h-12 items-center whitespace-nowrap gap-3 rounded-full border py-1.5 pr-1.5 pl-5 type-ui transition-[color,transform] duration-300 ${variants[variant]} ${className}`}
-    >
-      {variant !== "link" && <GlassLayers />}
+} & (
+  | { href: string }
+  // Without an href it renders a real <button> for in-page actions.
+  | { href?: undefined; onClick?: () => void; disabled?: boolean; type?: "button" | "submit" }
+);
+
+/** Pill button with a circular arrow badge; turns to liquid glass on hover. */
+export function Button({ children, variant = "primary", className = "", ...props }: ButtonProps) {
+  // A disabled button goes quiet: muted fill, no glass.
+  const disabled = props.href === undefined && Boolean(props.disabled);
+
+  const content = (
+    <>
+      {variant !== "link" && !disabled && <GlassLayers />}
       {/* flex-1 + text-center: when a button is stretched wider than its
           content, the label centres in the space left of the arrow badge. */}
       <span className="relative block flex-1 text-center leading-6">{children}</span>
       <span
         className={`relative flex size-9 items-center justify-center rounded-full border border-dotted backdrop-blur-sm ${
-          variant === "ivory"
-            ? "border-ivory/40 bg-burgundy text-ivory"
-            : "border-burgundy/40 bg-ivory text-burgundy"
+          disabled
+            ? "border-line bg-white text-muted"
+            : variant === "ivory"
+              ? "border-ivory/40 bg-burgundy text-ivory"
+              : "border-burgundy/40 bg-ivory text-burgundy"
         }`}
       >
         <Icon name="arrow" className="size-4" />
       </span>
-    </a>
+    </>
+  );
+
+  if (props.href !== undefined) {
+    return (
+      <a
+        href={props.href}
+        className={`${base} transition-[color,transform] duration-300 ${variants[variant]} ${className}`}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <button
+      type={props.type ?? "button"}
+      onClick={props.onClick}
+      disabled={disabled}
+      className={`${base} transition-[color,background-color,border-color,transform] duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy ${
+        disabled ? "cursor-not-allowed border-line bg-ivory-light text-muted" : variants[variant]
+      } ${className}`}
+    >
+      {content}
+    </button>
   );
 }

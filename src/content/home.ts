@@ -4,32 +4,38 @@ export const site = {
   name: "Elane",
   fullName: "Elane Beauty Studio",
   location: "Colombo, Sri Lanka",
+  // Top of the homepage, for the logo and "Home" links. Works from any page;
+  // on the homepage itself it scrolls up without reloading.
+  homeHref: "/#",
+  // The booking flow; every "book" CTA should link here.
+  bookingHref: "/booking",
 };
 
+// Root-relative so every link works from any page.
 export const nav = [
-  { label: "Home", href: "#" },
+  { label: "Home", href: site.homeHref },
   {
     label: "Services",
     children: [
       {
         label: "Studio",
         description: "Everyday hair, skin & nails",
-        href: "#studio",
+        href: "/#services",
       },
       {
         label: "Bridal",
         description: "Trials, styling & on-location care",
-        href: "#bridal",
+        href: "/#services",
       },
       {
         label: "Academy",
         description: "Hands-on beauty courses",
-        href: "#",
+        href: "/#services",
       },
     ],
   },
-  { label: "About", href: "#team" },
-  { label: "Gallery", href: "#gallery" },
+  { label: "About", href: "/about" },
+  { label: "Gallery", href: "/#gallery" },
   { label: "Contact", href: "#footer" },
 ];
 
@@ -59,7 +65,7 @@ export const hero = {
   // video loads and is the reduced-motion fallback.
   videos: [heroVideos.nails, heroVideos.salon],
   primary: { label: "Explore Services", href: "#studio" },
-  secondary: { label: "Book a Visit", href: "#book" },
+  secondary: { label: "Book a Visit", href: site.bookingHref },
 };
 
 export const about = {
@@ -401,7 +407,7 @@ export const booking = {
   eyebrow: "Book Your Visit",
   title: "Your next appointment starts here.",
   body: "An unhurried hour, a considered result. Reserve your time with ÉLANE and we’ll take care of the rest.",
-  primary: { label: "Book Your Visit", href: "/book" },
+  primary: { label: "Book Your Visit", href: site.bookingHref },
   secondary: { label: "View Services", href: "/services" },
   note: "Open daily from 9 AM · Colombo",
   // Stand-in from Pexels (mirrored, so the stations sit on the right and
@@ -415,10 +421,10 @@ export const booking = {
 export const footer = {
   tagline: "Beauty, thoughtfully considered.",
   nav: [
-    { label: "Home", href: "#" },
-    { label: "Services", href: "#services" },
-    { label: "About", href: "#about" },
-    { label: "Gallery", href: "#gallery" },
+    { label: "Home", href: site.homeHref },
+    { label: "Services", href: "/#services" },
+    { label: "About", href: "/about" },
+    { label: "Gallery", href: "/#gallery" },
     { label: "Contact", href: "#footer" },
   ],
   visit: ["Colombo 07", "Sri Lanka"],

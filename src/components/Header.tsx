@@ -31,6 +31,26 @@ export function Header() {
     return () => observer.disconnect();
   }, []);
 
+  // Arriving from another page at a "/#section" link: the browser's smooth
+  // scroll to the anchor gets cut short while the page is still settling
+  // (ScrollTrigger re-measures on load), so finish the jump once it has loaded.
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+    let timer = 0;
+    const jump = () => {
+      timer = window.setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "instant" });
+      }, 400);
+    };
+    if (document.readyState === "complete") jump();
+    else window.addEventListener("load", jump, { once: true });
+    return () => {
+      window.removeEventListener("load", jump);
+      window.clearTimeout(timer);
+    };
+  }, []);
+
   // Close the services dropdown on outside click or Escape.
   useEffect(() => {
     if (!dropdownOpen) return;
@@ -79,7 +99,7 @@ export function Header() {
           )}`}
         >
           <a
-            href="#"
+            href={site.homeHref}
             className={`relative z-20 transition-colors duration-500 ${tone("text-ivory", "text-ink")}`}
             aria-label={`${site.fullName} home`}
           >
@@ -163,7 +183,7 @@ export function Header() {
 
           <div className="relative z-20 flex items-center gap-3">
             <span data-intro="header-item" className="hidden sm:block">
-              <Button href="#book" className="min-w-44">
+              <Button href={site.bookingHref} className="min-w-44">
                 Book Now
               </Button>
             </span>
@@ -234,7 +254,7 @@ export function Header() {
           )}
         </ul>
         <div className="mt-8 sm:hidden" onClick={closeMenu}>
-          <Button href="#book">Book Now</Button>
+          <Button href={site.bookingHref}>Book Now</Button>
         </div>
       </div>
     </header>

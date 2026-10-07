@@ -25,7 +25,7 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-x-8 gap-y-8 md:grid-cols-12 lg:gap-x-10">
           {/* Wordmark + tagline */}
           <div className="col-span-2 md:col-span-12 lg:col-span-4">
-            <a href="#" aria-label={`${site.fullName} home`} className="inline-block">
+            <a href={site.homeHref} aria-label={`${site.fullName} home`} className="inline-block">
               <Logo />
             </a>
             <p className="mt-3 max-w-xs font-serif text-xl text-ivory/75 italic">{footer.tagline}</p>

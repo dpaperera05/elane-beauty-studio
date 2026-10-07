@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 /**
  * The homepage's closing invitation: a full-bleed photograph of the salon
  * floor under a deep charcoal veil, with the copy set left over the quiet wall.
- * It only starts the journey; "Book Your Visit" continues to /book. The photo
+ * It only starts the journey; "Book Your Visit" continues to /booking. The photo
  * settles in and drifts slowly with scroll; the copy rises in on entry.
  */
 export function BookingPreview() {
