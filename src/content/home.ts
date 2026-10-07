@@ -201,18 +201,18 @@ export const signature = {
   eyebrow: "Signature Experience",
   // Second line is set in italic, echoing the hero's emphasis.
   titleLines: ["The ÉLANE", "Ritual"],
-  body: "A personalised consultation followed by targeted treatment, styling and finishing — designed around your features, preferences and the way you want to feel.",
+  body: "Ninety unhurried minutes that begin with a slow scalp massage and warm botanical oils, then move into a treatment and finish tailored entirely to you.",
   details: [
     { label: "Duration", value: "90 min" },
-    { label: "Includes", value: "Consultation" },
-    { label: "Focus", value: "Hair · Skin · Styling" },
+    { label: "Begins with", value: "Consultation" },
+    { label: "Focus", value: "Scalp · Hair · Finish" },
     { label: "From", value: "LKR 12,500" },
   ],
   cta: { label: "Discover the Ritual", href: "/services#ritual" },
   // Stand-in from Unsplash; replace with the studio's own photography.
   image: {
-    src: "/images/home/signature-ritual.jpg",
-    alt: "Stylist finishing soft, glossy curls with a curling iron",
+    src: "/images/home/ritual-head-spa-rest.jpg",
+    alt: "Guest resting with eyes closed as a fine arc of water from a gold head-spa rail rinses her hair",
   },
 };
 

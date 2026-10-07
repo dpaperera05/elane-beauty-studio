@@ -10,10 +10,10 @@ import { Button } from "../ui/Button";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Signature experience on a deep burgundy band. Desktop: a tall photo on the
- * left that rises above the band into the white section before it, with a
- * thin offset frame behind; copy, details and CTA on the right. Tablet: a
- * side-by-side split. Mobile: copy first, photo below.
+ * Signature experience on a deep wine band: a warm glow at the top right
+ * fades into burgundy-deep, with a large, faint É at the bottom right. Desktop:
+ * an editorial split, portrait photo on the left and copy on the right.
+ * Mobile: photo first, copy below. Everything stays inside the band.
  */
 export function SignatureRitual() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -41,8 +41,14 @@ export function SignatureRitual() {
           { clipPath: "inset(100% 0% 0% 0%)" },
           { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut" },
         )
-        .from(media.querySelector("img"), { scale: 1.12, duration: 2.2, ease: "power2.out" }, 0.1)
-        .from("[data-reveal='frame']", { opacity: 0, duration: 1, ease: "power1.out" }, 0.9);
+        .from(media.querySelector("img"), { scale: 1.12, duration: 2.2, ease: "power2.out" }, 0.1);
+
+      gsap.from("[data-reveal='monogram']", {
+        opacity: 0,
+        duration: 2,
+        ease: "power1.out",
+        scrollTrigger: { trigger: section, start: "clamp(top 70%)", once: true },
+      });
 
       // Gentle drift on the photo; its wrapper is oversized so no edge shows.
       gsap.fromTo(
@@ -66,18 +72,42 @@ export function SignatureRitual() {
       ref={sectionRef}
       id="signature"
       aria-labelledby="signature-title"
-      className="section-space bg-burgundy text-ivory lg:pt-0"
+      className="relative isolate overflow-hidden bg-burgundy bg-[radial-gradient(ellipse_75%_65%_at_88%_8%,rgb(150_72_82/0.55),transparent_70%),linear-gradient(160deg,var(--color-burgundy)_15%,var(--color-burgundy-deep)_100%)] py-[clamp(3.5rem,2.5rem+3.5vw,6rem)] text-ivory"
     >
-      <div className="container-site grid grid-cols-1 gap-y-14 md:grid-cols-2 md:items-center md:gap-x-10 lg:grid-cols-12">
+      {/* The one decorative detail: an oversized, faint É in the corner. */}
+      <span
+        data-reveal="monogram"
+        aria-hidden="true"
+        className="pointer-events-none absolute right-[-0.06em] bottom-[-0.24em] -z-10 font-serif text-[clamp(18rem,10rem+24vw,38rem)] leading-none text-ivory/4.5 select-none"
+      >
+        É
+      </span>
+
+      <div className="container-site grid grid-cols-1 gap-y-12 md:gap-y-14 lg:grid-cols-12 lg:items-center lg:gap-x-10">
+        {/* Photo */}
+        <div className="mx-auto w-full max-w-md lg:col-span-5 lg:mx-0 lg:max-w-none xl:col-span-4">
+          <div data-reveal="image" className="relative aspect-4/5 overflow-hidden bg-burgundy-deep">
+            <div data-parallax className="absolute inset-x-0 -top-[7%] -bottom-[7%]">
+              <Image
+                src={signature.image.src}
+                alt={signature.image.alt}
+                fill
+                sizes="(min-width: 1280px) 30vw, (min-width: 1024px) 38vw, (min-width: 448px) 28rem, 100vw"
+                className="object-cover"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Copy */}
         <div
           data-reveal="text"
-          className="lg:col-span-6 lg:col-start-7 lg:pt-[clamp(4rem,3rem+4vw,7rem)]"
+          className="mx-auto w-full max-w-md lg:col-span-6 lg:col-start-7 lg:mx-0 lg:max-w-[34rem] xl:col-start-6"
         >
-          <p data-reveal="item" className="type-label text-ivory/70">
+          <p data-reveal="item" className="type-label text-rose">
             {signature.eyebrow}
           </p>
-          <h2 id="signature-title" data-reveal="item" className="type-display mt-6 text-ivory md:mt-8">
+          <h2 id="signature-title" data-reveal="item" className="type-display mt-5 text-ivory md:mt-6">
             {titleLines.map((line, i) => (
               <span key={line} className={`block ${i > 0 ? "italic" : ""}`}>
                 {line}
@@ -86,24 +116,26 @@ export function SignatureRitual() {
               </span>
             ))}
           </h2>
-          <p data-reveal="item" className="type-lead mt-7 max-w-[32rem] text-ivory/80 md:mt-8">
+          <p data-reveal="item" className="type-lead mt-6 text-ivory/80 md:mt-7">
             {signature.body}
           </p>
 
+          {/* Ritual details between hairlines: 2×2, then one row sized to its
+              content from xl. */}
           <dl
             data-reveal="item"
-            className="mt-9 grid max-w-[32rem] grid-cols-2 border-t border-ivory/20"
+            className="mt-9 grid grid-cols-2 gap-y-5 border-y border-ivory/20 py-5 md:mt-10 xl:grid-cols-[repeat(4,auto)] xl:justify-between"
           >
             {signature.details.map((detail, i) => (
               <div
                 key={detail.label}
-                className={`flex flex-col border-b border-ivory/20 py-4 ${
-                  i % 2 === 1 ? "border-l pl-5 sm:pl-6" : "pr-4"
-                }`}
+                className={`flex flex-col gap-1.5 px-5 first:pl-0 ${
+                  i % 2 === 1 ? "border-l border-ivory/20" : ""
+                } ${i === 2 ? "pl-0 xl:border-l xl:pl-5" : ""}`}
               >
-                <dt className="type-label order-2 mt-1.5 text-ivory/55">{detail.label}</dt>
+                <dt className="type-label text-ivory/55">{detail.label}</dt>
                 {/* Wraps between items, never inside one. */}
-                <dd className="type-ui order-1 text-ivory">
+                <dd className="type-ui text-ivory">
                   {detail.value.split(" · ").map((part, p) => (
                     <span key={part}>
                       {p > 0 && " · "}
@@ -119,26 +151,6 @@ export function SignatureRitual() {
             <Button href={signature.cta.href} variant="ivory">
               {signature.cta.label}
             </Button>
-          </div>
-        </div>
-
-        {/* Photo. Desktop: rises above the band; the thin frame sits offset behind it. */}
-        <div className="relative md:order-first lg:col-span-5 lg:row-start-1 lg:-mt-24 lg:self-start">
-          <div
-            data-reveal="frame"
-            aria-hidden="true"
-            className="absolute inset-0 translate-x-3 translate-y-3 border border-ivory/25 sm:translate-x-5 sm:translate-y-5"
-          />
-          <div data-reveal="image" className="relative aspect-4/5 overflow-hidden bg-burgundy-deep">
-            <div data-parallax className="absolute inset-x-0 -top-[7%] -bottom-[7%]">
-              <Image
-                src={signature.image.src}
-                alt={signature.image.alt}
-                fill
-                sizes="(min-width: 1024px) 38vw, (min-width: 768px) 46vw, 100vw"
-                className="object-cover"
-              />
-            </div>
           </div>
         </div>
       </div>

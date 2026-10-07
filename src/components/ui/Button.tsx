@@ -6,7 +6,8 @@ type Variant = "primary" | "secondary" | "light" | "ivory" | "link";
 // Liquid glass is the only hover effect on pill buttons (see LiquidGlass.tsx).
 // Solid burgundy keeps its colour and only gains the sheen; the outline
 // variant's text turns ivory so it stays legible on its burgundy glass tint.
-// `ivory` is the solid button for burgundy sections (its badge inverts).
+// `ivory` is the solid button for burgundy sections (its badge inverts; its
+// sheen is tuned to show on the ivory fill).
 // `link` is text-only, so it keeps a plain colour hover.
 const variants: Record<Variant, string> = {
   primary:
@@ -15,7 +16,8 @@ const variants: Record<Variant, string> = {
     "liquid-glass liquid-glass--burgundy bg-transparent text-ink border-ink/20 hover:text-ivory",
   light:
     "liquid-glass liquid-glass--clear liquid-glass--frosted text-white border-white/30",
-  ivory: "liquid-glass liquid-glass--solid bg-ivory text-burgundy border-ivory",
+  ivory:
+    "liquid-glass liquid-glass--solid liquid-glass--ivory bg-ivory text-burgundy border-ivory",
   link: "bg-transparent text-ink border-transparent !px-0 hover:text-burgundy",
 };
 
