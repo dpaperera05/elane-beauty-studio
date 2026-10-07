@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { hero } from "@/content/home";
+import { HeroVideo } from "../HeroVideo";
 import { Button } from "../ui/Button";
 
 export function Hero() {
@@ -7,42 +8,14 @@ export function Hero() {
     <section className="relative flex min-h-svh items-end overflow-hidden text-white">
       {/* Poster first: paints immediately and stays as the reduced-motion fallback. */}
       <Image
-        src={hero.video.poster}
+        src={hero.videos[0].poster}
         alt=""
         fill
         preload
         sizes="100vw"
         className="object-cover"
       />
-      {/*
-        Decorative background loop. It has no poster of its own, so it stays
-        transparent over the matching poster image until the first frame is
-        ready — no black flash. Sources only match when motion is allowed, so
-        with reduced motion nothing loads or plays (CSS hides it as a fallback).
-      */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        disablePictureInPicture
-        disableRemotePlayback
-        aria-hidden="true"
-        tabIndex={-1}
-        className="hero-video absolute inset-0 size-full object-cover motion-reduce:hidden"
-      >
-        <source
-          src={hero.video.mobile}
-          type="video/mp4"
-          media="(prefers-reduced-motion: no-preference) and (max-width: 767px)"
-        />
-        <source
-          src={hero.video.desktop}
-          type="video/mp4"
-          media="(prefers-reduced-motion: no-preference)"
-        />
-      </video>
+      <HeroVideo />
       <div
         className="absolute inset-0 bg-linear-to-t from-black/75 via-black/40 to-black/30"
         aria-hidden="true"

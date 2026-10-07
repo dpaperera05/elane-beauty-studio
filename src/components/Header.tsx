@@ -103,13 +103,9 @@ export function Header() {
                       aria-expanded={dropdownOpen}
                       aria-haspopup="true"
                       onClick={() => setDropdownOpen((o) => !o)}
-                      className={`flex items-center gap-1.5 rounded-full px-4 py-3 leading-none transition ${tone("hover:bg-white/10", "hover:bg-ink/5")} xl:px-5`}
+                      className={`block rounded-full px-4 py-3 leading-none transition ${tone("hover:bg-white/10", "hover:bg-ink/5")} xl:px-5`}
                     >
                       {item.label}
-                      <Icon
-                        name="chevron"
-                        className={`size-3.5 transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
-                      />
                     </button>
                     <div
                       className={`absolute top-full left-1/2 w-72 -translate-x-1/2 pt-3 transition duration-200 ${
