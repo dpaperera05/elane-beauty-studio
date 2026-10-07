@@ -368,62 +368,18 @@ export const testimonials = {
   ],
 };
 
-// Durations and prices are placeholders until the studio confirms its menu.
 export const booking = {
   eyebrow: "Book Your Visit",
   title: "Your next appointment starts here.",
-  body: "Choose what you’re looking for and begin building your ÉLANE experience.",
-  summaryLabel: "Your selection",
-  primary: { label: "Start Booking", href: "/book" },
-  secondary: { label: "View All Services", href: "/services" },
-  options: [
-    {
-      id: "hair",
-      name: "Hair",
-      duration: "45–120 min",
-      price: "From LKR 4,500",
-      description: "Cuts, colour, styling and personalised hair treatments.",
-    },
-    {
-      id: "skin",
-      name: "Skin",
-      duration: "60–90 min",
-      price: "From LKR 6,500",
-      description: "Facials and glow treatments tailored to your skin’s needs.",
-    },
-    {
-      id: "nails",
-      name: "Nails",
-      duration: "45–90 min",
-      price: "From LKR 3,500",
-      description: "Manicures, pedicures and long-wearing nail care.",
-    },
-    {
-      id: "beauty-makeup",
-      name: "Beauty & Makeup",
-      duration: "30–90 min",
-      price: "From LKR 3,000",
-      description: "Brows, lashes and makeup for everyday or special occasions.",
-    },
-    {
-      id: "bridal",
-      name: "Bridal",
-      duration: "2–4 hours",
-      price: "From LKR 35,000",
-      description: "Bridal styling, makeup and pre-event care, planned with you.",
-    },
-    {
-      id: "treatments",
-      name: "Treatments",
-      duration: "60–150 min",
-      price: "From LKR 8,500",
-      description: "Keratin, scalp care and repair rituals for healthier hair.",
-    },
-  ],
-  // Stand-in from Unsplash; replace with the studio's own photography.
+  body: "An unhurried hour, a considered result. Reserve your time with ÉLANE and we’ll take care of the rest.",
+  primary: { label: "Book Your Visit", href: "/book" },
+  secondary: { label: "View Services", href: "/services" },
+  note: "Open daily from 9 AM · Colombo",
+  // Stand-in from Unsplash (bottle label softened); replace with the
+  // studio's own photography.
   image: {
-    src: "/images/home/booking-detail.jpg",
-    alt: "Makeup brushes in a holder at a styling station",
+    src: "/images/home/booking-cta.jpg",
+    alt: "Hands letting a drop of oil fall from an amber bottle in soft, low light",
   },
 };
 
