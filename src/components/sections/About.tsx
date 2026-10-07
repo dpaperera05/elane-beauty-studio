@@ -98,7 +98,7 @@ export function About() {
       ref={sectionRef}
       id="about"
       aria-labelledby="about-title"
-      className="section-space overflow-x-clip"
+      className="section-space overflow-x-clip pb-10 lg:pb-12"
     >
       <div className="container-site">
         <SectionHeading

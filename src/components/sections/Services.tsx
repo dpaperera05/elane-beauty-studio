@@ -102,17 +102,16 @@ export function Services() {
         scrollTrigger: { trigger: "[data-reveal='list']", start: "clamp(top 85%)", once: true },
       });
 
+      // Desktop panel: the photo unmasks upward, then its frame fades in.
       const panel = section.querySelector("[data-reveal='panel']")!;
-      gsap.fromTo(
-        panel,
-        { clipPath: "inset(100% 0% 0% 0%)" },
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1.4,
-          ease: "expo.inOut",
-          scrollTrigger: { trigger: panel, start: "clamp(top 85%)", once: true },
-        },
-      );
+      gsap
+        .timeline({ scrollTrigger: { trigger: panel, start: "clamp(top 85%)", once: true } })
+        .fromTo(
+          panel,
+          { clipPath: "inset(100% 0% 0% 0%)" },
+          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut" },
+        )
+        .from("[data-reveal='frame']", { opacity: 0, duration: 1, ease: "power1.out" }, 0.9);
     });
 
     return () => mm.revert();
@@ -125,14 +124,15 @@ export function Services() {
       ref={sectionRef}
       id="services"
       aria-labelledby="services-title"
-      className="max-lg:section-space lg:flex lg:min-h-[min(100svh,64rem)] lg:flex-col lg:justify-center lg:pt-[calc(4.75rem+clamp(1.5rem,5vh,3.5rem))] lg:pb-[calc(6rem+clamp(4.5rem,12vh,7rem))]"
+      className="max-lg:section-space lg:flex lg:min-h-[min(100svh,64rem)] lg:flex-col lg:justify-center lg:pt-[calc(4.75rem+clamp(1rem,3vh,2.5rem))] lg:pb-[calc(6rem+clamp(4.5rem,12vh,7rem))]"
     >
       <div className="container-site">
         <SectionHeading
           id="services-title"
           eyebrow={services.eyebrow}
           title={services.title}
-          intro={services.intro}
+          tone="accent"
+          titleClassName="leading-[0.94] tracking-[-0.035em]"
         />
       </div>
 
@@ -157,21 +157,25 @@ export function Services() {
                     aria-controls={isDesktop ? "service-preview" : panelId}
                     aria-expanded={isDesktop ? undefined : isOpen}
                     aria-current={isDesktop && isCurrent ? "true" : undefined}
-                    className="group flex w-full items-center gap-5 py-3.5 text-left outline-none sm:gap-7 lg:py-[clamp(0.75rem,2vh,1.2rem)]"
+                    className="group flex w-full items-center gap-5 py-5 text-left outline-none sm:gap-7 lg:py-[clamp(1rem,2.6vh,1.5rem)]"
                   >
                     <span
                       className={`type-label w-6 shrink-0 transition-colors duration-500 ${
-                        isCurrent ? "text-burgundy" : "text-muted"
+                        isCurrent ? "text-burgundy" : "text-ink"
                       }`}
                     >
                       {pad(i + 1)}
                     </span>
-                    <span
-                      className={`type-h4 min-w-0 flex-1 transition-colors duration-500 group-focus-visible:underline group-focus-visible:decoration-1 group-focus-visible:underline-offset-6 ${
-                        isCurrent ? "text-burgundy" : "text-ink/60"
-                      }`}
-                    >
-                      {item.name}
+                    <span className="min-w-0 flex-1">
+                      <span
+                        className={`type-h4 block transition-colors duration-500 group-focus-visible:underline group-focus-visible:decoration-1 group-focus-visible:underline-offset-6 ${
+                          isCurrent ? "text-burgundy" : "text-ink"
+                        }`}
+                      >
+                        {item.name}
+                      </span>
+                      {/* What the service covers, in one line. */}
+                      <span className="type-small mt-1 block text-ink">{item.descriptor}</span>
                     </span>
                     {/* Desktop: arrow on the active row only. Mobile/tablet: accordion chevron. */}
                     <Icon
@@ -209,8 +213,8 @@ export function Services() {
                             className="object-cover"
                           />
                         </div>
-                        <div className="mt-4 flex items-center justify-between gap-6 sm:max-w-sm">
-                          <p className="type-small text-muted">{item.descriptor}</p>
+                        {/* The row above already lists what's included. */}
+                        <div className="mt-4 flex justify-end sm:max-w-sm">
                           <ExploreLink href={item.href} />
                         </div>
                       </div>
@@ -222,35 +226,41 @@ export function Services() {
           </ul>
         </div>
 
-        {/* Desktop panel: the photos are stacked; GSAP cross-fades them. The photo
-            stretches to the list's height (first to last divider), and its 4:5
-            ratio sets the width. */}
+        {/* Desktop panel: the photos are stacked; GSAP cross-fades them. The
+            photo fills the column to the list's height, with a hairline frame
+            offset behind it (as on the Signature photo). The right padding
+            leaves room for the frame's offset. */}
         <div
           id="service-preview"
-          className="hidden lg:col-span-6 lg:col-start-7 lg:flex lg:justify-center"
+          className="hidden lg:col-span-6 lg:col-start-7 lg:block lg:pr-[6%] lg:pl-[4%]"
         >
-          <div
-            data-reveal="panel"
-            className="relative aspect-4/5 h-full overflow-hidden bg-beige"
-          >
-            {items.map((item, i) => (
-              <div
-                key={item.id}
-                ref={(el) => {
-                  imageRefs.current[i] = el;
-                }}
-                aria-hidden={i !== active}
-                className={`absolute inset-0 ${i === 0 ? "" : "invisible opacity-0"}`}
-              >
-                <Image
-                  src={item.image.src}
-                  alt={item.image.alt}
-                  fill
-                  sizes="(min-width: 1024px) 30rem, 100vw"
-                  className="object-cover"
-                />
-              </div>
-            ))}
+          <div className="relative isolate h-full">
+            <div
+              data-reveal="frame"
+              aria-hidden="true"
+              className="absolute inset-0 -z-10 translate-x-5 translate-y-5 border border-burgundy/35"
+            />
+
+            <div data-reveal="panel" className="relative h-full overflow-hidden bg-beige">
+              {items.map((item, i) => (
+                <div
+                  key={item.id}
+                  ref={(el) => {
+                    imageRefs.current[i] = el;
+                  }}
+                  aria-hidden={i !== active}
+                  className={`absolute inset-0 ${i === 0 ? "" : "invisible opacity-0"}`}
+                >
+                  <Image
+                    src={item.image.src}
+                    alt={item.image.alt}
+                    fill
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

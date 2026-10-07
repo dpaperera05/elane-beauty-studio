@@ -64,7 +64,7 @@ export const hero = {
 
 export const about = {
   eyebrow: "About the Studio",
-  title: "A modern beauty studio in the heart of Colombo.",
+  title: "A modern beauty studio in the heart of Colombo",
   body: [
     "ÉLANE is a full-service beauty studio created around thoughtful care, skilled artistry and a calm, welcoming experience. From hair and skin to nails, makeup and bridal, every service begins with understanding what works for you.",
     "Tucked into Colombo 07, the studio is a quiet retreat from the city, with soft light, unhurried appointments and senior artists who take the time to get it right. From a fresh cut to your wedding day, you leave feeling looked after, never rushed.",
@@ -97,34 +97,33 @@ export const about = {
 // Unsplash; swap for the studio's own photography.
 export const services = {
   eyebrow: "Services",
-  title: "Beauty, tailored to you.",
-  intro: "Personalised hair, beauty and wellness services, thoughtfully designed around you.",
+  title: "Beauty rituals, thoughtfully crafted around you",
   linkLabel: "Explore",
   items: [
     {
       id: "hair",
       name: "Hair",
-      descriptor: "Cuts · Colour · Styling",
+      descriptor: "Cuts · Colour · Balayage · Blow-Dry",
       href: "/services#hair",
       image: {
-        src: "/images/services/hair.jpg",
-        alt: "Stylist blow-drying a client's hair with a round brush",
+        src: "/images/services/hair-styling.jpg",
+        alt: "Stylist finishing a client's soft balayage waves in front of a lit salon mirror",
       },
     },
     {
       id: "skin",
       name: "Skin",
-      descriptor: "Facials · Glow Treatments",
+      descriptor: "Facials · Peels · Glow Treatments",
       href: "/services#skin",
       image: {
-        src: "/images/services/skin-facial.jpg",
-        alt: "Therapist performing a precise facial treatment on a relaxed client",
+        src: "/images/services/skin-facial-massage.jpg",
+        alt: "Therapist massaging cream into a relaxed client's face during a facial",
       },
     },
     {
       id: "nails",
       name: "Nails",
-      descriptor: "Manicure · Pedicure · Nail Care",
+      descriptor: "Manicure · Pedicure · Gel & Nail Art",
       href: "/services#nails",
       image: {
         src: "/images/services/nails.jpg",
@@ -134,7 +133,7 @@ export const services = {
     {
       id: "beauty-makeup",
       name: "Beauty & Makeup",
-      descriptor: "Brows · Lashes · Makeup",
+      descriptor: "Brows · Lashes · Event Makeup",
       href: "/services#beauty-makeup",
       image: {
         src: "/images/services/beauty-makeup.jpg",
@@ -144,7 +143,7 @@ export const services = {
     {
       id: "bridal",
       name: "Bridal",
-      descriptor: "Bridal Styling · Makeup",
+      descriptor: "Bridal Hair & Makeup · Trials",
       href: "/services#bridal",
       image: {
         src: "/images/services/bridal-styling.jpg",
@@ -154,7 +153,7 @@ export const services = {
     {
       id: "treatments",
       name: "Treatments",
-      descriptor: "Keratin · Repair · Scalp Care",
+      descriptor: "Keratin · Bond Repair · Scalp Care",
       href: "/services#treatments",
       image: {
         src: "/images/services/treatments-scalp.jpg",
