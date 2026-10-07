@@ -112,8 +112,8 @@ export const services = {
       descriptor: "Cuts · Colour · Balayage · Blow-Dry",
       href: "/services#hair",
       image: {
-        src: "/images/services/hair-balayage.jpg",
-        alt: "Back view of long, softly waved balayage hair in a bright salon",
+        src: "/images/services/hair-curling.jpg",
+        alt: "Stylist curling long honey-blonde hair with a wand at a lit salon mirror",
       },
     },
     {
@@ -122,8 +122,8 @@ export const services = {
       descriptor: "Facials · Peels · Glow Treatments",
       href: "/services#skin",
       image: {
-        src: "/images/services/skin-facial-spa.jpg",
-        alt: "Therapist giving a relaxed client a calming facial massage",
+        src: "/images/services/skin-face-mask.jpg",
+        alt: "Guest lying back with a cream face mask as a gloved aesthetician works above her",
       },
     },
     {
@@ -162,8 +162,8 @@ export const services = {
       descriptor: "Keratin · Bond Repair · Scalp Care",
       href: "/services#treatments",
       image: {
-        src: "/images/services/treatments-shirodhara.jpg",
-        alt: "Guest resting beneath a brass vessel during an Ayurvedic shirodhara oil treatment",
+        src: "/images/services/treatments-scalp-wash.jpg",
+        alt: "Guest in a robe resting with eyes closed during a scalp treatment at a wash basin, a candle beside her",
       },
     },
   ],
