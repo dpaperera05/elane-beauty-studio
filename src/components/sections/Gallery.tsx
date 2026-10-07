@@ -10,16 +10,15 @@ import { SectionHeading } from "../ui/SectionHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Drift speed in px per second; hovering eases a row down to this fraction.
+// Drift speed in px per second.
 const SPEED = 40;
-const HOVER_TIME_SCALE = 0.15;
 
 /**
  * Gallery preview: two full-bleed rows of capsule-shaped portraits that drift
  * endlessly, the first to the left and the second to the right. Each row's
  * photos are rendered twice, so sliding the track by half its width loops
- * seamlessly. Hovering eases a row to a crawl; rows pause while off screen.
- * With reduced motion the rows stay still.
+ * seamlessly. Rows keep moving under the cursor and pause only while off
+ * screen. With reduced motion the rows stay still.
  */
 export function Gallery() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -39,7 +38,7 @@ export function Gallery() {
         scrollTrigger: { trigger: "[data-reveal='rows']", start: "clamp(top 85%)", once: true },
       });
 
-      const cleanups = gsap.utils.toArray<HTMLElement>("[data-marquee]").map((row) => {
+      gsap.utils.toArray<HTMLElement>("[data-marquee]").forEach((row) => {
         const track = row.querySelector<HTMLElement>("[data-track]")!;
         const toRight = row.dataset.marquee === "right";
         const loop = gsap.fromTo(
@@ -59,18 +58,7 @@ export function Gallery() {
           end: "bottom top",
           onToggle: (self) => (self.isActive ? loop.play() : loop.pause()),
         });
-
-        const slow = () => gsap.to(loop, { timeScale: HOVER_TIME_SCALE, duration: 0.8, ease: "power2.out" });
-        const resume = () => gsap.to(loop, { timeScale: 1, duration: 0.8, ease: "power2.in" });
-        row.addEventListener("pointerenter", slow);
-        row.addEventListener("pointerleave", resume);
-        return () => {
-          row.removeEventListener("pointerenter", slow);
-          row.removeEventListener("pointerleave", resume);
-        };
       });
-
-      return () => cleanups.forEach((cleanup) => cleanup());
     });
 
     return () => mm.revert();

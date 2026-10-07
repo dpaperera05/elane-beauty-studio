@@ -311,6 +311,60 @@ export const testimonials = {
       name: "Sarah K.",
       service: "Bridal · Makeup",
     },
+    {
+      quote:
+        "My nails have never looked this neat or lasted this long. The studio is so calm it feels like a proper pause.",
+      name: "Dinali P.",
+      service: "Nails · Gel Manicure",
+    },
+    {
+      quote:
+        "I came in unsure about my skin and left with a plan that actually made sense. Honest advice, gentle hands.",
+      name: "Amara W.",
+      service: "Treatments · Facial",
+    },
+    {
+      quote:
+        "A cut that grows out beautifully and styling tips I can actually repeat at home. I won’t go anywhere else now.",
+      name: "Tharushi M.",
+      service: "Hair · Cut & Style",
+    },
+    {
+      quote:
+        "They planned my wedding morning down to the minute. My makeup lasted through every photo, tear and dance.",
+      name: "Ishara D.",
+      service: "Bridal · Hair & Makeup",
+    },
+    {
+      quote:
+        "Booked a makeup session before a gala and felt like myself, only more polished. Soft, glowing and long-lasting.",
+      name: "Leah F.",
+      service: "Beauty · Event Makeup",
+    },
+    {
+      quote:
+        "The hydrating facial was exactly what my skin needed after a long trip. Calm room, unhurried hands, real glow.",
+      name: "Kavindi S.",
+      service: "Skin · Hydrating Facial",
+    },
+    {
+      quote:
+        "Finally a colourist who understood the soft blonde I had in mind. It still looks lovely weeks later.",
+      name: "Anna L.",
+      service: "Hair · Balayage",
+    },
+    {
+      quote:
+        "A pedicure that felt like a small holiday. Spotless tools, a gentle touch and a colour I keep being asked about.",
+      name: "Ruvini J.",
+      service: "Nails · Spa Pedicure",
+    },
+    {
+      quote:
+        "The scalp treatment has made a real difference. They explained every step and never pushed extra products.",
+      name: "Hiruni K.",
+      service: "Treatments · Scalp Therapy",
+    },
   ],
 };
 
