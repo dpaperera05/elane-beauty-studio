@@ -11,8 +11,8 @@ import { Icon } from "../ui/Icon";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * The homepage's closing invitation: a full-bleed, low-lit photograph under
- * a soft charcoal veil, with the copy set left in the photo's dark space.
+ * The homepage's closing invitation: a full-bleed photograph of the salon
+ * floor under a deep charcoal veil, with the copy set left over the quiet wall.
  * It only starts the journey; "Book Your Visit" continues to /book. The photo
  * settles in and drifts slowly with scroll; the copy rises in on entry.
  */
@@ -72,13 +72,17 @@ export function BookingPreview() {
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-[68%_center]"
+            className="object-cover object-[60%_center]"
           />
         </div>
       </div>
-      {/* Veil: light on wide screens, where the copy sits in the photo's dark
-          space; deeper on narrow ones, where it crosses the hands. */}
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink/60 md:bg-ink/45 lg:bg-ink/35" />
+      {/* Veil: the photo is bright, so it sits under a deep ink wash. Even on
+          narrow screens; from lg it eases off to the right, where the mirrors
+          are, and stays deepest behind the copy. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-ink/75 lg:bg-transparent lg:bg-[linear-gradient(to_right,rgb(27_25_24/0.88),rgb(27_25_24/0.7)_45%,rgb(27_25_24/0.48))]"
+      />
 
       <div className="container-site flex min-h-[clamp(34rem,85svh,48rem)] flex-col justify-center py-24 md:py-28">
         <div className="max-w-[40rem]">

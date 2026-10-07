@@ -252,10 +252,11 @@ export const team = {
   ],
 };
 
-// Stand-ins from Unsplash; replace with the studio's own work. `position`
-// keeps the subject in frame where a tile crops the photo.
 // Two carousel rows of 2:3 portraits, shown as capsules. The first row drifts
-// left, the second right. Stand-ins from Unsplash; swap for the studio's own work.
+// left, the second right. Illustrative stock photographs from Pexels, cut
+// down to 720×1080 from the originals in
+// /public/images/gallery/Elane_Beauty_Gallery_24_Photos (sources.json there
+// links each one to its Pexels page). They are not the studio's own work.
 const edit = (name: string, alt: string) => ({ src: `/images/gallery/edit-${name}.jpg`, alt });
 
 export const gallery = {
@@ -265,24 +266,32 @@ export const gallery = {
   cta: { label: "Explore the Gallery", href: "/gallery" },
   rows: [
     [
-      edit("eye-makeup", "Bronze eyeshadow and lashes being finished with a fine brush"),
-      edit("ivory-nails", "Glossy ivory almond nails against a deep wine backdrop"),
-      edit("salon-floor", "Stylist working on a client in a bright, plant-filled salon"),
-      edit("facial-massage", "Therapist's fingertips smoothing a client's brow during a facial"),
-      edit("braid", "Close-up of a loose, glossy honey-brown braid"),
-      edit("amber-serum", "Amber serum bottle on a turned wooden stand in soft palm shadow"),
-      edit("bridal-vine", "Bridal half-up waves threaded with a pearl and crystal vine"),
-      edit("curls", "Stylist shaping long brunette curls with a curling iron"),
+      edit("bridal-01", "Bride looking out through a sheer ivory veil, her hands lifting its edges"),
+      edit("hair-02", "Shoulder-length brunette waves with soft caramel ends, seen in profile"),
+      edit("nails-03", "Blush almond nails resting on a white surface beside small white flowers"),
+      edit("makeup-01", "Warm copper eyeshadow and softly defined brows in golden light"),
+      edit("treatments-02", "Therapist kneading a guest's shoulders during a massage"),
+      edit("skin-02", "Gloved hands pressing a warm cloth to a guest's cheek during a facial"),
+      edit("bridal-03", "Bride with closed eyes framed by a drift of white tulle"),
+      edit("hair-04", "Braided low bun finished with gold leaf hairpins, seen from behind"),
+      edit("nails-01", "French-tip nails on a relaxed hand against a deep navy backdrop"),
+      edit("makeup-04", "Powder being brushed onto a cheek, reflected in a round mirror"),
+      edit("treatments-04", "Hands cradling a guest's forehead and jaw during a head massage"),
+      edit("skin-04", "Aesthetician applying a mask with a brush to a guest wrapped in white towels"),
     ],
     [
-      edit("honey-mask", "Warm honey mask being spread across a client's lips and cheek"),
-      edit("nails-marigold", "Taupe manicure and gold watch among marigold blooms"),
-      edit("bridal-veil", "Bride in a lace veil with a softly swept updo"),
-      edit("precision-cut", "Stylist taking a precise cut on long, wet dark hair"),
-      edit("pink-nails", "Soft pink almond manicure resting on white linen"),
-      edit("head-massage", "Guest relaxing into a slow head and ear massage"),
-      edit("rose-gold", "Rose-gold and blush skincare bottles on a pink surface"),
-      edit("polish-wall", "Wall of nail colours on fine gold shelves"),
+      edit("makeup-02", "Soft matte makeup with long lashes and a berry lip, eyes lowered"),
+      edit("nails-02", "Pearl-pink square nails and gold rings resting on white feathers"),
+      edit("hair-01", "Long copper curls gathered into a half-up twist, seen from behind"),
+      edit("bridal-04", "Bride half hidden behind a pearl-dotted veil, with a nude manicure"),
+      edit("skin-03", "Aesthetician tending to a guest on a treatment bed in a bright white room"),
+      edit("treatments-01", "A hand resting on a guest's forehead in a softly lit treatment room"),
+      edit("hair-03", "Long, glossy dark layers with a wispy fringe"),
+      edit("makeup-03", "Deep red lip and long auburn curls against a teal backdrop"),
+      edit("nails-04", "Glossy red nails during a hand massage"),
+      edit("bridal-02", "Bride with a low textured updo, seen in profile through pale tulle"),
+      edit("treatments-03", "Therapist working warm oil along a guest's upper arm"),
+      edit("skin-01", "Aesthetician in a mask and cap cleansing a guest's face with cotton"),
     ],
   ],
 };
@@ -395,11 +404,11 @@ export const booking = {
   primary: { label: "Book Your Visit", href: "/book" },
   secondary: { label: "View Services", href: "/services" },
   note: "Open daily from 9 AM · Colombo",
-  // Stand-in from Unsplash (bottle label softened); replace with the
-  // studio's own photography.
+  // Stand-in from Pexels (mirrored, so the stations sit on the right and
+  // the copy gets the quiet wall); replace with the studio's own photography.
   image: {
-    src: "/images/home/booking-cta.jpg",
-    alt: "Hands letting a drop of oil fall from an amber bottle in soft, low light",
+    src: "/images/home/booking-salon-stations.jpg",
+    alt: "A bright salon floor with a row of styling chairs facing round, softly lit mirrors",
   },
 };
 
