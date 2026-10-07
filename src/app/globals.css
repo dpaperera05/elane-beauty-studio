@@ -1,26 +1,463 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-burgundy: #7a343d;
+  --color-burgundy-deep: #5f2730;
+  --color-rose: #c9a3a1;
+  --color-ivory: #f5f1ea;
+  --color-ivory-light: #faf7f2;
+  --color-beige: #e9e0d5;
+  --color-ink: #1b1918;
+  --color-muted: #6f6862;
+  --color-line: #d7cec4;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Two typefaces only: serif = editorial, sans = interface. */
+  --font-sans: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-cormorant), Georgia, serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Editorial scale (Cormorant Garamond). Display steps down below 80rem;
+     "& Every Occasion" must fit one line at 320px. */
+  --text-display-mobile: clamp(2.375rem, 1.55rem + 4.1vw, 3rem);
+  --text-display-tablet: clamp(3.25rem, 1.9rem + 3.8vw, 4.75rem);
+  --text-display: clamp(3.125rem, 2.1rem + 4.6vw, 6.25rem);
+  --text-h2: clamp(2.75rem, 2rem + 2.6vw, 4.5rem);
+  --text-h3: clamp(2rem, 1.85rem + 0.7vw, 2.625rem);
+  --text-h4: clamp(1.375rem, 1.3rem + 0.4vw, 1.75rem);
+
+  /* Interface scale (Manrope). */
+  --text-body: clamp(1rem, 0.97rem + 0.12vw, 1.0625rem);
+  --text-lead-mobile: 0.9375rem;
+  --text-lead-tablet: 1rem;
+  --text-lead: clamp(1.0625rem, 1.03rem + 0.15vw, 1.125rem);
+  --text-ui: 0.9375rem;
+  --text-small: 0.875rem;
+  --text-label: 0.75rem;
+
+  /* Brand strip: the track holds two identical halves, so sliding it half
+     its own width loops without a seam. */
+  --animate-marquee: marquee 48s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  /* The whole site sits on pure white (html too, so overscroll stays white). */
+  html {
+    background: #fff;
+    scroll-behavior: smooth;
+    /* Anchor jumps land below the fixed header. */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background: #fff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.7;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-rose);
+    color: var(--color-ink);
+  }
+}
+
+/*
+ * Typography roles. Components use these instead of ad-hoc font/size classes
+ * so every page shares one scale.
+ */
+
+/* Editorial — Cormorant Garamond, regular/medium, tight leading. */
+@utility type-display {
+  font-family: var(--font-serif);
+  font-size: var(--text-display-mobile);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: -0.015em;
+
+  @media (width >= 40rem) {
+    font-size: var(--text-display-tablet);
+  }
+  @media (width >= 80rem) {
+    font-size: var(--text-display);
+  }
+}
+
+/* Section titles. Medium weight: Cormorant's hairlines read pale at 400. */
+@utility type-h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-h2);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+}
+
+@utility type-h3 {
+  font-family: var(--font-serif);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+@utility type-h4 {
+  font-family: var(--font-serif);
+  font-size: var(--text-h4);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+@utility type-wordmark {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+/* Interface — Manrope. */
+@utility type-lead {
+  font-family: var(--font-sans);
+  font-size: var(--text-lead-mobile);
+  line-height: 1.65;
+
+  @media (width >= 40rem) {
+    font-size: var(--text-lead-tablet);
+    line-height: 1.7;
+  }
+  @media (width >= 80rem) {
+    font-size: var(--text-lead);
+  }
+}
+
+@utility type-small {
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  line-height: 1.6;
+}
+
+@utility type-ui {
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+@utility type-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+@utility container-site {
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 0.7rem + 1.5vw, 3rem);
+}
+
+/* Text link hover: a hairline underline draws in from the left. */
+@utility link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.3s ease;
+
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 1px;
+  }
+}
+
+@utility section-space {
+  padding-block: clamp(4rem, 3rem + 4vw, 7rem);
+}
+
+/*
+ * Liquid glass hover — the site-wide standard for buttons.
+ * Usage: `liquid-glass` + a tone class on the host, <GlassLayers /> inside,
+ * and <LiquidGlass /> mounted once in the layout (refraction + pointer light).
+ * Layers, bottom to top: refract (bends the backdrop, Chromium only),
+ * frost (blur + tint), shine (edge highlights + specular that follows the cursor).
+ */
+@layer components {
+  .liquid-glass {
+    --glass-x: 50%;
+    --glass-y: 0%;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  /* Tones: the tint the glass takes on hover. */
+  /* Solid: the button keeps its own fill on hover; only the sheen and edge
+     highlights are laid over it (nothing behind a solid fill to blur or bend). */
+  .liquid-glass--solid .liquid-glass__refract,
+  .liquid-glass--solid .liquid-glass__frost {
+    display: none;
+  }
+  .liquid-glass--burgundy {
+    /* Deep burgundy at 75% keeps ivory text above 5:1 on light backgrounds. */
+    --glass-tint: rgb(95 39 48 / 0.75);
+  }
+  .liquid-glass--clear {
+    --glass-tint: rgb(255 255 255 / 0.28);
+  }
+  /* Frosted: already glass at rest (light tint, no refraction), intensifies on hover. */
+  .liquid-glass--frosted {
+    --glass-tint-rest: rgb(255 255 255 / 0.1);
+  }
+
+  .liquid-glass__layer {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      opacity 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+      background-color 0.45s ease,
+      backdrop-filter 0.45s ease;
+  }
+
+  .liquid-glass__refract {
+    display: none;
+    /* Oversized (> half the displacement scale) so displaced pixels never pull
+       in empty edges; the host clips it. */
+    inset: -24px;
+  }
+  /* Solid buttons are excluded here too: this selector outranks the
+     `--solid` rule above, and the bent backdrop would show through the fill. */
+  :root[data-glass-refraction] .liquid-glass:not(.liquid-glass--solid) .liquid-glass__refract {
+    display: block;
+    backdrop-filter: blur(1px) saturate(1.6);
+    filter: url(#liquid-glass-refraction);
+    /* Trim the oversized layer back to the host's exact pill (clip-path runs
+       after the filter), so the bend never alters the button's outline. */
+    clip-path: inset(24px round 9999px);
+  }
+
+  .liquid-glass__frost {
+    background-color: var(--glass-tint-rest, transparent);
+    -webkit-backdrop-filter: blur(12px) saturate(1.8);
+    backdrop-filter: blur(12px) saturate(1.8);
+  }
+  .liquid-glass--frosted .liquid-glass__frost {
+    opacity: 1;
+  }
+
+  .liquid-glass__shine {
+    background:
+      /* Specular light that follows the cursor. */
+      radial-gradient(
+        7rem circle at var(--glass-x) var(--glass-y),
+        rgb(255 255 255 / 0.5),
+        transparent 65%
+      ),
+      /* Glossy upper half with a soft horizon, plus a faint lower bounce. */
+      linear-gradient(
+        to bottom,
+        rgb(255 255 255 / 0.34),
+        rgb(255 255 255 / 0.08) 48%,
+        transparent 54% 78%,
+        rgb(255 255 255 / 0.16)
+      );
+    box-shadow:
+      /* Bright rim along the top and sides, dimmer along the bottom. */
+      inset 0 1.5px 0.5px rgb(255 255 255 / 0.95),
+      inset 1px 0 0.5px rgb(255 255 255 / 0.35),
+      inset -1px 0 0.5px rgb(255 255 255 / 0.35),
+      inset 0 -1px 0.5px rgb(255 255 255 / 0.45),
+      inset 0 0 0 1px rgb(255 255 255 / 0.24),
+      /* Inner glow pooling at the top and bottom edges. */
+      inset 0 0.5rem 1rem -0.75rem rgb(255 255 255 / 0.5),
+      inset 0 -0.75rem 1.25rem -1rem rgb(255 255 255 / 0.6);
+  }
+
+  /* Ivory: white light barely registers on an ivory fill, so this sheen is
+     brighter and adds a faint wine shading at the edges for depth. The fill
+     itself is unchanged. */
+  .liquid-glass--ivory .liquid-glass__shine {
+    background:
+      radial-gradient(
+        6rem circle at var(--glass-x) var(--glass-y),
+        rgb(255 255 255 / 0.95),
+        transparent 65%
+      ),
+      linear-gradient(
+        to bottom,
+        rgb(255 255 255 / 0.75),
+        rgb(255 255 255 / 0.2) 46%,
+        rgb(122 52 61 / 0.04) 54% 76%,
+        rgb(122 52 61 / 0.12)
+      );
+    box-shadow:
+      inset 0 1.5px 0.5px rgb(255 255 255),
+      inset 0 -1.5px 1px rgb(95 39 48 / 0.3),
+      inset 1px 0 1px rgb(95 39 48 / 0.14),
+      inset -1px 0 1px rgb(95 39 48 / 0.14),
+      inset 0 0.5rem 1rem -0.75rem rgb(255 255 255),
+      inset 0 -0.75rem 1.25rem -1rem rgb(95 39 48 / 0.32);
+  }
+
+  /* Hover (pointer devices), keyboard focus and touch press share one state. */
+  @media (hover: hover) {
+    .liquid-glass:hover .liquid-glass__layer {
+      opacity: 1;
+    }
+    .liquid-glass:hover .liquid-glass__frost {
+      background-color: var(--glass-tint);
+    }
+    /* With real refraction, ease the blur so the bend stays visible. */
+    :root[data-glass-refraction] .liquid-glass:hover .liquid-glass__frost {
+      -webkit-backdrop-filter: blur(2px) saturate(2);
+      backdrop-filter: blur(2px) saturate(2);
+    }
+  }
+  .liquid-glass:is(:focus-visible, :active) .liquid-glass__layer {
+    opacity: 1;
+  }
+  .liquid-glass:is(:focus-visible, :active) .liquid-glass__frost {
+    background-color: var(--glass-tint);
+  }
+  .liquid-glass:active {
+    transform: scale(0.98);
+  }
+}
+
+/* iOS Low Power Mode blocks autoplay and overlays a play button; keep the
+   decorative hero video clean (the poster shows instead). */
+.hero-video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+/*
+ * Intro overlay (SiteIntro). The wordmark entrance is CSS so it starts on
+ * first paint; GSAP takes over for the exit and the hero reveal.
+ */
+.site-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background: var(--color-burgundy-deep);
+  color: var(--color-ivory);
+  clip-path: inset(0% 0% 0% 0%);
+}
+
+.site-intro__mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.site-intro__mask {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.14em 0.04em;
+  font-size: clamp(2.75rem, 2.2rem + 2.6vw, 4.25rem);
+}
+
+.site-intro__name {
+  display: block;
+  /* Cancels the trailing letter-spacing so the word centres optically. */
+  margin-right: -0.26em;
+  animation: site-intro-rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.site-intro__tagline {
+  margin-top: 0.9rem;
+  /* Balances the trailing letter-spacing for true centring. */
+  padding-left: 0.42em;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  animation: site-intro-fade 0.8s 0.25s ease both;
+}
+
+@keyframes site-intro-rise {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@keyframes site-intro-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Hidden until the intro reveals them (only while the overlay exists). */
+  .site-intro ~ * [data-intro] {
+    opacity: 0;
+  }
+  /* Failsafe: if the script never takes over, reveal everything after 4s. */
+  .site-intro:not(.is-ready) ~ * [data-intro] {
+    animation: site-intro-failsafe-in 0s 4s forwards;
+  }
+  .site-intro:not(.is-ready) {
+    animation: site-intro-failsafe-out 0s 4s forwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-intro {
+    display: none;
+  }
+}
+
+@keyframes site-intro-failsafe-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes site-intro-failsafe-out {
+  to {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .liquid-glass__layer {
+    transition: none;
+  }
+  .liquid-glass:active {
+    transform: none;
+  }
 }
