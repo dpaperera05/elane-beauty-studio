@@ -35,7 +35,7 @@ export const nav = [
     ],
   },
   { label: "About", href: "/about" },
-  { label: "Gallery", href: "/#gallery" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Contact", href: "#footer" },
 ];
 
@@ -424,7 +424,7 @@ export const footer = {
     { label: "Home", href: site.homeHref },
     { label: "Services", href: "/#services" },
     { label: "About", href: "/about" },
-    { label: "Gallery", href: "/#gallery" },
+    { label: "Gallery", href: "/gallery" },
     { label: "Contact", href: "#footer" },
   ],
   visit: ["Colombo 07", "Sri Lanka"],

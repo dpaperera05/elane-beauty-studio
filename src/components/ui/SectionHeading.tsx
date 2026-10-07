@@ -14,8 +14,10 @@ const tones = {
 };
 
 type SectionHeadingProps = {
-  /** Id for the <h2>, referenced by the section's aria-labelledby. */
+  /** Id for the title, referenced by the section's aria-labelledby. */
   id: string;
+  /** Heading level: "h1" when this is the page's own title. */
+  as?: "h1" | "h2";
   eyebrow: string;
   title: string;
   intro?: string;
@@ -34,6 +36,7 @@ type SectionHeadingProps = {
  */
 export function SectionHeading({
   id,
+  as: Title = "h2",
   eyebrow,
   title,
   intro,
@@ -51,13 +54,19 @@ export function SectionHeading({
 
     const mm = gsap.matchMedia(header);
     mm.add("(prefers-reduced-motion: no-preference)", () => {
+      // A heading already in view on load (the first thing on a page) plays
+      // straight away: its clamped start is scroll 0, which would only fire
+      // once the page moves, leaving the heading hidden until then.
+      const inView = header.getBoundingClientRect().top < window.innerHeight * 0.85;
       gsap.from("[data-heading-item]", {
         opacity: 0,
         y: 22,
         duration: 1.1,
         stagger: 0.1,
         ease: "power3.out",
-        scrollTrigger: { trigger: header, start: "clamp(top 85%)", once: true },
+        scrollTrigger: inView
+          ? undefined
+          : { trigger: header, start: "clamp(top 85%)", once: true },
       });
     });
 
@@ -77,13 +86,13 @@ export function SectionHeading({
         {eyebrow}
         <span aria-hidden="true" className="h-px w-8 bg-current opacity-50 sm:w-10" />
       </p>
-      <h2
+      <Title
         id={id}
         data-heading-item
         className={`type-h2 mt-5 max-w-[24ch] md:mt-6 ${colors.title} ${titleClassName}`}
       >
         {title}
-      </h2>
+      </Title>
       {intro && (
         <p data-heading-item className={`type-lead mt-5 max-w-[34rem] md:mt-6 ${colors.intro}`}>
           {intro}
