@@ -1,6 +1,6 @@
 // Booking state, validation, formatting and the mock availability calendar.
 
-import { timeSlots } from "@/content/booking";
+import { bookingServices, timeSlots } from "@/content/booking";
 
 export type BookingDetails = {
   name: string;
@@ -31,6 +31,25 @@ export const emptyBooking: BookingState = {
   time: null,
   details: { name: "", phone: "", email: "", notes: "" },
 };
+
+/**
+ * The choices carried by a link such as
+ * `/booking?category=hair&service=signature-cut-finish` (see `bookingHref` in
+ * content/services.ts). An unknown category gives null; an unknown service
+ * keeps the category only.
+ */
+export function preselectFromSearch(
+  search: string,
+): Pick<BookingState, "categoryId" | "serviceId"> | null {
+  const params = new URLSearchParams(search);
+  const categoryId = params.get("category");
+  const services = categoryId ? bookingServices[categoryId] : undefined;
+  if (!categoryId || !services) return null;
+
+  const serviceId = params.get("service");
+  const known = services.some((service) => service.id === serviceId);
+  return { categoryId, serviceId: known ? serviceId : null };
+}
 
 export type DetailErrors = Partial<Record<"name" | "phone" | "email", string>>;
 

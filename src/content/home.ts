@@ -14,26 +14,7 @@ export const site = {
 // Root-relative so every link works from any page.
 export const nav = [
   { label: "Home", href: site.homeHref },
-  {
-    label: "Services",
-    children: [
-      {
-        label: "Studio",
-        description: "Everyday hair, skin & nails",
-        href: "/#services",
-      },
-      {
-        label: "Bridal",
-        description: "Trials, styling & on-location care",
-        href: "/#services",
-      },
-      {
-        label: "Academy",
-        description: "Hands-on beauty courses",
-        href: "/#services",
-      },
-    ],
-  },
+  { label: "Services", href: "/services" },
   { label: "About", href: "/about" },
   { label: "Gallery", href: "/gallery" },
   { label: "Contact", href: "#footer" },
@@ -64,7 +45,7 @@ export const hero = {
   // them. The first clip's poster (its exact first frame) paints before any
   // video loads and is the reduced-motion fallback.
   videos: [heroVideos.nails, heroVideos.salon],
-  primary: { label: "Explore Services", href: "#studio" },
+  primary: { label: "Explore Services", href: "/services" },
   secondary: { label: "Book a Visit", href: site.bookingHref },
 };
 
@@ -422,7 +403,7 @@ export const footer = {
   tagline: "Beauty, thoughtfully considered.",
   nav: [
     { label: "Home", href: site.homeHref },
-    { label: "Services", href: "/#services" },
+    { label: "Services", href: "/services" },
     { label: "About", href: "/about" },
     { label: "Gallery", href: "/gallery" },
     { label: "Contact", href: "#footer" },

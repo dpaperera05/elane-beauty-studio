@@ -26,6 +26,7 @@ import {
   formatDuration,
   formatPrice,
   NO_PREFERENCE,
+  preselectFromSearch,
   validateDetails,
   type BookingState,
 } from "./model";
@@ -96,6 +97,21 @@ export function BookingFlow() {
   });
   const [confirmed, setConfirmed] = useState(false);
   const railRef = useRef<HTMLDivElement>(null);
+
+  // Arriving from a "Book this service" link: take the category and service
+  // from the URL and open on the first step still to answer (Artist, or
+  // Treatment when only the category is known). Applied after hydration, as
+  // the page is prerendered without the query string.
+  useEffect(() => {
+    const preselected = preselectFromSearch(window.location.search);
+    if (!preselected) return;
+    const frame = requestAnimationFrame(() => {
+      const step = preselected.serviceId ? 2 : 1;
+      setBooking((current) => ({ ...current, ...preselected }));
+      setNav({ step, direction: 1, furthest: step, moved: false });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   const { step } = nav;
   const category = bookingCategories.find((item) => item.id === booking.categoryId);
