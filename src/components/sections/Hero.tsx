@@ -1,0 +1,68 @@
+import Image from "next/image";
+import { hero } from "@/content/home";
+import { HeroVideo } from "../HeroVideo";
+import { Button } from "../ui/Button";
+
+export function Hero() {
+  return (
+    <section className="relative flex min-h-svh items-end overflow-hidden text-white">
+      {/* Poster first: paints immediately and stays as the reduced-motion fallback. */}
+      <Image
+        src={hero.videos[0].poster}
+        alt=""
+        fill
+        preload
+        sizes="100vw"
+        className="object-cover"
+      />
+      <HeroVideo />
+      <div
+        className="absolute inset-0 bg-linear-to-t from-black/75 via-black/40 to-black/30"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-x-0 top-0 h-56 bg-linear-to-b from-black/50 to-transparent"
+        aria-hidden="true"
+      />
+
+      <div className="container-site relative pt-32 pb-16 sm:pt-44 sm:pb-24 md:pb-40">
+        <div className="mx-auto max-w-5xl text-center">
+          <h1 className="type-display">
+            {hero.titleLines.map((line, i) => {
+              const [start, end] = line.split(hero.titleEmphasis);
+              return (
+                <span key={line} data-intro="headline-line" className="block">
+                  {end === undefined ? (
+                    line
+                  ) : (
+                    <>
+                      {start}
+                      <em>{hero.titleEmphasis}</em>
+                      {end}
+                    </>
+                  )}
+                  {/* Keeps words separated for screen readers and copy-paste. */}
+                  {i < hero.titleLines.length - 1 && " "}
+                </span>
+              );
+            })}
+          </h1>
+          <p data-intro="hero-copy" className="type-lead mx-auto mt-5 max-w-[21rem] text-balance text-white/85 sm:mt-6 sm:max-w-[34rem] xl:mt-7 xl:max-w-[42rem]">
+            {hero.body}
+          </p>
+          {/* Phones: full-width stacked buttons. From sm: an equal-width pair
+              whose grid columns share the widest button's width. */}
+          <div
+            data-intro="hero-cta"
+            className="mx-auto mt-8 grid w-full max-w-xs grid-cols-1 gap-3 sm:mt-9 sm:inline-grid sm:w-auto sm:max-w-none sm:grid-cols-2"
+          >
+            <Button href={hero.primary.href}>{hero.primary.label}</Button>
+            <Button href={hero.secondary.href} variant="light">
+              {hero.secondary.label}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
