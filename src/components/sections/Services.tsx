@@ -250,7 +250,6 @@ export function Services() {
             offset behind it (as on the Signature photo). The right padding
             leaves room for the frame's offset. */}
         <div
-          id="service-preview"
           className="hidden lg:col-span-6 lg:col-start-7 lg:block lg:pr-[6%] lg:pl-[4%]"
         >
           <div className="relative isolate h-full">

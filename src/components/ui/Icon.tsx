@@ -4,7 +4,6 @@ export type IconName =
   | "arrow"
   | "chevron"
   | "pin"
-  | "sparkle"
   | "instagram"
   | "tiktok"
   | "pinterest";
@@ -17,9 +16,6 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0113 0c0 5.4-6.5 11-6.5 11z" />
       <circle cx="12" cy="10" r="2.3" />
     </>
-  ),
-  sparkle: (
-    <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z" />
   ),
   instagram: (
     <>
