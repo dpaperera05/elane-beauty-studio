@@ -2,8 +2,6 @@
 // already in /public/images/gallery (illustrative stock, not the studio's own
 // work; see the note on `gallery` in home.ts).
 
-import { site } from "./home";
-
 export const galleryIntro = {
   eyebrow: "The ÉLANE Edit",
   title: "Real looks. Real moments.",
@@ -99,8 +97,3 @@ export const galleryItems: GalleryItem[] = [
   item("finished-hair", "hair", "Lilac Waves", "Long lilac waves framing a face with soft pink makeup"),
   item("nail-detail", "nails", "Tortoiseshell", "Black and tortoiseshell nails against a grey knit sleeve", "square"),
 ];
-
-export const galleryCta = {
-  titleLines: ["Like what you see?", "Let’s create yours."],
-  button: { label: "Book an Appointment", href: site.bookingHref },
-};
