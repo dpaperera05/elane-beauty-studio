@@ -27,6 +27,9 @@ function useIsDesktop() {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
+const rowClass =
+  "group flex w-full items-center gap-5 py-5 text-left outline-none sm:gap-7 lg:py-[clamp(1rem,2.6vh,1.5rem)]";
+
 function ExploreLink({ href }: { href: string }) {
   return (
     <a
@@ -143,54 +146,70 @@ export function Services() {
               const isOpen = open === i;
               const isCurrent = isDesktop ? active === i : isOpen;
               const panelId = `service-panel-${item.id}`;
-
-              return (
-                <li key={item.id} data-reveal="row" className="border-t border-line">
-                  <button
-                    type="button"
-                    onMouseEnter={() => setActive(i)}
-                    onFocus={() => setActive(i)}
-                    onClick={() => {
-                      setActive(i);
-                      setOpen(isOpen ? null : i);
-                    }}
-                    aria-controls={isDesktop ? "service-preview" : panelId}
-                    aria-expanded={isDesktop ? undefined : isOpen}
-                    aria-current={isDesktop && isCurrent ? "true" : undefined}
-                    className="group flex w-full items-center gap-5 py-5 text-left outline-none sm:gap-7 lg:py-[clamp(1rem,2.6vh,1.5rem)]"
+              const row = (
+                <>
+                  <span
+                    className={`type-label w-6 shrink-0 transition-colors duration-500 ${
+                      isCurrent ? "text-burgundy" : "text-ink"
+                    }`}
                   >
+                    {pad(i + 1)}
+                  </span>
+                  <span className="min-w-0 flex-1">
                     <span
-                      className={`type-label w-6 shrink-0 transition-colors duration-500 ${
+                      className={`type-h4 block transition-colors duration-500 group-focus-visible:underline group-focus-visible:decoration-1 group-focus-visible:underline-offset-6 ${
                         isCurrent ? "text-burgundy" : "text-ink"
                       }`}
                     >
-                      {pad(i + 1)}
+                      {item.name}
                     </span>
-                    <span className="min-w-0 flex-1">
-                      <span
-                        className={`type-h4 block transition-colors duration-500 group-focus-visible:underline group-focus-visible:decoration-1 group-focus-visible:underline-offset-6 ${
-                          isCurrent ? "text-burgundy" : "text-ink"
-                        }`}
-                      >
-                        {item.name}
-                      </span>
-                      {/* What the service covers, in one line. */}
-                      <span className="type-small mt-1 block text-ink">{item.descriptor}</span>
-                    </span>
-                    {/* Desktop: arrow on the active row only. Mobile/tablet: accordion chevron. */}
-                    <Icon
-                      name="arrow"
-                      className={`hidden size-4 shrink-0 text-burgundy transition duration-500 lg:block ${
-                        isCurrent ? "translate-x-0 opacity-100" : "-translate-x-2 opacity-0"
-                      }`}
-                    />
-                    <Icon
-                      name="chevron"
-                      className={`size-5 shrink-0 transition duration-500 lg:hidden ${
-                        isOpen ? "rotate-180 text-burgundy" : "text-muted"
-                      }`}
-                    />
-                  </button>
+                    {/* What the service covers, in one line. */}
+                    <span className="type-small mt-1 block text-ink">{item.descriptor}</span>
+                  </span>
+                  {/* Desktop: arrow on the active row only. Mobile/tablet: accordion chevron. */}
+                  <Icon
+                    name="arrow"
+                    className={`hidden size-4 shrink-0 text-burgundy transition duration-500 lg:block ${
+                      isCurrent ? "translate-x-0 opacity-100" : "-translate-x-2 opacity-0"
+                    }`}
+                  />
+                  <Icon
+                    name="chevron"
+                    className={`size-5 shrink-0 transition duration-500 lg:hidden ${
+                      isOpen ? "rotate-180 text-burgundy" : "text-muted"
+                    }`}
+                  />
+                </>
+              );
+
+              return (
+                <li key={item.id} data-reveal="row" className="border-t border-line">
+                  {/* Desktop: the row is a link to this category on the services
+                      page (hover or focus still previews its photo). Below lg it
+                      is the accordion toggle, with the link inside the panel. */}
+                  {isDesktop ? (
+                    <a
+                      href={item.href}
+                      onMouseEnter={() => setActive(i)}
+                      onFocus={() => setActive(i)}
+                      className={rowClass}
+                    >
+                      {row}
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActive(i);
+                        setOpen(isOpen ? null : i);
+                      }}
+                      aria-controls={panelId}
+                      aria-expanded={isOpen}
+                      className={rowClass}
+                    >
+                      {row}
+                    </button>
+                  )}
 
                   {/* Accordion panel (below lg). Grid-rows trick animates to content height. */}
                   <div
