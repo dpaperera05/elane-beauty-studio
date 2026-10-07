@@ -1,9 +1,8 @@
-// All homepage copy and imagery lives here so it can be edited without touching layout code.
+// Site-wide and homepage copy and imagery, kept here so it can be edited
+// without touching layout code.
 
 export const site = {
-  name: "Elane",
   fullName: "Elane Beauty Studio",
-  location: "Colombo, Sri Lanka",
   // Top of the homepage, for the logo and "Home" links. Works from any page;
   // on the homepage itself it scrolls up without reloading.
   homeHref: "/#",
@@ -150,40 +149,6 @@ export const services = {
   ],
 };
 
-// `icon` keys map to Lucide icons in WhyElane.tsx.
-export const whyElane = {
-  eyebrow: "Why Élane",
-  title: "Care that goes beyond the appointment.",
-  tagline: "Thoughtful service. Skilled hands. No rushed appointments.",
-  points: [
-    {
-      icon: "consultation",
-      title: "Personal Consultations",
-      body: "Every service begins with understanding your goals, routine and preferences.",
-    },
-    {
-      icon: "artists",
-      title: "Expert Artists",
-      body: "A skilled team across hair, skin, nails, beauty and bridal.",
-    },
-    {
-      icon: "products",
-      title: "Premium Products",
-      body: "Professional-grade products chosen for performance, care and lasting results.",
-    },
-    {
-      icon: "space",
-      title: "Calm, Considered Space",
-      body: "A welcoming studio designed to make every appointment feel relaxed and personal.",
-    },
-  ] as const,
-  // Stand-in from Unsplash; replace with the studio's own photography.
-  image: {
-    src: "/images/home/why-elane-studio.jpg",
-    alt: "Stylist smiling as she blow-dries a client's hair in a bright, airy studio",
-  },
-};
-
 export const signature = {
   eyebrow: "Signature Experience",
   // Second line is set in italic, echoing the hero's emphasis.
@@ -203,21 +168,19 @@ export const signature = {
   },
 };
 
-// Portraits: 2:3, 1200×1800, cropped from the top in the layout. Stand-ins
-// from Unsplash; replace with the studio's own team photography.
+// The core team, shared by the About page and the booking flow. Portraits:
+// 2:3, 1200×1800, cropped from the top in the layout. Stand-ins from Unsplash;
+// replace with the studio's own team photography.
 export const team = {
   eyebrow: "Meet the Artists",
   title: "The people behind your look.",
   body: "Meet the artists who bring together skill, care and creativity across hair, skin, beauty and styling.",
-  profileLabel: "View profile",
-  cta: { label: "Meet the Full Team", href: "/about#team" },
   members: [
     {
       id: "amaya-sen",
       name: "Amaya Sen",
       role: "Creative Director",
       specialties: "Hair · Colour",
-      href: "/about#amaya-sen",
       image: { src: "/images/team/amaya-sen.jpg", alt: "Portrait of Amaya Sen" },
     },
     {
@@ -225,7 +188,6 @@ export const team = {
       name: "Maya Fernando",
       role: "Senior Stylist",
       specialties: "Cuts · Styling",
-      href: "/about#maya-fernando",
       image: { src: "/images/team/maya-fernando.jpg", alt: "Portrait of Maya Fernando" },
     },
     {
@@ -233,7 +195,6 @@ export const team = {
       name: "Rhea Jay",
       role: "Beauty Artist",
       specialties: "Skin · Makeup",
-      href: "/about#rhea-jay",
       image: { src: "/images/team/rhea-jay.jpg", alt: "Portrait of Rhea Jay" },
     },
   ],
@@ -241,9 +202,8 @@ export const team = {
 
 // Two carousel rows of 2:3 portraits, shown as capsules. The first row drifts
 // left, the second right. Illustrative stock photographs from Pexels, cut
-// down to 720×1080 from the originals in
-// /public/images/gallery/Elane_Beauty_Gallery_24_Photos (sources.json there
-// links each one to its Pexels page). They are not the studio's own work.
+// down to 720×1080 (/public/images/gallery/sources.json links each original
+// to its Pexels page). They are not the studio's own work.
 const edit = (name: string, alt: string) => ({ src: `/images/gallery/edit-${name}.jpg`, alt });
 
 export const gallery = {

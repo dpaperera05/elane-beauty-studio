@@ -167,7 +167,7 @@ export const serviceCategories: ServiceCategory[] = [
 
 // The signature experience. Not one of the menu rows: it has its own feature
 // on the page, and is booked under Treatments.
-export const ritualService: Service & { categoryId: ServiceCategoryId } = {
+const ritualService: Service & { categoryId: ServiceCategoryId } = {
   ...service(
     "The ÉLANE Ritual",
     12500,

@@ -92,7 +92,7 @@ const artistCategories: Record<string, string[]> = {
 };
 
 export const bookingArtists: BookingArtist[] = [
-  // The homepage team, so names, roles and portraits stay in one place.
+  // The core team (home.ts), so names, roles and portraits stay in one place.
   ...team.members.map(({ id, name, role, specialties, image }) => ({
     id,
     name,
@@ -102,7 +102,7 @@ export const bookingArtists: BookingArtist[] = [
     categories: artistCategories[id] ?? [],
   })),
   // Sample artist so skin, nails and beauty have more than one choice. Not on
-  // the team page and has no portrait yet.
+  // the About page and has no portrait.
   {
     id: "nisha-perera",
     name: "Nisha Perera",

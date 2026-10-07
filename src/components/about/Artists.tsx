@@ -9,16 +9,6 @@ import { SectionHeading } from "../ui/SectionHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export type ArtistCard = {
-  id: string;
-  name: string;
-  role: string;
-  specialties: string;
-  photo: { src: string; alt: string };
-  /** False while a craft photo stands in for the artist's portrait. */
-  isPortrait: boolean;
-};
-
 // Per-portrait placement. Desktop: three across, then two centred beneath;
 // the middle of the first row and the last of the second sit lower. Tablet:
 // two columns, the right one set lower, the fifth centred on its own.
@@ -34,10 +24,9 @@ const layout = [
  * The team: a centred heading over five arch-topped portraits (a sibling of
  * the gallery's capsules), each with its name, role and specialties centred
  * beneath. Hover zooms the photo and slides a hairline arch out from behind
- * it. `members` comes from the page, which swaps in a stand-in photo for any
- * portrait file that is not in /public yet.
+ * it.
  */
-export function Artists({ members }: { members: ArtistCard[] }) {
+export function Artists() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -92,7 +81,7 @@ export function Artists({ members }: { members: ArtistCard[] }) {
         />
 
         <ul className="mx-auto mt-12 grid max-w-[66rem] grid-cols-1 gap-y-12 md:mt-16 md:grid-cols-2 md:gap-x-8 md:gap-y-14 lg:mt-20 lg:grid-cols-6 lg:gap-x-12 lg:gap-y-16">
-          {members.map((member, i) => (
+          {artists.members.map((member, i) => (
             <li key={member.id} id={member.id} data-card className={`group ${layout[i]}`}>
               {/* Capped on phones so the five stay quick to scan. */}
               <div className="relative isolate mx-auto w-full max-w-[17rem] sm:max-w-[20rem] md:max-w-none">
@@ -106,13 +95,11 @@ export function Artists({ members }: { members: ArtistCard[] }) {
                   className="relative aspect-3/4 overflow-hidden rounded-t-full bg-beige"
                 >
                   <Image
-                    src={member.photo.src}
-                    alt={member.photo.alt}
+                    src={member.image.src}
+                    alt={member.image.alt}
                     fill
                     sizes="(min-width: 1024px) 22rem, (min-width: 768px) 46vw, 20rem"
-                    className={`object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05] motion-reduce:transition-none ${
-                      member.isPortrait ? "object-top" : "object-[50%_65%]"
-                    }`}
+                    className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05] motion-reduce:transition-none"
                   />
                 </div>
               </div>

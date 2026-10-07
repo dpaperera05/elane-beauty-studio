@@ -57,7 +57,6 @@ export const location = {
   eyebrow: "Location",
   title: "Find us in Colombo.",
   body: "In the heart of Colombo 07, a short drive from the city centre.",
-  place,
   mapTitle: `Map showing ${place}`,
   embedSrc: `https://www.google.com/maps?q=${mapQuery}&z=14&output=embed`,
   directions: {

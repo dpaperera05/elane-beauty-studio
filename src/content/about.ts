@@ -1,7 +1,7 @@
 // Copy and imagery for the /about page. The photographs are files already in
 // /public/images (illustrative stock, not the studio's own work).
 
-import { team, whyElane } from "./home";
+import { team } from "./home";
 
 export const aboutHero = {
   // Set on three fixed lines; the last is italic, echoing the homepage hero.
@@ -32,11 +32,32 @@ export const story = {
   },
 };
 
-// The four points are shared with home.ts; only the photograph differs.
+// `icon` keys map to Lucide icons in WhyElane.tsx.
 export const why = {
-  eyebrow: whyElane.eyebrow,
-  title: whyElane.title,
-  points: whyElane.points,
+  eyebrow: "Why Élane",
+  title: "Care that goes beyond the appointment.",
+  points: [
+    {
+      icon: "consultation",
+      title: "Personal Consultations",
+      body: "Every service begins with understanding your goals, routine and preferences.",
+    },
+    {
+      icon: "artists",
+      title: "Expert Artists",
+      body: "A skilled team across hair, skin, nails, beauty and bridal.",
+    },
+    {
+      icon: "products",
+      title: "Premium Products",
+      body: "Professional-grade products chosen for performance, care and lasting results.",
+    },
+    {
+      icon: "space",
+      title: "Calm, Considered Space",
+      body: "A welcoming studio designed to make every appointment feel relaxed and personal.",
+    },
+  ] as const,
   image: {
     src: "/images/gallery/stylist-at-work.jpg",
     alt: "Stylist pinning rolled sections of an updo into place",
@@ -49,37 +70,23 @@ export type Artist = {
   role: string;
   specialties: string;
   image: { src: string; alt: string };
-  /** A photo of the artist's craft, shown until their portrait file exists. */
-  standIn?: { src: string; alt: string };
 };
 
 // Portraits: 2:3, 1200×1800, cropped from the top in the layout. Stand-ins
-// from Unsplash; replace with the studio's own team photography. If one of
-// the last two files is ever missing, the page shows that artist's `standIn`
-// photo instead.
+// from Unsplash; replace with the studio's own team photography.
 export const artists = {
   eyebrow: team.eyebrow,
   title: team.title,
   body: team.body,
   members: [
-    // The first three are the booking flow's artists, kept in home.ts.
-    ...team.members.map(({ id, name, role, specialties, image }) => ({
-      id,
-      name,
-      role,
-      specialties,
-      image,
-    })),
+    // The first three also take bookings (see booking.ts).
+    ...team.members,
     {
       id: "nethmi-perera",
       name: "Nethmi Perera",
       role: "Nail Artist",
       specialties: "Nails · Detail Work",
       image: { src: "/images/team/nethmi-perera.jpg", alt: "Portrait of Nethmi Perera" },
-      standIn: {
-        src: "/images/gallery/edit-ivory-nails.jpg",
-        alt: "Ivory square nails on folded hands against a deep wine backdrop",
-      },
     },
     {
       id: "kavindu-silva",
@@ -87,10 +94,6 @@ export const artists = {
       role: "Treatment Specialist",
       specialties: "Keratin · Scalp Care",
       image: { src: "/images/team/kavindu-silva.jpg", alt: "Portrait of Kavindu Silva" },
-      standIn: {
-        src: "/images/home/ritual-head-spa-rest.jpg",
-        alt: "Guest resting with eyes closed as water from a gold head-spa rail rinses her hair",
-      },
     },
-  ] as Artist[],
+  ] satisfies Artist[],
 };
