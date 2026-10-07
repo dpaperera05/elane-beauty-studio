@@ -93,8 +93,8 @@ export const about = {
   },
 };
 
-// Images: 4:5 portrait, 1200×1500 (shown at 4:5 everywhere). Stand-ins from
-// Unsplash; swap for the studio's own photography.
+// Images: 4:5 portrait, 1200×1500 (shown at 4:5 everywhere), one warm,
+// softly lit set. Stand-ins from Unsplash; swap for the studio's own photography.
 export const services = {
   eyebrow: "Services",
   title: "Beauty rituals, thoughtfully crafted around you",
@@ -106,8 +106,8 @@ export const services = {
       descriptor: "Cuts · Colour · Balayage · Blow-Dry",
       href: "/services#hair",
       image: {
-        src: "/images/services/hair-styling.jpg",
-        alt: "Stylist finishing a client's soft balayage waves in front of a lit salon mirror",
+        src: "/images/services/hair-balayage.jpg",
+        alt: "Back view of long, softly waved balayage hair in a bright salon",
       },
     },
     {
@@ -116,8 +116,8 @@ export const services = {
       descriptor: "Facials · Peels · Glow Treatments",
       href: "/services#skin",
       image: {
-        src: "/images/services/skin-facial-massage.jpg",
-        alt: "Therapist massaging cream into a relaxed client's face during a facial",
+        src: "/images/services/skin-facial-spa.jpg",
+        alt: "Therapist giving a relaxed client a calming facial massage",
       },
     },
     {
@@ -126,8 +126,8 @@ export const services = {
       descriptor: "Manicure · Pedicure · Gel & Nail Art",
       href: "/services#nails",
       image: {
-        src: "/images/services/nails.jpg",
-        alt: "Lilac and white manicure with a glitter accent nail",
+        src: "/images/services/nails-nude.jpg",
+        alt: "Hand with a glossy nude-pink manicure resting on soft white fur",
       },
     },
     {
@@ -136,8 +136,8 @@ export const services = {
       descriptor: "Brows · Lashes · Event Makeup",
       href: "/services#beauty-makeup",
       image: {
-        src: "/images/services/beauty-makeup.jpg",
-        alt: "Makeup artist applying lipstick to a client with winged liner",
+        src: "/images/services/makeup-eyeshadow.jpg",
+        alt: "Makeup artist blending warm eyeshadow onto a client's eyelid",
       },
     },
     {
@@ -146,8 +146,8 @@ export const services = {
       descriptor: "Bridal Hair & Makeup · Trials",
       href: "/services#bridal",
       image: {
-        src: "/images/services/bridal-styling.jpg",
-        alt: "Bride in a lace gown and veil with softly styled hair and a bouquet",
+        src: "/images/services/bridal-updo.jpg",
+        alt: "Bridal braided updo finished with a pearl and leaf hair comb and veil",
       },
     },
     {
@@ -156,8 +156,8 @@ export const services = {
       descriptor: "Keratin · Bond Repair · Scalp Care",
       href: "/services#treatments",
       image: {
-        src: "/images/services/treatments-scalp.jpg",
-        alt: "Therapist giving a guest a calming scalp and head massage",
+        src: "/images/services/treatments-shirodhara.jpg",
+        alt: "Guest resting beneath a brass vessel during an Ayurvedic shirodhara oil treatment",
       },
     },
   ],
