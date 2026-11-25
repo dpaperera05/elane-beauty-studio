@@ -21,7 +21,7 @@ export function Footer() {
       id="footer"
       className="bg-burgundy bg-[linear-gradient(170deg,var(--color-burgundy)_30%,var(--color-burgundy-deep)_100%)] text-ivory"
     >
-      <div className="container-site pt-10 pb-6 md:pt-12">
+      <div className="container-site pt-14 pb-8 md:pt-20 md:pb-10">
         <div className="grid grid-cols-2 gap-x-8 gap-y-8 md:grid-cols-12 lg:gap-x-10">
           {/* Wordmark + tagline */}
           <div className="col-span-2 md:col-span-12 lg:col-span-4">
@@ -98,7 +98,7 @@ export function Footer() {
         </div>
 
         {/* Bottom row */}
-        <div className="type-small mt-8 flex flex-col gap-2 border-t border-ivory/15 pt-5 text-ivory/70 sm:flex-row sm:items-center sm:justify-between">
+        <div className="type-small mt-12 flex flex-col gap-2 border-t border-ivory/15 pt-6 md:mt-16 md:pt-8 text-ivory/70 sm:flex-row sm:items-center sm:justify-between">
           <p>{footer.copyright}</p>
           <ul className="flex gap-6">
             {footer.legal.map((item) => (
