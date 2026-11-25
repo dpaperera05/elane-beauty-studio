@@ -10,10 +10,11 @@ import { SectionHeading } from "../ui/SectionHeading";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * The studio's story, told in words: a centred heading, then the narrative on
- * the left (a serif opening line and three paragraphs) with one portrait photo on the right over a soft ivory
- * block. On desktop the photo stays in view while the text scrolls past.
- * Mobile: the opening line, the photo, then the paragraphs.
+ * The studio's story, in the homepage About section's treatment: a centred
+ * heading over an ivory panel. Inside it, a tall photo rises out of the
+ * panel's top edge with a small detail photo overlapping its corner; beside
+ * it, the opening line in the serif, two paragraphs and a caption. Stacks
+ * photo-first below lg.
  */
 export function Story() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -24,43 +25,58 @@ export function Story() {
 
     const mm = gsap.matchMedia(section);
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      // Each block of text rises in as it arrives.
-      gsap.utils.toArray<HTMLElement>("[data-reveal='item']").forEach((item) => {
-        gsap.from(item, {
-          opacity: 0,
-          y: 22,
-          duration: 1.1,
-          ease: "power3.out",
-          scrollTrigger: { trigger: item, start: "clamp(top 88%)", once: true },
-        });
-      });
+      const panel = section.querySelector("[data-reveal='panel']")!;
 
-      // The ivory block wipes in, then the photo unmasks upward, settling
-      // from a slight zoom; the caption follows.
-      const media = section.querySelector("[data-reveal='image']")!;
+      // The ivory wipes up from the bottom, then the photos unmask upward
+      // one after another, each settling from a slight zoom.
       gsap
-        .timeline({ scrollTrigger: { trigger: media, start: "clamp(top 82%)", once: true } })
+        .timeline({ scrollTrigger: { trigger: panel, start: "clamp(top 85%)", once: true } })
         .fromTo(
           "[data-reveal='backdrop']",
-          { clipPath: "inset(0% 0% 0% 100%)" },
+          { clipPath: "inset(100% 0% 0% 0%)" },
           { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut" },
           0,
         )
         .fromTo(
-          media,
+          "[data-reveal='photo']",
           { clipPath: "inset(100% 0% 0% 0%)" },
-          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.5, ease: "expo.inOut" },
-          0.1,
+          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, stagger: 0.25, ease: "expo.inOut" },
+          0.25,
         )
-        .from(media.querySelector("img"), { scale: 1.12, duration: 2, ease: "power2.out" }, 0.2)
-        .from("[data-reveal='caption']", { opacity: 0, duration: 0.9, ease: "power1.out" }, 1.1);
+        .from(
+          "[data-reveal='photo'] img",
+          { scale: 1.12, duration: 1.8, stagger: 0.25, ease: "power2.out" },
+          0.35,
+        );
+
+      gsap.from("[data-reveal='item']", {
+        opacity: 0,
+        y: 22,
+        duration: 1.1,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: { trigger: "[data-reveal='text']", start: "clamp(top 80%)", once: true },
+      });
+
+      // Depth: the main photo drifts inside its oversized wrapper, and the
+      // detail photo moves a little against it.
+      const scrub = { trigger: panel, start: "top bottom", end: "bottom top", scrub: true };
+      gsap.fromTo("[data-parallax]", { yPercent: -5 }, { yPercent: 5, ease: "none", scrollTrigger: scrub });
+      gsap.fromTo("[data-float]", { y: 28 }, { y: -28, ease: "none", scrollTrigger: scrub });
     });
 
     return () => mm.revert();
   }, []);
 
+  const { images } = story;
+
   return (
-    <section ref={sectionRef} id="story" aria-labelledby="story-title" className="section-space">
+    <section
+      ref={sectionRef}
+      id="story"
+      aria-labelledby="story-title"
+      className="section-space overflow-x-clip"
+    >
       <div className="container-site">
         <SectionHeading
           id="story-title"
@@ -70,52 +86,68 @@ export function Story() {
           titleClassName="leading-[0.94] tracking-[-0.035em]"
         />
 
-        <div className="mt-12 grid grid-cols-1 gap-y-10 md:mt-16 lg:mt-20 lg:grid-cols-12 lg:items-start lg:gap-x-10">
-          {/* `contents` below lg, so the photo can sit between the opening
-              line and the paragraphs on phones and tablets. */}
-          <div className="contents lg:col-span-6 lg:block">
-            <p data-reveal="item" className="type-h3 max-w-[22ch] text-ink">
-              {story.lead}
-            </p>
+        {/* The ivory is its own layer so its wipe-in doesn't clip the photo
+            rising above the panel. */}
+        <div
+          data-reveal="panel"
+          className="relative isolate mt-24 flex flex-col gap-16 px-5 pb-14 sm:mt-28 sm:px-10 sm:pb-16 lg:mt-34 lg:flex-row lg:items-start lg:gap-[clamp(3rem,6vw,6rem)] lg:px-[clamp(2.5rem,5.5vw,5rem)] lg:pb-22"
+        >
+          <div data-reveal="backdrop" aria-hidden="true" className="absolute inset-0 -z-10 bg-ivory" />
 
-            <div className="order-2 max-w-[36rem] lg:mt-8">
-              <div className="space-y-5">
-                {story.body.map((paragraph) => (
-                  <p key={paragraph} data-reveal="item" className="type-lead text-ink">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Photo. The top and right padding leave room for the ivory block
-              to run past it to the container edge. */}
-          <figure className="order-1 mx-auto w-full max-w-md lg:sticky lg:top-28 lg:order-none lg:col-span-5 lg:col-start-8 lg:mx-0 lg:max-w-none">
-            <div className="relative isolate pt-6 pr-[7%] sm:pt-8 lg:pt-10">
-              <div
-                data-reveal="backdrop"
-                aria-hidden="true"
-                className="absolute top-0 right-0 bottom-[38%] left-[38%] -z-10 bg-ivory"
-              />
-              <div data-reveal="image" className="relative aspect-4/5 overflow-hidden bg-beige">
+          {/* Photos: pulled up so the main one breaks the panel's top edge. */}
+          <div className="relative -mt-12 w-full max-w-[32.5rem] self-center sm:-mt-16 lg:-mt-18 lg:w-[44%] lg:shrink-0 lg:self-start">
+            <div data-reveal="photo" className="relative aspect-4/5 overflow-hidden bg-beige">
+              <div data-parallax className="absolute inset-x-0 -top-[7%] -bottom-[7%]">
                 <Image
-                  src={story.image.src}
-                  alt={story.image.alt}
+                  src={images.main.src}
+                  alt={images.main.alt}
                   fill
-                  sizes="(min-width: 1024px) 36vw, (min-width: 448px) 26rem, 93vw"
+                  sizes="(min-width: 640px) 520px, 90vw"
+                  style={{ objectPosition: images.main.position }}
                   className="object-cover"
                 />
               </div>
             </div>
-            <figcaption
-              data-reveal="caption"
-              className="type-small mt-5 flex items-center gap-3 text-muted"
+
+            <div data-float className="absolute -right-3 -bottom-8 w-[38%] sm:-right-9 sm:-bottom-9">
+              <div
+                data-reveal="photo"
+                className="relative aspect-4/5 overflow-hidden border-6 border-ivory bg-beige sm:border-8"
+              >
+                <Image
+                  src={images.detail.src}
+                  alt={images.detail.alt}
+                  fill
+                  sizes="(min-width: 1024px) 200px, 38vw"
+                  style={{ objectPosition: images.detail.position }}
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Copy */}
+          <div data-reveal="text" className="max-w-[37.5rem] lg:pt-22">
+            <p
+              data-reveal="item"
+              className="font-serif text-[clamp(1.875rem,1.5rem+1.2vw,2.5rem)] leading-[1.18] font-medium tracking-[-0.015em] text-ink"
             >
-              <span className="h-px w-8 shrink-0 bg-burgundy/60" aria-hidden="true" />
+              {story.lead}
+            </p>
+
+            <div data-reveal="item" className="mt-8 space-y-4 border-t border-line pt-7">
+              {story.body.map((paragraph) => (
+                <p key={paragraph} className="text-ink/85">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            <p data-reveal="item" className="type-small mt-7 flex items-center gap-3 text-muted">
+              <span aria-hidden="true" className="h-px w-7 bg-current" />
               {story.caption}
-            </figcaption>
-          </figure>
+            </p>
+          </div>
         </div>
       </div>
     </section>

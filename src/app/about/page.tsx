@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { AboutCta } from "@/components/about/AboutCta";
 import { AboutHero } from "@/components/about/AboutHero";
 import { Artists } from "@/components/about/Artists";
 import { Story } from "@/components/about/Story";
+import { Studio } from "@/components/about/Studio";
 import { WhyElane } from "@/components/about/WhyElane";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -22,8 +24,10 @@ export default function AboutPage() {
           <AboutHero />
         </div>
         <Story />
+        <Studio />
         <WhyElane />
         <Artists />
+        <AboutCta />
       </main>
       <Footer />
     </>

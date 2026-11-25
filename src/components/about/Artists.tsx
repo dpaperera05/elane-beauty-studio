@@ -4,27 +4,17 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { artists } from "@/content/about";
+import { artists, type Artist } from "@/content/about";
 import { SectionHeading } from "../ui/SectionHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Per-portrait placement. Desktop: three across, then two centred beneath;
-// the middle of the first row and the last of the second sit lower. Tablet:
-// two columns, the right one set lower, the fifth centred on its own.
-const layout = [
-  "lg:col-span-2",
-  "md:mt-14 lg:col-span-2",
-  "lg:col-span-2",
-  "md:mt-14 lg:col-span-2 lg:col-start-2 lg:mt-0",
-  "md:col-span-2 md:mx-auto md:w-[calc(50%-1rem)] lg:col-span-2 lg:mx-0 lg:mt-14 lg:w-auto",
-];
-
 /**
- * The team: a centred heading over five arch-topped portraits (a sibling of
- * the gallery's capsules), each with its name, role and specialties centred
- * beneath. Hover zooms the photo and slides a hairline arch out from behind
- * it.
+ * The team: a centred heading, then the first artist featured large beside
+ * the rest in a two-by-two grid, all with arch-topped portraits (siblings of
+ * the gallery's capsules). Below lg the featured portrait comes first and the
+ * others follow two across. Hover zooms the photo and slides a hairline arch
+ * out from behind it; portraits unmask upward as they arrive.
  */
 export function Artists() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -35,8 +25,6 @@ export function Artists() {
 
     const mm = gsap.matchMedia(section);
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      // Portraits unmask upward as they arrive (a row at a time), each photo
-      // settling from a slight zoom; the caption follows.
       const cards = gsap.utils.toArray<HTMLElement>("[data-card]");
       ScrollTrigger.batch(cards, {
         start: "clamp(top 88%)",
@@ -68,6 +56,8 @@ export function Artists() {
     return () => mm.revert();
   }, []);
 
+  const [lead, ...others] = artists.members;
+
   return (
     <section ref={sectionRef} id="team" aria-labelledby="team-title" className="section-space">
       <div className="container-site">
@@ -80,41 +70,68 @@ export function Artists() {
           titleClassName="leading-[0.94] tracking-[-0.035em]"
         />
 
-        <ul className="mx-auto mt-12 grid max-w-[66rem] grid-cols-1 gap-y-12 md:mt-16 md:grid-cols-2 md:gap-x-8 md:gap-y-14 lg:mt-20 lg:grid-cols-6 lg:gap-x-12 lg:gap-y-16">
-          {artists.members.map((member, i) => (
-            <li key={member.id} id={member.id} data-card className={`group ${layout[i]}`}>
-              {/* Capped on phones so the five stay quick to scan. */}
-              <div className="relative isolate mx-auto w-full max-w-[17rem] sm:max-w-[20rem] md:max-w-none">
-                {/* Hover: a hairline arch slides out from behind the photo. */}
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 -z-10 rounded-t-full border border-burgundy/40 opacity-0 transition duration-700 ease-out group-hover:translate-x-3 group-hover:translate-y-3 group-hover:opacity-100 motion-reduce:transition-none"
-                />
-                <div
-                  data-card-media
-                  className="relative aspect-3/4 overflow-hidden rounded-t-full bg-beige"
-                >
-                  <Image
-                    src={member.image.src}
-                    alt={member.image.alt}
-                    fill
-                    sizes="(min-width: 1024px) 22rem, (min-width: 768px) 46vw, 20rem"
-                    className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05] motion-reduce:transition-none"
-                  />
-                </div>
-              </div>
-
-              <div data-card-caption className="mt-6 text-center">
-                <h3 className="type-h4 text-ink transition-colors duration-500 group-hover:text-burgundy">
-                  {member.name}
-                </h3>
-                <p className="type-small mt-0.5 text-ink/80">{member.role}</p>
-                <p className="type-label mt-3 text-burgundy">{member.specialties}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className="mx-auto mt-12 flex max-w-[76rem] flex-col gap-12 md:mt-16 lg:mt-20 lg:flex-row lg:items-start lg:gap-[clamp(2rem,4vw,4rem)]">
+          <div className="lg:w-[44%] lg:shrink-0">
+            <Portrait artist={lead} featured />
+          </div>
+          <ul className="grid grid-cols-2 gap-x-5 gap-y-10 sm:gap-x-8 lg:flex-1 lg:gap-y-12">
+            {others.map((artist) => (
+              <li key={artist.id}>
+                <Portrait artist={artist} />
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
+  );
+}
+
+function Portrait({ artist, featured = false }: { artist: Artist; featured?: boolean }) {
+  return (
+    <article id={artist.id} data-card className="group">
+      <div className="relative isolate">
+        {/* Hover: a hairline arch slides out from behind the photo. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 rounded-t-full border border-burgundy/40 opacity-0 transition duration-700 ease-out group-hover:translate-x-3 group-hover:translate-y-3 group-hover:opacity-100 motion-reduce:transition-none"
+        />
+        <div
+          data-card-media
+          className="relative aspect-4/5 overflow-hidden rounded-t-full bg-beige"
+        >
+          <Image
+            src={artist.image.src}
+            alt={artist.image.alt}
+            fill
+            sizes={featured ? "(min-width: 1024px) 34rem, 92vw" : "(min-width: 1024px) 19rem, 46vw"}
+            className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05] motion-reduce:transition-none"
+          />
+        </div>
+      </div>
+
+      {featured ? (
+        <div
+          data-card-caption
+          className="mt-6 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2"
+        >
+          <div>
+            <h3 className="font-serif text-[clamp(1.875rem,1.6rem+1vw,2.375rem)] leading-none font-medium text-ink transition-colors duration-500 group-hover:text-burgundy">
+              {artist.name}
+            </h3>
+            <p className="type-small mt-2 text-ink/80">{artist.role}</p>
+          </div>
+          <p className="type-label text-burgundy">{artist.specialties}</p>
+        </div>
+      ) : (
+        <div data-card-caption className="mt-4 sm:mt-5">
+          <h3 className="type-h4 text-ink transition-colors duration-500 group-hover:text-burgundy">
+            {artist.name}
+          </h3>
+          <p className="type-small mt-0.5 text-ink/80">{artist.role}</p>
+          <p className="type-label mt-2.5 text-burgundy">{artist.specialties}</p>
+        </div>
+      )}
+    </article>
   );
 }

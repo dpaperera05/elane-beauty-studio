@@ -4,9 +4,15 @@
 import { team } from "./home";
 
 export const aboutHero = {
-  // Set on three fixed lines; the last is italic, echoing the homepage hero.
-  titleLines: ["Beauty, care", "and craft", "since 2010"],
-  body: "Since 2010, ÉLANE has grown into a full-service beauty studio in Colombo, bringing together thoughtful consultations, skilled artistry and a calm, personal approach to beauty.",
+  eyebrow: "About Élane",
+  // Set on two fixed lines; the emphasis line is italicised, echoing the
+  // homepage hero.
+  titleLines: ["Beauty, care and craft", "since 2010"],
+  titleEmphasis: "since 2010",
+  body: "A full-service beauty studio in Colombo, built on thoughtful consultations, skilled artistry and a calm, personal approach.",
+  cta: { label: "Book a Visit", href: "/booking" },
+  // Quick facts along the hairline at the base of the hero.
+  facts: ["Since 2010", "Colombo 07 · Sri Lanka", "Six areas of care", "Five artists"],
   // Also the homepage's closing booking photo (stand-in from Pexels).
   image: { src: "/images/home/booking-salon-stations.jpg" },
 };
@@ -20,48 +26,83 @@ export const story = {
   // Set large in the serif, as the opening line.
   lead: "ÉLANE began in 2010 as a small studio with one simple belief: beauty care should feel personal.",
   body: [
-    "In those first years, every appointment began the way it still does today, with a conversation. We listened before we reached for a brush or a pair of scissors, and guests came back because they felt understood rather than hurried through.",
-    "As word spread, the studio grew with the people it served. New artists joined, each bringing their own craft, and hair was soon joined by skin, nails and beauty. We added a service only when we could offer it with the same care as the first.",
-    "Today ÉLANE brings hair, skin, nails, makeup, bridal and specialist treatments together under one roof in Colombo. The studio is larger and the team is bigger, but the way we work has not changed: unhurried appointments, honest advice and results that suit you.",
+    "In those first years, every appointment began the way it still does today, with a conversation. Guests came back because they felt understood rather than hurried through.",
+    "As word spread, new artists joined and hair was joined by skin, nails and beauty. Today the studio is larger, but the way we work has not changed: unhurried appointments, honest advice and results that suit you.",
   ],
   caption: "Inside the studio · Colombo 07",
-  // Stand-in from Unsplash; replace with the studio's own photography.
-  image: {
-    src: "/images/home/why-elane-studio.jpg",
-    alt: "Stylist smiling as she blow-dries a client's hair in a bright, airy studio",
+  // A tall 4:5 photo that rises out of the top of the ivory panel, with a
+  // small 4:5 detail overlapping its lower right corner. Stand-ins from
+  // Pexels (see /public/images/about/sources.json); replace with the
+  // studio's own photography. Both are landscape files, so `position` sets
+  // the 4:5 crop.
+  images: {
+    main: {
+      src: "/images/about/about-story-stylist.jpg",
+      alt: "Stylist styling a guest's dark curls in a bright salon by the window",
+      position: "36% 40%",
+    },
+    detail: {
+      src: "/images/about/about-story-tools.jpg",
+      alt: "Hairdryer, paddle brush and two bottles of hair oil laid out on marble",
+      position: "62% 50%",
+    },
   },
 };
 
-// `icon` keys map to Lucide icons in WhyElane.tsx.
+// Three views of the space, shown as tall capsules. Stand-ins from Pexels
+// (see /public/images/about/sources.json); `position` sets each crop.
+export const studio = {
+  eyebrow: "Inside the Studio",
+  title: "A calm space, made for unhurried care.",
+  spaces: [
+    {
+      label: "The welcome lounge",
+      image: {
+        src: "/images/about/about-space-lounge.jpg",
+        alt: "Warm wood-panelled lounge with an armchair beside the reception desk",
+        position: "48% 50%",
+      },
+    },
+    {
+      label: "The nail bar",
+      image: {
+        src: "/images/about/about-space-nails.jpg",
+        alt: "Nail technician filing a guest's nails at a manicure table",
+        position: "50% 50%",
+      },
+    },
+    {
+      label: "The treatment room",
+      image: {
+        src: "/images/about/about-space-treatment.jpg",
+        alt: "Softly lit arched treatment room with a made-up treatment bed and folded towels",
+        position: "50% 50%",
+      },
+    },
+  ],
+};
+
 export const why = {
   eyebrow: "Why Élane",
   title: "Care that goes beyond the appointment.",
   points: [
     {
-      icon: "consultation",
       title: "Personal Consultations",
       body: "Every service begins with understanding your goals, routine and preferences.",
     },
     {
-      icon: "artists",
       title: "Expert Artists",
       body: "A skilled team across hair, skin, nails, beauty and bridal.",
     },
     {
-      icon: "products",
       title: "Premium Products",
       body: "Professional-grade products chosen for performance, care and lasting results.",
     },
     {
-      icon: "space",
       title: "Calm, Considered Space",
       body: "A welcoming studio designed to make every appointment feel relaxed and personal.",
     },
-  ] as const,
-  image: {
-    src: "/images/gallery/stylist-at-work.jpg",
-    alt: "Stylist pinning rolled sections of an updo into place",
-  },
+  ],
 };
 
 export type Artist = {
@@ -73,7 +114,8 @@ export type Artist = {
 };
 
 // Portraits: 2:3, 1200×1800, cropped from the top in the layout. Stand-ins
-// from Unsplash; replace with the studio's own team photography.
+// from Unsplash; replace with the studio's own team photography. The first
+// member is featured large beside the others.
 export const artists = {
   eyebrow: team.eyebrow,
   title: team.title,
@@ -96,4 +138,12 @@ export const artists = {
       image: { src: "/images/team/kavindu-silva.jpg", alt: "Portrait of Kavindu Silva" },
     },
   ] satisfies Artist[],
+};
+
+// The page's closing invitation.
+export const aboutCta = {
+  eyebrow: "Visit the Studio",
+  title: "Your next appointment starts with a conversation.",
+  primary: { label: "Book Your Visit", href: "/booking" },
+  secondary: { label: "Contact the Studio", href: "/contact" },
 };
