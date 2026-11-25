@@ -51,30 +51,24 @@ export const hero = {
 export const about = {
   eyebrow: "About the Studio",
   title: "A modern beauty studio in the heart of Colombo",
-  body: [
-    "ÉLANE is a full-service beauty studio created around thoughtful care, skilled artistry and a calm, welcoming experience. From hair and skin to nails, makeup and bridal, every service begins with understanding what works for you.",
-    "Tucked into Colombo 07, the studio is a quiet retreat from the city, with soft light, unhurried appointments and senior artists who take the time to get it right. From a fresh cut to your wedding day, you leave feeling looked after, never rushed.",
-  ],
+  // The studio's founding belief, set large as a pull quote. Shares its
+  // wording with the About page story (`story.lead` in about.ts).
+  quote:
+    "Beauty care should feel personal. That belief opened our doors in 2010, and it still shapes every appointment.",
+  attribution: "The ÉLANE belief · Since 2010",
+  body: "Hair, skin, nails, makeup and bridal under one roof in Colombo 07, with senior artists who take the time to get it right. You leave looked after, never rushed.",
   cta: { label: "Discover Our Studio", href: "/about" },
-  location: "Colombo 07 · Sri Lanka",
-  // `icon` keys map to Lucide icons in About.tsx.
-  highlights: [
-    { icon: "disciplines", value: "05", label: "Beauty disciplines under one roof" },
-    { icon: "consultation", value: "1:1", label: "Consultation before every service" },
-  ],
-  // Studio interiors: the tall main photo, then the two stacked beside it.
+  // A tall 4:5 photo that rises out of the top of the ivory panel, with a
+  // small 4:5 detail overlapping its lower right corner. Stand-ins from
+  // Pexels (720×1080, also on the Gallery page); swap for the studio's own.
   images: {
     main: {
-      src: "/images/home/about-styling-floor.jpg",
-      alt: "Styling floor with round backlit mirrors, pendant lamps and hanging greenery",
-    },
-    secondary: {
-      src: "/images/home/about-nail-lounge.jpg",
-      alt: "Marble reception desk beside a nail-colour wall and window manicure stations",
+      src: "/images/gallery/edit-salon-floor.jpg",
+      alt: "Stylist blow-drying a guest's hair in a bright, airy salon with a window wall",
     },
     detail: {
-      src: "/images/home/about-mirror-wall.jpg",
-      alt: "Row of backlit round mirrors and black styling chairs along a stone wall",
+      src: "/images/gallery/edit-ivory-nails.jpg",
+      alt: "Ivory square nails with a glitter accent on folded hands against a deep wine backdrop",
     },
   },
 };

@@ -4,22 +4,17 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Flower2, MessageCircleHeart, type LucideIcon } from "lucide-react";
 import { about } from "@/content/home";
 import { Button } from "../ui/Button";
-import { Icon } from "../ui/Icon";
 import { SectionHeading } from "../ui/SectionHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const highlightIcons: Record<(typeof about.highlights)[number]["icon"], LucideIcon> = {
-  disciplines: Flower2,
-  consultation: MessageCircleHeart,
-};
-
 /**
- * Studio introduction: a centred heading, then copy on the left and a
- * three-photo collage of the studio interior on the right. Stacks text-first
+ * Studio introduction: a centred heading over an ivory panel. Inside it, a
+ * tall photo rises out of the panel's top edge with a small detail photo
+ * overlapping its corner; beside it, the studio's founding belief as a pull
+ * quote, a short paragraph and the CTA. Stacks photo-first
  * below lg.
  */
 export function About() {
@@ -31,7 +26,29 @@ export function About() {
 
     const mm = gsap.matchMedia(section);
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      const collage = section.querySelector("[data-reveal='collage']")!;
+      const panel = section.querySelector("[data-reveal='panel']")!;
+
+      // The ivory wipes up from the bottom, then the photos unmask upward
+      // one after another, each settling from a slight zoom.
+      gsap
+        .timeline({ scrollTrigger: { trigger: panel, start: "clamp(top 85%)", once: true } })
+        .fromTo(
+          "[data-reveal='backdrop']",
+          { clipPath: "inset(100% 0% 0% 0%)" },
+          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut" },
+          0,
+        )
+        .fromTo(
+          "[data-reveal='photo']",
+          { clipPath: "inset(100% 0% 0% 0%)" },
+          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, stagger: 0.25, ease: "expo.inOut" },
+          0.25,
+        )
+        .from(
+          "[data-reveal='photo'] img",
+          { scale: 1.12, duration: 1.8, stagger: 0.25, ease: "power2.out" },
+          0.35,
+        );
 
       gsap.from("[data-reveal='item']", {
         opacity: 0,
@@ -42,50 +59,11 @@ export function About() {
         scrollTrigger: { trigger: "[data-reveal='text']", start: "clamp(top 80%)", once: true },
       });
 
-      // The backdrop wipes in, then the photos unmask upward one after
-      // another, each settling from a slight zoom.
-      gsap
-        .timeline({ scrollTrigger: { trigger: collage, start: "clamp(top 80%)", once: true } })
-        .fromTo(
-          "[data-reveal='photo']",
-          { clipPath: "inset(100% 0% 0% 0%)" },
-          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, stagger: 0.18, ease: "expo.inOut" },
-          0.1,
-        )
-        .from(
-          "[data-reveal='photo'] img",
-          { scale: 1.12, duration: 1.8, stagger: 0.18, ease: "power2.out" },
-          0.2,
-        )
-        .fromTo(
-          "[data-reveal='backdrop']",
-          { clipPath: "inset(0% 0% 0% 100%)" },
-          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut" },
-          0,
-        );
-
-      // The backdrop drifts slightly against the scroll so it reads as a
-      // layer behind the photos.
-      gsap.fromTo(
-        "[data-reveal='backdrop']",
-        { y: 24 },
-        {
-          y: -24,
-          ease: "none",
-          scrollTrigger: { trigger: collage, start: "top bottom", end: "bottom top", scrub: true },
-        },
-      );
-
-      // Gentle drift on the main photo; its wrapper is oversized so no edge shows.
-      gsap.fromTo(
-        "[data-parallax]",
-        { yPercent: -5 },
-        {
-          yPercent: 5,
-          ease: "none",
-          scrollTrigger: { trigger: collage, start: "top bottom", end: "bottom top", scrub: true },
-        },
-      );
+      // Depth: the main photo drifts inside its oversized wrapper, and the
+      // detail photo moves a little against it.
+      const scrub = { trigger: panel, start: "top bottom", end: "bottom top", scrub: true };
+      gsap.fromTo("[data-parallax]", { yPercent: -5 }, { yPercent: 5, ease: "none", scrollTrigger: scrub });
+      gsap.fromTo("[data-float]", { y: 28 }, { y: -28, ease: "none", scrollTrigger: scrub });
     });
 
     return () => mm.revert();
@@ -98,7 +76,7 @@ export function About() {
       ref={sectionRef}
       id="about"
       aria-labelledby="about-title"
-      className="section-space overflow-x-clip pb-10 lg:pb-12"
+      className="section-space overflow-x-clip"
     >
       <div className="container-site">
         <SectionHeading
@@ -109,105 +87,70 @@ export function About() {
           titleClassName="leading-[0.94] tracking-[-0.035em]"
         />
 
-        <div className="mt-12 grid grid-cols-1 gap-y-16 md:mt-16 lg:mt-20 lg:grid-cols-12 lg:items-start lg:gap-x-10">
-          {/* Copy */}
-          <div data-reveal="text" className="max-w-[36rem] lg:col-span-6">
-            {/* Desktop: pulled up by its half-leading so the first line sits
-                level with the photo top. */}
-            <div data-reveal="item" className="space-y-5 lg:-mt-[0.5em]">
-              {about.body.map((paragraph) => (
-                <p key={paragraph} className="type-lead text-ink">
-                  {paragraph}
-                </p>
-              ))}
+        {/* The ivory is its own layer so its wipe-in doesn't clip the photo
+            rising above the panel. */}
+        <div
+          data-reveal="panel"
+          className="relative isolate mt-24 flex flex-col gap-16 px-5 pb-14 sm:mt-28 sm:px-10 sm:pb-16 lg:mt-34 lg:flex-row lg:items-start lg:gap-[clamp(3rem,6vw,6rem)] lg:px-[clamp(2.5rem,5.5vw,5rem)] lg:pb-22"
+        >
+          <div data-reveal="backdrop" aria-hidden="true" className="absolute inset-0 -z-10 bg-ivory" />
+
+          {/* Photos: pulled up so the main one breaks the panel's top edge. */}
+          <div className="relative -mt-12 w-full max-w-[32.5rem] self-center sm:-mt-16 lg:-mt-18 lg:w-[44%] lg:shrink-0 lg:self-start">
+            <div data-reveal="photo" className="relative aspect-4/5 overflow-hidden bg-beige">
+              <div data-parallax className="absolute inset-x-0 -top-[7%] -bottom-[7%]">
+                <Image
+                  src={images.main.src}
+                  alt={images.main.alt}
+                  fill
+                  sizes="(min-width: 1024px) 520px, (min-width: 640px) 520px, 90vw"
+                  className="object-cover"
+                />
+              </div>
             </div>
 
-            {/* Highlights: a compact ivory strip, each stat with its icon. */}
-            <ul data-reveal="item" className="mt-8 grid max-w-[30rem] grid-cols-2 bg-ivory">
-              {about.highlights.map((item) => {
-                const HighlightIcon = highlightIcons[item.icon];
-                return (
-                  <li
-                    key={item.value}
-                    className="flex flex-col gap-2.5 px-4 py-3.5 not-first:border-l not-first:border-line sm:flex-row sm:items-center sm:gap-3.5 sm:px-5"
-                  >
-                    <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-burgundy">
-                      <HighlightIcon aria-hidden="true" strokeWidth={1.5} className="size-4" />
-                    </span>
-                    <span>
-                      <span className="block font-serif text-[1.625rem] leading-none font-medium text-burgundy lining-nums">
-                        {item.value}
-                      </span>
-                      <span className="mt-1 block text-[0.8125rem] leading-snug text-ink">{item.label}</span>
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-
             <div
-              data-reveal="item"
-              className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5"
+              data-float
+              className="absolute -right-3 -bottom-8 w-[38%] sm:-right-9 sm:-bottom-9"
             >
-              <Button href={about.cta.href}>{about.cta.label}</Button>
-              <p className="type-small flex items-center gap-2.5 text-ink">
-                <Icon name="pin" className="size-4 shrink-0 text-burgundy" />
-                {about.location}
-              </p>
+              <div
+                data-reveal="photo"
+                className="relative aspect-4/5 overflow-hidden border-6 border-ivory bg-beige sm:border-8"
+              >
+                <Image
+                  src={images.detail.src}
+                  alt={images.detail.alt}
+                  fill
+                  sizes="(min-width: 1024px) 200px, 38vw"
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
 
-          {/* Collage: a large photo on the left and a narrower column set
-              lower on the right (portrait over square), with a soft ivory
-              block behind the top right. The right padding leaves room for the
-              block to run past the photos to the container edge. */}
-          <div
-            data-reveal="collage"
-            className="relative isolate pr-[3.5%] lg:col-span-6 lg:col-start-7"
-          >
-            <div
-              data-reveal="backdrop"
-              aria-hidden="true"
-              className="absolute -top-6 right-0 bottom-[45%] left-[44%] -z-10 bg-ivory sm:-top-8 lg:-top-10"
-            />
-
-            <div className="grid grid-cols-[64fr_31fr] gap-x-[2.3%]">
-              <div
-                data-reveal="photo"
-                className="relative aspect-4/5 overflow-hidden bg-beige"
+          {/* Copy */}
+          <div data-reveal="text" className="max-w-[38.75rem] lg:pt-22">
+            <figure data-reveal="item">
+              <p
+                aria-hidden="true"
+                className="h-11 font-serif text-[7rem] leading-[0.5] text-rose select-none"
               >
-                <div data-parallax className="absolute inset-x-0 -top-[7%] -bottom-[7%]">
-                  <Image
-                    src={images.main.src}
-                    alt={images.main.alt}
-                    fill
-                    sizes="(min-width: 1024px) 30vw, 64vw"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
+                &ldquo;
+              </p>
+              <blockquote>
+                <p className="font-serif text-[clamp(1.875rem,1.4rem+1.6vw,2.75rem)] leading-[1.14] font-medium tracking-[-0.015em] text-ink">
+                  {about.quote}
+                </p>
+              </blockquote>
+              <figcaption className="type-label mt-5 text-burgundy">{about.attribution}</figcaption>
+            </figure>
 
-              {/* Set lower so the collage reads as staggered. */}
-              <div className="flex flex-col gap-3 pt-[38%] sm:gap-4">
-                {[
-                  { ...images.secondary, aspect: "aspect-3/4" },
-                  { ...images.detail, aspect: "aspect-square" },
-                ].map((image) => (
-                  <div
-                    key={image.src}
-                    data-reveal="photo"
-                    className={`relative overflow-hidden bg-beige ${image.aspect}`}
-                  >
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      fill
-                      sizes="(min-width: 1024px) 15vw, 31vw"
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
+            <p data-reveal="item" className="type-lead mt-9 border-t border-line pt-8 text-ink">
+              {about.body}
+            </p>
+
+            <div data-reveal="item" className="mt-10">
+              <Button href={about.cta.href}>{about.cta.label}</Button>
             </div>
           </div>
         </div>
