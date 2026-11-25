@@ -4,66 +4,37 @@
 import { footer, site } from "./home";
 
 const place = "Colombo 07, Sri Lanka";
-const mapQuery = encodeURIComponent(place);
 
-export const contactHero = {
+export const contactIntro = {
   eyebrow: "Contact ÉLANE",
   title: "Come by, call us, or send a note.",
   body: "Whether you have a question about a service, need help with a booking, or want to talk through a bridal enquiry, our team is here to help.",
-  // Also in the homepage's studio collage (stand-in photography).
-  image: {
-    src: "/images/home/about-nail-lounge.jpg",
-    alt: "Marble reception desk beside a nail-colour wall and window manicure stations",
+};
+
+// The pills under the page title. `icon` keys map to Lucide icons in
+// ContactView.tsx; `srLabel` is read before the pill's text by screen readers.
+// The WhatsApp number is fictional sample data.
+export const quickActions = [
+  {
+    icon: "call",
+    text: footer.contact.phone,
+    srLabel: "Call us on",
+    href: footer.contact.phoneHref,
   },
-};
-
-export const studio = {
-  eyebrow: "Visit the Studio",
-  name: "ÉLANE Beauty Studio",
-  address: footer.visit,
-  phone: { label: footer.contact.phone, href: footer.contact.phoneHref },
-  email: { label: footer.contact.email, href: `mailto:${footer.contact.email}` },
-  hours: footer.hours,
-  labels: { address: "Address", phone: "Phone", email: "Email", hours: "Opening Hours" },
-  note: "Walk-ins are welcome when availability allows. Appointments are recommended, especially for evenings, weekends and bridal services.",
-};
-
-// `icon` keys map to Lucide icons in ContactVisit.tsx. The WhatsApp number is
-// fictional sample data.
-export const quickActions = {
-  eyebrow: "Get in Touch",
-  title: "Reach us directly.",
-  items: [
-    { icon: "call", label: "Call Us", detail: footer.contact.phone, href: footer.contact.phoneHref },
-    {
-      icon: "whatsapp",
-      label: "WhatsApp",
-      detail: "+94 77 245 6789",
-      href: "https://wa.me/94772456789",
-      external: true,
-    },
-    {
-      icon: "email",
-      label: "Email Us",
-      detail: footer.contact.email,
-      href: `mailto:${footer.contact.email}`,
-    },
-  ] as const,
-};
-
-// A keyless Google Maps embed: the public `output=embed` URL needs no API
-// credentials. Directions open Google Maps itself in a new tab.
-export const location = {
-  eyebrow: "Location",
-  title: "Find us in Colombo.",
-  body: "In the heart of Colombo 07, a short drive from the city centre.",
-  mapTitle: `Map showing ${place}`,
-  embedSrc: `https://www.google.com/maps?q=${mapQuery}&z=14&output=embed`,
-  directions: {
-    label: "Get Directions",
-    href: `https://www.google.com/maps/dir/?api=1&destination=${mapQuery}`,
+  {
+    icon: "whatsapp",
+    text: "WhatsApp",
+    srLabel: "Message us on",
+    href: "https://wa.me/94772456789",
+    external: true,
   },
-};
+  {
+    icon: "email",
+    text: footer.contact.email,
+    srLabel: "Email us at",
+    href: `mailto:${footer.contact.email}`,
+  },
+] as const;
 
 export const enquiryTypes = [
   "General Enquiry",
@@ -74,9 +45,7 @@ export const enquiryTypes = [
 ] as const;
 
 export const contactForm = {
-  eyebrow: "Send a Note",
   title: "Tell us how we can help.",
-  body: "Leave your details and a few lines about what you need, and we’ll pick it up from there.",
   requiredNote: "are required.",
   fields: {
     name: "Full Name",
@@ -95,7 +64,21 @@ export const contactForm = {
   },
 };
 
-export const bookingLine = {
-  text: "Looking to book a service?",
-  link: { label: "Book your appointment", href: site.bookingHref },
+// The three short columns under the form. Directions open Google Maps in a
+// new tab.
+export const studioDetails = {
+  visit: {
+    label: "Visit",
+    lines: footer.visit,
+    link: {
+      label: "Get Directions",
+      href: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(place)}`,
+    },
+  },
+  hours: { label: "Opening Hours", rows: footer.hours },
+  booking: {
+    label: "Booking",
+    text: "Looking to book a service?",
+    link: { label: "Book your appointment", href: site.bookingHref },
+  },
 };
