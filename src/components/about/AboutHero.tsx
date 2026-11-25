@@ -10,8 +10,8 @@ import { Button } from "../ui/Button";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Page opener, in the Services hero's "base" treatment: a full-bleed photo of
- * the salon floor left almost clear at the top, an ink wash deepening towards
+ * Page opener: a full-bleed photo of the salon floor left almost clear at the
+ * top, an ink wash deepening towards
  * the bottom, and the copy anchored low: a large two-line title on the left,
  * the intro and "Book a Visit" beside it, and the studio's quick facts along a
  * hairline at the base. The header floats transparent over it. On load the

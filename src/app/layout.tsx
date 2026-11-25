@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { LiquidGlass } from "@/components/ui/LiquidGlass";
+import { site } from "@/content/home";
 import "./globals.css";
 
 // Interface font: navigation, buttons, body copy, labels.
@@ -16,10 +17,14 @@ const cormorant = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
+// Each page sets a short `title` ("Services"); the template adds the studio's
+// name, so a rebrand only changes `site.fullName`.
 export const metadata: Metadata = {
-  title: "Elane Beauty Studio | Hair, Beauty & Bridal",
-  description:
-    "Elane Beauty Studio — a calm, luxurious space for hair artistry, skin and nail care, and bridal styling.",
+  title: {
+    default: `${site.fullName} | Hair, Beauty & Bridal`,
+    template: `%s | ${site.fullName}`,
+  },
+  description: site.description,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

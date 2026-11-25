@@ -8,7 +8,7 @@ import { ServicesHero } from "@/components/services/ServicesHero";
 import { serviceCategories } from "@/content/services";
 
 export const metadata: Metadata = {
-  title: "Services | Elane Beauty Studio",
+  title: "Services",
   description:
     "The ÉLANE service menu: hair, skin, nails, beauty and makeup, bridal and treatments, with prices and durations. Book any service online.",
 };

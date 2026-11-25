@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Book Your Visit | Elane Beauty Studio",
+  title: "Book Your Visit",
   description:
     "Plan your visit to Elane Beauty Studio: choose a service, treatment, artist and time.",
 };

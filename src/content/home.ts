@@ -1,8 +1,16 @@
 // Site-wide and homepage copy and imagery, kept here so it can be edited
 // without touching layout code.
 
+import { formatLkr, formatMinutes, ritualFeature, ritualService } from "./services";
+
 export const site = {
+  // The studio's name in page titles, link labels and search results.
   fullName: "Elane Beauty Studio",
+  // The logo's two lines (the wordmark is set in capitals by CSS).
+  logo: { wordmark: "Élane", tagline: "Beauty Studio" },
+  // Default description for search results and link previews.
+  description:
+    "Elane Beauty Studio — a calm, luxurious space for hair artistry, skin and nail care, and bridal styling.",
   // Top of the homepage, for the logo and "Home" links. Works from any page;
   // on the homepage itself it scrolls up without reloading.
   homeHref: "/#",
@@ -143,23 +151,22 @@ export const services = {
   ],
 };
 
+// The title, intro and photo come from the Services page's Ritual feature,
+// and the duration and price from the Ritual's booking entry, so the two pages
+// can't disagree. Photo: stand-in from Unsplash; replace with the studio's own.
 export const signature = {
-  eyebrow: "Signature Experience",
+  eyebrow: ritualFeature.eyebrow,
   // Second line is set in italic, echoing the hero's emphasis.
-  titleLines: ["The ÉLANE", "Ritual"],
-  body: "Ninety unhurried minutes that begin with a slow scalp massage and warm botanical oils, then move into a treatment and finish tailored entirely to you.",
+  titleLines: ritualFeature.titleLines,
+  body: ritualFeature.body,
   details: [
-    { label: "Duration", value: "90 min" },
+    { label: "Duration", value: formatMinutes(ritualService.duration) },
     { label: "Begins with", value: "Consultation" },
     { label: "Focus", value: "Scalp · Hair · Finish" },
-    { label: "From", value: "LKR 12,500" },
+    { label: "From", value: formatLkr(ritualService.price) },
   ],
-  cta: { label: "Discover the Ritual", href: "/services#ritual" },
-  // Stand-in from Unsplash; replace with the studio's own photography.
-  image: {
-    src: "/images/home/ritual-head-spa-rest.jpg",
-    alt: "Guest resting with eyes closed as a fine arc of water from a gold head-spa rail rinses her hair",
-  },
+  cta: { label: "Discover the Ritual", href: `/services#${ritualFeature.id}` },
+  image: ritualFeature.image,
 };
 
 // The core team, shared by the About page and the booking flow. Portraits:
@@ -355,13 +362,7 @@ export const booking = {
 
 export const footer = {
   tagline: "Beauty, thoughtfully considered.",
-  nav: [
-    { label: "Home", href: site.homeHref },
-    { label: "Services", href: "/services" },
-    { label: "About", href: "/about" },
-    { label: "Gallery", href: "/gallery" },
-    { label: "Contact", href: "/contact" },
-  ],
+  // The page links are the header's (`nav` above).
   visit: ["Colombo 07", "Sri Lanka"],
   hours: [
     { days: "Mon–Fri", time: "9:00 AM – 7:00 PM" },

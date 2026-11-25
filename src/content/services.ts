@@ -174,8 +174,8 @@ export const serviceCategories: ServiceCategory[] = [
 ];
 
 // The signature experience. Not one of the menu rows: it has its own feature
-// on the page, and is booked under Treatments.
-const ritualService: Service & { categoryId: ServiceCategoryId } = {
+// on the page (and on the homepage), and is booked under Treatments.
+export const ritualService: Service & { categoryId: ServiceCategoryId } = {
   ...service(
     "The ÉLANE Ritual",
     12500,
@@ -211,10 +211,6 @@ export const bookingHref = (categoryId: ServiceCategoryId, serviceId: string) =>
 // Page copy.
 
 export const servicesHero = {
-  // "base": the title anchored low over a clear photo, categories along a
-  // hairline at the bottom. "side": the copy on the left with the photo
-  // bright on the right, categories in a frosted bar at the bottom.
-  layout: "side" as "base" | "side",
   eyebrow: "The Service Menu",
   // Set on two fixed lines; the emphasis word is italicised, as on the
   // homepage hero.
@@ -222,7 +218,7 @@ export const servicesHero = {
   titleEmphasis: "you.",
   body: "From everyday upkeep to special occasions, every service begins with a consultation and ends with a finish made for you.",
   cta: { label: "Book Now", href: "/booking" },
-  // "side" layout only: jumps to the first category of the menu.
+  // Jumps to the first category of the menu.
   secondaryCta: { label: "View the Menu", href: "#hair" },
   // Label for the category links along the bottom of the hero.
   navLabel: "Jump to a category",
@@ -238,11 +234,13 @@ export const serviceMenu = {
   bookShortLabel: "Book",
 };
 
+// The homepage's Signature section reuses this copy and photo (home.ts), so
+// the two always match.
 export const ritualFeature = {
   // The anchor the homepage's "Discover the Ritual" links to.
   id: "ritual",
   eyebrow: "Signature Experience",
-  // Second line is set in italic, as on the homepage.
+  // The second line is set in italic.
   titleLines: ["The ÉLANE", "Ritual"],
   body: "Ninety unhurried minutes that begin with a slow scalp massage and warm botanical oils, then move into a treatment and finish tailored entirely to you.",
   details: [

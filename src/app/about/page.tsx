@@ -9,7 +9,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "About | Elane Beauty Studio",
+  title: "About",
   description:
     "Since 2010, ÉLANE has grown into a full-service beauty studio in Colombo. Our story, what sets us apart and the artists behind your look.",
 };

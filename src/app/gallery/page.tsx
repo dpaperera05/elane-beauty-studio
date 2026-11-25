@@ -4,7 +4,7 @@ import { GalleryView } from "@/components/gallery/GalleryView";
 import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Gallery | Elane Beauty Studio",
+  title: "Gallery",
   description:
     "The ÉLANE Edit: hair, skin, nails, beauty, bridal and treatment moments from Elane Beauty Studio.",
 };

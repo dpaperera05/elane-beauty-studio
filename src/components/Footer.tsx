@@ -1,4 +1,4 @@
-import { footer, site } from "@/content/home";
+import { footer, nav, site } from "@/content/home";
 import { Logo } from "./Logo";
 import { Icon } from "./ui/Icon";
 
@@ -40,7 +40,7 @@ export function Footer({ hideOnMobile = false }: { hideOnMobile?: boolean }) {
           <nav aria-label="Footer" className="max-md:hidden md:col-span-3 lg:col-span-2">
             <GroupLabel>Explore</GroupLabel>
             <ul className="type-small mt-3 space-y-1">
-              {footer.nav.map((item) => (
+              {nav.map((item) => (
                 <li key={item.label}>
                   <a href={item.href} className={linkClass}>
                     {item.label}

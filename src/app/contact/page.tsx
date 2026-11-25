@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Contact | Elane Beauty Studio",
+  title: "Contact",
   description:
     "Call, message or write to Elane Beauty Studio in Colombo 07: an enquiry form, opening hours and directions.",
 };
