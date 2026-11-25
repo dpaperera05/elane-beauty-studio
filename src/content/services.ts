@@ -211,9 +211,21 @@ export const bookingHref = (categoryId: ServiceCategoryId, serviceId: string) =>
 // Page copy.
 
 export const servicesHero = {
-  title: "Services designed around you.",
-  body: "From everyday maintenance to special occasions, every ÉLANE service is delivered with thoughtful consultation, skilled technique and attention to detail.",
+  // "base": the title anchored low over a clear photo, categories along a
+  // hairline at the bottom. "side": the copy on the left with the photo
+  // bright on the right, categories in a frosted bar at the bottom.
+  layout: "side" as "base" | "side",
+  eyebrow: "The Service Menu",
+  // Set on two fixed lines; the emphasis word is italicised, as on the
+  // homepage hero.
+  titleLines: ["Services designed", "around you."],
+  titleEmphasis: "you.",
+  body: "From everyday upkeep to special occasions, every service begins with a consultation and ends with a finish made for you.",
   cta: { label: "Book Now", href: "/booking" },
+  // "side" layout only: jumps to the first category of the menu.
+  secondaryCta: { label: "View the Menu", href: "#hair" },
+  // Label for the category links along the bottom of the hero.
+  navLabel: "Jump to a category",
   // Background photo, decorative (no alt). Stand-in from Unsplash (Adam
   // Winger); replace with the studio's own photography.
   image: { src: "/images/services/hero-blow-dry.jpg" },

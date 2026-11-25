@@ -5,18 +5,34 @@ import { motion, MotionConfig } from "motion/react";
 import { serviceCategories, serviceMenu } from "@/content/services";
 
 /**
- * The category bar: sticks under the header once the hero has scrolled away.
- * Each link jumps to its section (the page scrolls smoothly; see globals.css)
- * and the category being read is highlighted, the highlight sliding from one
- * pill to the next. Centred on desktop; a horizontally scrollable strip on
- * narrower screens, which keeps the active pill in view.
+ * The category bar: fixed under the header, it slides in once the hero (which
+ * carries its own category links) has scrolled away, and hides again when the
+ * hero comes back. Each link jumps to its section (the page scrolls smoothly;
+ * see globals.css) and the category being read is highlighted, the highlight
+ * sliding from one pill to the next. Centred on desktop; a horizontally
+ * scrollable strip on narrower screens, which keeps the active pill in view.
  *
  * The page marks what it is showing with `data-menu-section`: a category id on
- * the category sections, empty on everything else.
+ * the category sections, empty on everything else. The hero is found by the
+ * page's `data-header-overlay` wrapper.
  */
 export function CategoryNav() {
   const [active, setActive] = useState<string | null>(null);
+  const [shown, setShown] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
+
+  // Shown once the hero's bottom edge has passed under the header.
+  useEffect(() => {
+    // The services page always wraps its hero in `data-header-overlay`.
+    const hero = document.querySelector("[data-header-overlay]");
+    if (!hero) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShown(!entry.isIntersecting),
+      { rootMargin: "-80px 0px 0px 0px" },
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
 
   // Whichever marked section crosses a thin band a third of the way down the
   // screen is the one being read.
@@ -50,10 +66,14 @@ export function CategoryNav() {
 
   return (
     <MotionConfig reducedMotion="user">
-      {/* `top` is the solid header's height at each breakpoint. */}
+      {/* `top` is the solid header's height at each breakpoint. While hidden
+          it is inert, so its links can't take keyboard focus. */}
       <nav
         aria-label={serviceMenu.navLabel}
-        className="sticky top-[4.25rem] z-30 border-y border-line bg-white/90 backdrop-blur-md sm:top-[4.5rem] lg:top-[4.75rem]"
+        inert={!shown}
+        className={`fixed inset-x-0 top-[4.25rem] z-30 border-y border-line bg-white/90 backdrop-blur-md transition-[opacity,translate] duration-500 ease-out motion-reduce:transition-none sm:top-[4.5rem] lg:top-[4.75rem] ${
+          shown ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-3 opacity-0"
+        }`}
       >
         <ul
           ref={listRef}
