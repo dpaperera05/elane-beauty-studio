@@ -86,8 +86,8 @@ export const services = {
       descriptor: "Cuts · Colour · Balayage · Blow-Dry",
       href: "/services#hair",
       image: {
-        src: "/images/services/hair-curling.jpg",
-        alt: "Stylist curling long honey-blonde hair with a wand at a lit salon mirror",
+        src: "/images/services/hair-waves.jpg",
+        alt: "Stylist curling long honey-blonde hair into soft waves beside a backlit salon mirror",
       },
     },
     {
@@ -126,8 +126,8 @@ export const services = {
       descriptor: "Bridal Hair & Makeup · Trials",
       href: "/services#bridal",
       image: {
-        src: "/images/services/bridal-updo.jpg",
-        alt: "Bridal braided updo finished with a pearl and leaf hair comb and veil",
+        src: "/images/services/bridal-lace.jpg",
+        alt: "Bride in a lace-sleeved gown with a statement ring and a soft blush manicure, holding a bouquet of cream roses",
       },
     },
     {

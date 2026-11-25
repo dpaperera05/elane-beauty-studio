@@ -28,7 +28,13 @@ export type ServiceCategory = {
   id: ServiceCategoryId;
   name: string;
   intro: string;
-  image: { src: string; alt: string };
+  image: {
+    src: string;
+    alt: string;
+    /** Focal point for the landscape crop below lg (CSS object-position,
+     *  e.g. "50% 80%"). Defaults to centre; desktop always shows the centre. */
+    focus?: string;
+  };
   services: Service[];
 };
 
@@ -54,8 +60,8 @@ export const serviceCategories: ServiceCategory[] = [
     name: "Hair",
     intro: "Cuts, colour and finishing shaped around your hair’s texture and the way you wear it.",
     image: {
-      src: "/images/services/hair-balayage.jpg",
-      alt: "Back view of long, softly waved balayage hair in a bright salon",
+      src: "/images/services/hair-waves.jpg",
+      alt: "Stylist curling long honey-blonde hair into soft waves beside a backlit salon mirror",
     },
     services: [
       service("Signature Cut & Finish", 6500, 60, "Personalised consultation, precision cut and professional finish."),
@@ -130,8 +136,10 @@ export const serviceCategories: ServiceCategory[] = [
     name: "Bridal",
     intro: "Trials, wedding-day hair and makeup, and styling for the bridal party.",
     image: {
-      src: "/images/services/bridal-updo.jpg",
-      alt: "Bridal braided updo finished with a pearl and leaf hair comb and veil",
+      src: "/images/services/bridal-lace.jpg",
+      alt: "Bride in a lace-sleeved gown with a statement ring and a soft blush manicure, holding a bouquet of cream roses",
+      // Small screens: keep the hand and the roses in the landscape crop.
+      focus: "50% 80%",
     },
     services: [
       service("Bridal Consultation", 5000, 60, "Style consultation covering makeup, hair and overall bridal direction."),

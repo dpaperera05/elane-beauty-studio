@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -114,7 +114,8 @@ export function ServiceCategorySection({
                 alt={category.image.alt}
                 fill
                 sizes="(min-width: 1024px) 38vw, 100vw"
-                className="object-cover"
+                style={{ "--focus": category.image.focus ?? "center" } as CSSProperties}
+                className="object-cover object-(--focus) lg:object-center"
               />
             </div>
           </div>
