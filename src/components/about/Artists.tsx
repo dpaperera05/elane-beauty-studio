@@ -71,7 +71,9 @@ export function Artists() {
         />
 
         <div className="mx-auto mt-12 flex max-w-[76rem] flex-col gap-12 md:mt-16 lg:mt-20 lg:flex-row lg:items-start lg:gap-[clamp(2rem,4vw,4rem)]">
-          <div className="lg:w-[44%] lg:shrink-0">
+          {/* Phones: full width. Tablets: capped and centred, so the lead
+              portrait doesn't fill the screen. Desktop: the left column. */}
+          <div className="w-full sm:mx-auto sm:max-w-md lg:mx-0 lg:w-[44%] lg:max-w-none lg:shrink-0">
             <Portrait artist={lead} featured />
           </div>
           <ul className="grid grid-cols-2 gap-x-5 gap-y-10 sm:gap-x-8 lg:flex-1 lg:gap-y-12">

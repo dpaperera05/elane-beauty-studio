@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Phones held sideways (and other short, wide screens): heroes drop their
+   tall minimums and scale the headline down so the copy fits the view. */
+@custom-variant short (@media (orientation: landscape) and (max-height: 32rem));
+
 @theme {
   --color-burgundy: #7a343d;
   --color-burgundy-deep: #5f2730;

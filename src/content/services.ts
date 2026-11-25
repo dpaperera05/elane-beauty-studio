@@ -234,6 +234,8 @@ export const servicesHero = {
 export const serviceMenu = {
   navLabel: "Service categories",
   bookLabel: "Book this service",
+  // Shown instead on phones, where it shares a line with the price.
+  bookShortLabel: "Book",
 };
 
 export const ritualFeature = {

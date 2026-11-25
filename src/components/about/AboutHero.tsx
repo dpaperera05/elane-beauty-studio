@@ -67,7 +67,7 @@ export function AboutHero() {
     <section
       ref={sectionRef}
       aria-labelledby="about-hero-title"
-      className="relative isolate flex min-h-[clamp(38rem,90svh,58rem)] flex-col overflow-hidden bg-ink text-white"
+      className="relative isolate flex min-h-[clamp(38rem,90svh,58rem)] flex-col short:min-h-svh overflow-hidden bg-ink text-white"
     >
       {/* Photo, oversized at the top so the drift never shows an edge. */}
       <div data-parallax aria-hidden="true" className="absolute inset-x-0 -top-[8%] bottom-0 -z-10">
@@ -91,7 +91,7 @@ export function AboutHero() {
       />
 
       {/* The top padding clears the floating header; the copy sits at the base. */}
-      <div className="container-site flex flex-1 flex-col justify-end pt-32 pb-6 sm:pb-8 lg:pb-10">
+      <div className="container-site flex flex-1 flex-col justify-end pt-32 pb-6 sm:pb-8 lg:pb-10 short:pt-28">
         <div className="flex flex-wrap items-end justify-between gap-x-16 gap-y-7">
           <div className="min-w-0 flex-[1_1_37.5rem]">
             <p data-reveal="item" className="type-label flex items-center gap-4 text-white/85">
@@ -100,7 +100,7 @@ export function AboutHero() {
             </p>
             <h1
               id="about-hero-title"
-              className="mt-4 font-serif text-[clamp(2.5rem,0.9rem+6.2vw,6rem)] leading-[0.92] font-medium tracking-[-0.04em] sm:mt-5 lg:text-[min(clamp(2.5rem,0.9rem+6.2vw,6rem),12svh)]"
+              className="mt-4 font-serif text-[clamp(2.5rem,0.9rem+6.2vw,6rem)] leading-[0.92] font-medium tracking-[-0.04em] sm:mt-5 lg:text-[min(clamp(2.5rem,0.9rem+6.2vw,6rem),12svh)] short:text-[3rem]"
             >
               {titleLines.map((line, i) => (
                 // Each line is its own mask; the padding keeps accents and

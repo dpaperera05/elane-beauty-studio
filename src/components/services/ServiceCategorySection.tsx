@@ -26,7 +26,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
  *
  * A row is a small two-by-two grid from sm: name and duration/price on the
  * first line, description and the booking link on the second. On phones the
- * four stack, so the price can never run into the name.
+ * name and description each take the full width, then the price and a short
+ * "Book" link share the last line, so the price can never run into the name.
  */
 export function ServiceCategorySection({
   category,
@@ -143,27 +144,32 @@ export function ServiceCategorySection({
               <li
                 key={service.id}
                 data-reveal="row"
-                className="group grid grid-cols-1 gap-y-1.5 border-t border-line pt-5 pb-3 sm:grid-cols-[1fr_auto] sm:gap-x-8 sm:gap-y-1 sm:pb-2.5"
+                className="group grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 border-t border-line pt-5 pb-1.5 sm:gap-x-8 sm:gap-y-1 sm:pb-2.5"
               >
-                <h3 className="type-h4 text-ink transition-colors duration-500 group-hover:text-burgundy">
+                <h3 className="type-h4 order-1 col-span-2 text-ink transition-colors duration-500 group-hover:text-burgundy sm:col-span-1">
                   {service.name}
                 </h3>
-                <p className="type-ui flex items-baseline gap-2.5 whitespace-nowrap tabular-nums sm:justify-end sm:pt-1">
+                <p className="type-ui order-3 flex items-baseline gap-2.5 self-center whitespace-nowrap tabular-nums sm:order-2 sm:self-auto sm:justify-end sm:pt-1">
                   <span className="font-normal text-muted">{formatMinutes(service.duration)}</span>
                   <span aria-hidden="true" className="text-line">
                     /
                   </span>
                   <span className="font-semibold text-ink">{formatLkr(service.price)}</span>
                 </p>
-                <p className="type-small max-w-[34rem] text-muted sm:pt-1">{service.description}</p>
-                {/* 44px tall, so it stays an easy target on touch screens. */}
+                <p className="type-small order-2 col-span-2 max-w-136 text-muted sm:order-3 sm:col-span-1 sm:pt-1">
+                  {service.description}
+                </p>
+                {/* 44px tall, so it stays an easy target on touch screens. On
+                    phones it shares the price's line, so its label shortens
+                    (the aria-label still names the service). */}
                 <a
                   href={bookingHref(category.id, service.id)}
                   aria-label={`${serviceMenu.bookLabel}: ${service.name}`}
-                  className="type-ui group/link inline-flex h-11 items-center gap-2 justify-self-start text-burgundy transition-colors hover:text-burgundy-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy sm:justify-self-end"
+                  className="type-ui group/link order-4 inline-flex h-11 items-center gap-2 justify-self-end text-burgundy transition-colors hover:text-burgundy-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy"
                 >
                   <span className="underline decoration-burgundy/30 decoration-1 underline-offset-[6px] transition-colors group-hover/link:decoration-burgundy">
-                    {serviceMenu.bookLabel}
+                    <span className="sm:hidden">{serviceMenu.bookShortLabel}</span>
+                    <span className="max-sm:hidden">{serviceMenu.bookLabel}</span>
                   </span>
                   <Icon
                     name="arrow"

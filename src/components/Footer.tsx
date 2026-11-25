@@ -14,12 +14,17 @@ const linkClass = "link-underline text-ivory/80 hover:text-ivory";
  * deepening towards the bottom). Desktop: the wordmark and tagline on the
  * left, four compact groups on the right; a hairline bottom row closes it.
  * Mobile: wordmark first, then the groups two by two.
+ *
+ * `hideOnMobile` drops it below md, for pages that are a focused task on a
+ * phone (the booking flow).
  */
-export function Footer() {
+export function Footer({ hideOnMobile = false }: { hideOnMobile?: boolean }) {
   return (
     <footer
       id="footer"
-      className="bg-burgundy bg-[linear-gradient(170deg,var(--color-burgundy)_30%,var(--color-burgundy-deep)_100%)] text-ivory"
+      className={`bg-burgundy bg-[linear-gradient(170deg,var(--color-burgundy)_30%,var(--color-burgundy-deep)_100%)] text-ivory ${
+        hideOnMobile ? "max-md:hidden" : ""
+      }`}
     >
       <div className="container-site pt-14 pb-8 md:pt-20 md:pb-10">
         <div className="grid grid-cols-2 gap-x-8 gap-y-8 md:grid-cols-12 lg:gap-x-10">
@@ -31,7 +36,8 @@ export function Footer() {
             <p className="mt-3 max-w-xs font-serif text-xl text-ivory/75 italic">{footer.tagline}</p>
           </div>
 
-          <nav aria-label="Footer" className="md:col-span-3 lg:col-span-2">
+          {/* Hidden on phones, where the header menu already lists these pages. */}
+          <nav aria-label="Footer" className="max-md:hidden md:col-span-3 lg:col-span-2">
             <GroupLabel>Explore</GroupLabel>
             <ul className="type-small mt-3 space-y-1">
               {footer.nav.map((item) => (
@@ -67,7 +73,8 @@ export function Footer() {
             </dl>
           </div>
 
-          <div className="md:col-span-3 lg:col-span-2">
+          {/* Full width on phones: Visit and Opening Hours pair up above it. */}
+          <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <GroupLabel>Contact</GroupLabel>
             <ul className="type-small mt-3 space-y-1">
               <li>

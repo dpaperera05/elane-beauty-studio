@@ -60,16 +60,18 @@ export function WhyElane() {
             <li
               key={point.title}
               data-reveal="point"
-              className="border-t border-ivory/20 py-8 sm:border-t-0 sm:border-l sm:px-7 sm:py-9 lg:px-8"
+              // Phones: the number sits beside the text, so four points don't
+              // run a full screen each. From sm it heads its column.
+              className="grid grid-cols-[3.25rem_1fr] gap-x-4 border-t border-ivory/20 py-7 sm:block sm:border-t-0 sm:border-l sm:px-7 sm:py-9 lg:px-8"
             >
               <span
                 aria-hidden="true"
-                className="block font-serif text-[3.5rem] leading-none text-ivory/55 lining-nums"
+                className="row-span-2 block font-serif text-[2.75rem] leading-none text-ivory/55 lining-nums sm:text-[3.5rem]"
               >
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="type-h4 mt-6 text-ivory">{point.title}</h3>
-              <p className="type-small mt-2.5 text-ivory/80">{point.body}</p>
+              <h3 className="type-h4 pt-1 text-ivory sm:mt-6 sm:pt-0">{point.title}</h3>
+              <p className="type-small mt-2 text-ivory/80 sm:mt-2.5">{point.body}</p>
             </li>
           ))}
         </ol>

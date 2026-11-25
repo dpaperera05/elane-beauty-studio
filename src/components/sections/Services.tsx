@@ -222,18 +222,21 @@ export function Services() {
                     }`}
                   >
                     <div className="min-h-0 overflow-hidden">
+                      {/* Phones: a 4:3 photo across the width. Tablets: a
+                          wider 16:9 crop under the row's text, so it isn't a
+                          narrow portrait beside empty space. */}
                       <div className="pb-7 sm:pl-13">
-                        <div className="relative aspect-4/5 w-full overflow-hidden bg-beige sm:max-w-sm">
+                        <div className="relative aspect-4/3 w-full overflow-hidden bg-beige sm:aspect-video">
                           <Image
                             src={item.image.src}
                             alt={item.image.alt}
                             fill
-                            sizes="(min-width: 640px) 24rem, 100vw"
+                            sizes="100vw"
                             className="object-cover"
                           />
                         </div>
                         {/* The row above already lists what's included. */}
-                        <div className="mt-4 flex justify-end sm:max-w-sm">
+                        <div className="mt-4 flex justify-end">
                           <ExploreLink href={item.href} />
                         </div>
                       </div>

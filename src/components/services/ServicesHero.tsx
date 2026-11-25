@@ -71,7 +71,7 @@ export function ServicesHero() {
     <h1
       id="services-hero-title"
       data-reveal="item"
-      className={`mt-5 font-serif leading-[0.88] font-medium sm:mt-6 ${
+      className={`mt-5 font-serif leading-[0.88] font-medium sm:mt-6 short:mt-4 short:text-[3rem] ${
         side
           ? "text-[clamp(2.75rem,1.2rem+5.6vw,6.25rem)] tracking-[-0.035em] lg:text-[min(clamp(2.75rem,1.2rem+5.6vw,6.25rem),11svh)]"
           : "text-[clamp(2.75rem,1rem+7.4vw,7.75rem)] tracking-[-0.04em] lg:text-[min(clamp(2.75rem,1rem+7.4vw,7.75rem),13svh)]"
@@ -103,7 +103,7 @@ export function ServicesHero() {
       ref={sectionRef}
       data-menu-section=""
       aria-labelledby="services-hero-title"
-      className="relative isolate flex min-h-[clamp(38rem,90svh,58rem)] flex-col overflow-hidden bg-ink text-white"
+      className="relative isolate flex min-h-[clamp(38rem,90svh,58rem)] flex-col short:min-h-svh overflow-hidden bg-ink text-white"
     >
       {/* Photo, oversized at the top so the drift never shows an edge. */}
       <div data-parallax aria-hidden="true" className="absolute inset-x-0 -top-[8%] bottom-0 -z-10">
@@ -140,7 +140,7 @@ export function ServicesHero() {
       {side ? (
         <>
           {/* The top padding clears the floating header. */}
-          <div className="container-site flex flex-1 items-center pt-32 pb-12 sm:pb-16">
+          <div className="container-site flex flex-1 items-center pt-32 pb-12 sm:pb-16 short:pt-28 short:pb-10">
             {/* Wide enough for "Services designed" on one line at full size. */}
             <div className="max-w-[47rem]">
               {eyebrow}

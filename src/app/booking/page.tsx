@@ -17,7 +17,9 @@ export default function BookingPage() {
       <main className="pt-16 lg:pt-20">
         <BookingFlow />
       </main>
-      <Footer />
+      {/* On phones the booking steps end the page; the header menu still
+          links back to the rest of the site. */}
+      <Footer hideOnMobile />
     </>
   );
 }
